@@ -7,7 +7,7 @@
 	padding:0;
 }
 a{
-	color: black;
+	color: white;
 	-webkit-transition: 0.5s ease;  
 	-moz-transition: 0.5s ease;  
 	-o-transition: 0.5s ease;  
@@ -32,7 +32,6 @@ body{
 	position:relative;
 }
 p{
-	text-color:white;
 	margin:0 0 0.7em;
 }
 #center{

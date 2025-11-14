@@ -2370,7 +2370,8 @@ function setHoverText() {
 }
 
 function menuWatchA() {
-	window.open('https://www.youtube.com/watch?v=4q77g4xo9ic');
+	window.open('https://discord.gg/Xm8xzhEFjy');
+	//window.open('https://www.youtube.com/watch?v=4q77g4xo9ic');
 }
 
 function menuWatchC() {
@@ -2917,8 +2918,9 @@ function drawMenu() {
 	ctx.textAlign = 'left';
 	ctx.font = '20px Helvetica';
 
-	if (levelProgress > 99) drawMenu0Button('WATCH BFDIA 5c', 665.55, 303.75, false, menuWatchC);
-	else drawMenu0Button('WATCH BFDIA 5a', 665.55, 303.75, false, menuWatchA);
+	//if (levelProgress > 99) drawMenu0Button('WATCH BFDIA 5c', 665.55, 303.75, false, menuWatchC);
+	//else 
+	drawMenu0Button('JOIN 5b CENTRAL', 665.55, 303.75, false, menuWatchA);
 	if (showingNewGame2) {
 		drawRoundedRect('#ffffff', 665.5, 81, 273, 72.95, 15);
 		ctx.font = '20px Helvetica';
@@ -4018,7 +4020,7 @@ function addTileMovieClip(x, y, context) {
 			context.drawImage(svgTiles[t], x * 30 + svgTilesVB[t][0], y * 30 + svgTilesVB[t][1], svgTiles[t].width / scaleFactor, svgTiles[t].height / scaleFactor);
 		} else if (blockProperties[t][16] > 1) {
 			let frame = 0;
-			if (blockProperties[t][17]) frame = blockProperties[t][18][_frameCount % blockProperties[t][18].length];
+			if (blockProperties[t][17]) frame = blockProperties[t][18][_frameCount % blockProperties[t][18].length]+x+y;
 			else {
 				frame = tileFrames[y][x].cf;
 				if (tileFrames[y][x].playing) tileFrames[y][x].cf++;

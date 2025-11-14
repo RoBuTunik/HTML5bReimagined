@@ -2028,7 +2028,7 @@ let exploreOldLevelData = {};
 let previousMenuExplore = 0;
 let exploreUser;
 let exploreUserPageNumbers = [];
-let exploreSortText = ['new','old','plays'];
+let exploreSortText = ['New','Old','Plays'];
 let exploreSortTextWidth = 160;
 let loggedInExploreUser5beamID = -1; // Temporarily just being used for checking if the user is logged in.
 let exploreLevelTitlesTruncated = new Array(8);

@@ -9913,8 +9913,8 @@ function draw() {
 					drawArrow(920, y + 60, 25, 30, 1);
 
 					for (let i = 0; i < exploreUserPageLevels[j].length; i++) {
-						drawExploreLevel(y, 214 * i + 55, i+j*4, (i+j*4)>=4?1:0, 1);
-						//drawExploreLevel(214 * i + 55, y, i+j*4, (i+j*4)>=4?1:0, 1);
+						//drawExploreLevel(y, 214 * i + 55, i+j*4, (i+j*4)>=4?1:0, 1);
+						drawExploreLevel(214 * i + 55, y, i+j*4, (i+j*4)>=4?1:0, 1);
 					}
 				}
 			}

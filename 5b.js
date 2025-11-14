@@ -2816,7 +2816,7 @@ function drawMenu2_3Button(id, x, y, action) {
 function drawLevelButton(text, x, y, id, color) {
 	let useFill = false
 	let fill = '#585858';
-	let gradient = ctx.createLinearGradient(0, y+0.5, 0, y);
+	let gradient = ctx.createLinearGradient(0, y, 0, y+50);
 	if (color == 1) {
 		gradient.addColorStop(0, '#424242');
     	gradient.addColorStop(1, '#707070');

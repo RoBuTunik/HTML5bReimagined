@@ -5254,11 +5254,11 @@ function drawLCTiles() {
 			if (showTile) {
 				let img =
 					blockProperties[tile][16] > 1
-						? svgTiles[tile][blockProperties[tile][17] ? _frameCount+x % blockProperties[tile][16] : 0]
+						? svgTiles[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
 						: svgTiles[tile];
 				let vb =
 					blockProperties[tile][16] > 1
-						? svgTilesVB[tile][blockProperties[tile][17] ? _frameCount+x % blockProperties[tile][16] : 0]
+						? svgTilesVB[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
 						: svgTilesVB[tile];
 				osctx5.drawImage(
 					img,

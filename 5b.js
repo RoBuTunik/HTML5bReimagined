@@ -4583,6 +4583,7 @@ function land(i, y, vy) {
 	} else {
 		char[i].vy = vy;
 		char[i].onob = true;
+		char[i].cTime = 0;
 	}
 }
 
@@ -4738,6 +4739,7 @@ function bounce(i) {
 	}
 	char[i].jump(-jumpPower * 1.66);
 	char[i].onob = false;
+	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
 }
 
@@ -7835,13 +7837,14 @@ function draw() {
 					} else qPress = false;
 					if (_keysDown[32]) {
 						if (
-							(char[control].onob || char[control].submerged == 3) &&
+							(char[control].onob || char[control].cTime <= 3 || char[control].submerged == 3) &&
 							char[control].landTimer > 2 &&
 							!recover
 						) {
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
 							else char[control].jump(-jumpPower);
 							char[control].onob = false;
+							char[control].cTime = 999;
 							fallOff(control);
 						}
 					} else char[control].landTimer = 80;
@@ -7857,6 +7860,9 @@ function draw() {
 			for (let i = 0; i < charCount; i++) {
 				if (char[i].charState >= 5) {
 					char[i].landTimer = char[i].landTimer + 1;
+					if (!char[i].onob) {
+						char[i].cTime = char[i].cTime + 1;
+					}
 					if (char[i].carry && char[char[i].carryObject].justChanged < char[i].justChanged) {
 						char[char[i].carryObject].justChanged = char[i].justChanged;
 					}
@@ -10543,6 +10549,7 @@ class Character {
 		this.expr = 0;
 		this.dExpr = tdExpr;
 		this.acidDropTimer = [0, 0]; // Why am I doing it like this
+		this.cTime = 999;
 	}
 
 	applyForces(grav, control, waterUpMaxSpeed) {

@@ -101,7 +101,7 @@ let screenShake = true;
 let screenFlashes = true;
 let frameRateThrottling = true;
 let slowTintsEnabled = true;
-let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Features','Frame Rate Throttling', 'Slow Tints'];
+let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Features','Frame Rate Throttling', 'High Quality Tints'];
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
 let nextLevelId;
@@ -2170,7 +2170,8 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
-let musicSound = new Audio('data/the fiber 16x loop.wav');
+let musicSound = new Audio('data/Leopard Print Elevator.mp3');
+// let musicSound = new Audio('data/the fiber 16x loop.wav');
 // musicSound.addEventListener('canplaythrough', event => {incrementCounter();});
 
 const scaleFactor = 3;

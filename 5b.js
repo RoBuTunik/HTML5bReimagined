@@ -110,7 +110,7 @@ let nextLevelpackId;
 let whiteAlpha = 0;
 let coinAlpha = 0;
 let searchParams = new URLSearchParams(window.location.href);
-let [levelId, levelpackId] = [searchParams.get("https://coppersalts.github.io/HTML5b/?level"), searchParams.get("https://coppersalts.github.io/HTML5b/?levelpack")]
+let [levelId, levelpackId] = [searchParams.get("https://robutunik.github.io/HTML5bReimagined/?level"), searchParams.get("https://robutunik.github.io/HTML5bReimagined/?levelpack")]
 const difficultyMap = [
 	["Unknown", "#e6e6e6"],
 	["Easy", "#85ff85"],
@@ -6235,7 +6235,7 @@ function copyLevelString() {
 }
 
 function exploreCopyLink() {
-	copyText('https://coppersalts.github.io/HTML5b/?' + (exploreLevelPageType===0?'level=':'levelpack=') + exploreLevelPageLevel.id);
+	copyText('https://robutunik.github.io/HTML5bReimagined/?' + (exploreLevelPageType===0?'level=':'levelpack=') + exploreLevelPageLevel.id);
 }
 
 function copyText(textIn) {

@@ -2814,7 +2814,13 @@ function drawMenu2_3Button(id, x, y, action) {
 }
 
 function drawLevelButton(text, x, y, id, color) {
+	let useFill = false
 	let fill = '#585858';
+	let gradient = ctx.createLinearGradient(0, 0, 200, 0);
+	if (color == 1) {
+		gradient.addColorStop(0, 'red');
+    	gradient.addColorStop(1, 'yellow');
+	}
 	if (color == 2) fill = '#ff8000';
 	else if (color == 3) fill = '#efe303';
 	else if (color == 4) fill = '#00cc00';
@@ -2824,6 +2830,7 @@ function drawLevelButton(text, x, y, id, color) {
 			(_xmouse < 587 || _ymouse < 469)
 		) {
 			onButton = true;
+			useFill = true
 			if (mouseIsDown) {
 				if (color == 2) fill = '#d56a00';
 				else if (color == 3) fill = '#c6bc02';
@@ -2844,7 +2851,11 @@ function drawLevelButton(text, x, y, id, color) {
 		}
 	}
 
-	ctx.fillStyle = fill;
+	if (useFill) {
+		ctx.fillStyle = fill;
+	} else {
+		ctx.fillStyle = gradient;
+	}
 	ctx.fillRect(x, y, levelButtonSize.w, levelButtonSize.h);
 	ctx.lineWidth = 2;
 	ctx.strokeStyle = '#000000';

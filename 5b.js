@@ -2818,12 +2818,24 @@ function drawLevelButton(text, x, y, id, color) {
 	let fill = '#585858';
 	let gradient = ctx.createLinearGradient(0, y, 0, y+100);
 	if (color == 1) {
-		gradient.addColorStop(0, 'red');
-    	gradient.addColorStop(1, 'yellow');
+		gradient.addColorStop(0, '#424242');
+    	gradient.addColorStop(1, '#707070');
+	}
+	if (color == 2) {
+		gradient.addColorStop(0, '#d92100');
+    	gradient.addColorStop(1, '#ff8000');
+	}
+	if (color == 3) {
+		gradient.addColorStop(0, '#b0bd00');
+    	gradient.addColorStop(1, '#efe303');
+	}
+	if (color == 4) {
+		gradient.addColorStop(0, '#00ad00');
+    	gradient.addColorStop(1, '#00ff00');
 	}
 	if (color == 2) fill = '#ff8000';
-	else if (color == 3) fill = '#efe303';
-	else if (color == 4) fill = '#00cc00';
+	if (color == 3) fill = '#efe303';
+	if (color == 4) fill = '#00cc00';
 	if (color > 1) {
 		if (
 			onRect(_xmouse, _ymouse + cameraY, x, y, levelButtonSize.w, levelButtonSize.h) &&

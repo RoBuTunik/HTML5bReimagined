@@ -1943,7 +1943,7 @@ const charModels = [
 const names = ['Ruby','Book','Ice Cube','Match','Pencil','Bubble','Lego Brick','Waffle','Tune','','','','','','','','','','','','','','','','','','','','','','','','','','','HPRC 1','HPRC 2','Crate','Metal Box','Platform','Spike Ball','Package','Companian Cube','Rusty Apparatuses','Purple Thing','Saw Blade','Spike Ball Jr.','Pillar','Large Platform','Blue Spike Ball','Green Things','Acid Platform','Large Acid Platform','Green Block','Blue Block','Spike Wall'];
 let selectedTab = 0;
 let selectedBg = 0;
-const tabNames = ['Level Info', 'Characters / Objects', 'Tiles', 'Background', 'Dialogue', 'Options'];
+const tabNames = ['Level Info', 'Entities', 'Tiles', 'Background', 'Dialogue', 'Options'];
 let charInfoHeight = 40;
 let diaInfoHeight = 20;
 const charStateNames = ['', 'Dead', 'Being Recovered', 'Deadly & Moving', 'Moving', 'Deadly', 'Carryable', '', 'Non-Playable Character', 'Rescuable', 'Playable Character'];
@@ -2028,7 +2028,7 @@ let exploreOldLevelData = {};
 let previousMenuExplore = 0;
 let exploreUser;
 let exploreUserPageNumbers = [];
-let exploreSortText = ['New','Old','Plays'];
+let exploreSortText = ['new','old','plays'];
 let exploreSortTextWidth = 160;
 let loggedInExploreUser5beamID = -1; // Temporarily just being used for checking if the user is logged in.
 let exploreLevelTitlesTruncated = new Array(8);

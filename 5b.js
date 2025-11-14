@@ -4020,7 +4020,7 @@ function addTileMovieClip(x, y, context) {
 			context.drawImage(svgTiles[t], x * 30 + svgTilesVB[t][0], y * 30 + svgTilesVB[t][1], svgTiles[t].width / scaleFactor, svgTiles[t].height / scaleFactor);
 		} else if (blockProperties[t][16] > 1) {
 			let frame = 0;
-			if (blockProperties[t][17]) frame = blockProperties[t][18][(_frameCount+x+y) % blockProperties[t][18].length];
+			if (blockProperties[t][17]) frame = blockProperties[t][18][_frameCount % blockProperties[t][18].length];
 			else {
 				frame = tileFrames[y][x].cf;
 				if (tileFrames[y][x].playing) tileFrames[y][x].cf++;
@@ -5254,11 +5254,11 @@ function drawLCTiles() {
 			if (showTile) {
 				let img =
 					blockProperties[tile][16] > 1
-						? svgTiles[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
+						? svgTiles[tile][blockProperties[tile][17] ? _frameCount+x % blockProperties[tile][16] : 0]
 						: svgTiles[tile];
 				let vb =
 					blockProperties[tile][16] > 1
-						? svgTilesVB[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
+						? svgTilesVB[tile][blockProperties[tile][17] ? _frameCount+x % blockProperties[tile][16] : 0]
 						: svgTilesVB[tile];
 				osctx5.drawImage(
 					img,

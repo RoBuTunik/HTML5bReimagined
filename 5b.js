@@ -112,14 +112,14 @@ let coinAlpha = 0;
 let searchParams = new URLSearchParams(window.location.href);
 let [levelId, levelpackId] = [searchParams.get("https://robutunik.github.io/HTML5bReimagined/?level"), searchParams.get("https://robutunik.github.io/HTML5bReimagined/?levelpack")]
 const difficultyMap = [
-	["Unknown", "#e6e6e6"],
-	["Easy", "#85ff85"],
-	["Normal", "#ffff00"],
-	["Difficult", "#ffab1a"],
-	["Hard", "#ff7070"],
-	["Extreme", "#ff66d6"],
-	["Insane", "#eca2de"],
-	["Impossible", "#3d0000"],
+	["Unknown", "#e6e6e6", 0], //await createImage(resourceData['difficulties/Unkown.svg'])
+	["Easy", "#1981ff", 0], //await createImage(resourceData['difficulties/Easy.svg'])
+	["Normal", "#4dff4d", 0], //await createImage(resourceData['difficulties/Normal.svg'])
+	["Difficult", "#ffff00", 0], //await createImage(resourceData['difficulties/Difficult.svg'])
+	["Hard", "#ffab1a", 0], //await createImage(resourceData['difficulties/Hard.svg'])
+	["Extreme", "#ff7070", 0], //await createImage(resourceData['difficulties/Extreme.svg'])
+	["Insane", "#ff66d6", 0], //await createImage(resourceData['difficulties/Insane.svg'])
+	["Impossible", "#a38393", 0], //await createImage(resourceData['difficulties/Impossible.svg'])
 ];
 
 function clearVars() {
@@ -2250,6 +2250,16 @@ async function loadingScreen() {
 
 	req = await fetch('data/images6.json');
 	let resourceData = await req.json();
+
+	// Difficulty faces
+	difficultyMap[0][2] = await createImage(resourceData['difficulties/Unkown.svg']);
+	difficultyMap[1][2] = await createImage(resourceData['difficulties/Easy.svg']);
+	difficultyMap[2][2] = await createImage(resourceData['difficulties/Normal.svg']);
+	difficultyMap[3][2] = await createImage(resourceData['difficulties/Difficult.svg']);
+	difficultyMap[4][2] = await createImage(resourceData['difficulties/Hard.svg']);
+	difficultyMap[5][2] = await createImage(resourceData['difficulties/Extreme.svg']);
+	difficultyMap[6][2] = await createImage(resourceData['difficulties/Insane.svg']);
+	difficultyMap[7][2] = await createImage(resourceData['difficulties/Impossible.svg']);
 
 	svgCSBubble = await createImage(resourceData['ui/csbubble/dia.svg']);
 	svgHPRCCrank = await createImage(resourceData['entities/e0035crank.svg']);
@@ -7005,8 +7015,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		// Views icon & counter
 		ctx.fillStyle = '#47cb46';
 		ctx.beginPath();
-		let atX = 180
-		let atY = 100
+		let atX = 178
+		let atY = 105
 		ctx.moveTo(x + atX + 5,		y + atY-9);
 		ctx.lineTo(x + atX,			y + atY);
 		ctx.lineTo(x + atX + 10,	y + atY);
@@ -7016,6 +7026,16 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.textAlign = "right";
 		ctx.fillText(thisExploreLevel.plays, x + atX - 3, y + atY - 8);
 		ctx.textAlign = "left";
+
+		// Difficulty face
+		if (levelType == 0) {
+			ctx.drawImage(difficultyMap[thisExploreLevel.difficulty][2], x + 183, y + 89, 5, 5);
+			//ctx.beginPath();
+			//ctx.arc(x + 183, y + 89, 5, 0, 2 * Math.PI);
+			//ctx.fillStyle = difficultyMap[thisExploreLevel.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
+			//ctx.closePath();
+			//ctx.fill();
+		}
 	}
 
 	// explorePageLevels[i]
@@ -7163,7 +7183,7 @@ function drawExploreLoadingText() {
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 	ctx.fillStyle = '#ffffff';
-	if (exploreTab == 0) x = 740;
+	if (exploreTab == -1) x = 740;
 	else x = cwidth / 2;
 	ctx.fillText('loading...', x, cheight / 2);
 }
@@ -9681,7 +9701,7 @@ function draw() {
 				drawExploreLoadingText();
 			} else {
 				for (let i = 0; i < explorePageLevels.length; i++) {
-					if (exploreTab == 0) {
+					if (exploreTab == -1) {
 						x = (i % 2) * 205 + (exploreTab == 2 ? 500 : 555);
 						y = 120 * Math.floor(i / 2) + 8;
 					} else {
@@ -9692,8 +9712,6 @@ function draw() {
 				}
 				if (exploreTab == 0) { // daily
 					//drawExploreLevel(0, 0, -1, 0, 0);
-					//const newWindow = window.open("", "_blank", "width=400,height=300");
-					//newWindow.document.write(exploreDailyLevel.title);
 				}
 			}
 
@@ -9727,17 +9745,15 @@ function draw() {
 			ctx.font = '30px Helvetica';
 			ctx.fillStyle = '#ffffff';
 
-			if (exploreTab == 0) x = 740;
+			if (exploreTab == -1) x = 740;
 			else x = cwidth / 2;
 
 			ctx.fillText(explorePage, x, 505);
 
 			// Previous page button
-			if (exploreTab == 0) {
-				x = 555;
-			} else {
-				x = cwidth * 0.25;
-			}
+			if (exploreTab == -1) x = 555;
+			else x = cwidth * 0.25;
+
 			if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
 			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
 				ctx.fillStyle = '#cccccc';
@@ -9747,7 +9763,7 @@ function draw() {
 			drawArrow(x, 495, 25, 30, 3);
 
 			// Next page button
-			if (exploreTab == 0) {
+			if (exploreTab == -1) {
 				x = 925;
 			} else {
 				x = cwidth * 0.75;
@@ -9769,7 +9785,6 @@ function draw() {
 			} else {
 				drawMenu0Button('Log Out', 100, 75, false, logOutExplore, 120);
 			}
-			//}
 
 			break;
 
@@ -10407,8 +10422,6 @@ function getDailyLevel() {
 	return fetch('https://5beam.zelo.dev/api/daily', { method: 'GET' })
 		.then(async response => {
 			exploreDailyLevel = await response.json();
-			//setExploreDailyThumb();
-			//truncateDailyLevelTitle(exploreDailyLevel, 0);
 			requestResolved();
 		})
 		.catch(err => {

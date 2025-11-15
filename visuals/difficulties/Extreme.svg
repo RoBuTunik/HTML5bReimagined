@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="200mm"
+   height="200mm"
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="Extreme.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.5"
+     inkscape:cx="231"
+     inkscape:cy="385"
+     inkscape:window-width="1680"
+     inkscape:window-height="979"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient2"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#ff7070;stop-opacity:1;"
+         offset="0"
+         id="stop2" />
+      <stop
+         style="stop-color:#ff1010;stop-opacity:1;"
+         offset="1"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2"
+       id="linearGradient3"
+       x1="100"
+       y1="0"
+       x2="100"
+       y2="200"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:url(#linearGradient3);fill-opacity:1;stroke-width:0.264022"
+       id="path1"
+       cx="100"
+       cy="100"
+       r="100" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke-width:0.40621"
+       id="path2"
+       cx="55.864582"
+       cy="79.412498"
+       r="17.5" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke-width:0.406209"
+       id="path2-8"
+       cx="147.56313"
+       cy="79.84478"
+       r="17.5" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke-width:0.289988"
+       d="m 46.749943,148.69582 c 1.864836,-5.23539 16.936251,-12.08995 30.511935,-16.93333 13.338252,-4.75868 30.652862,-6.05609 44.496572,-3.175 3.3695,0.70125 9.35942,7.26219 12.07764,9.525 1.86415,1.55184 14.52961,17.538 12.7133,19.05 -3.29596,2.74376 -10.62856,-6.39263 -11.44197,-7.40833 -1.58471,-1.97881 -5.18315,-3.56173 -6.99232,-5.82084 -5.39255,-6.73362 -13.86048,-9.525 -24.15528,-9.525 -1.90783,0 -5.174927,-0.5043 -6.992316,0 -9.552115,2.65059 -42.281966,22.35304 -50.217561,19.05 -3.591392,-1.49484 2.716627,-8.7563 3.813992,-10.58333"
+       id="path6" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke-width:0.264583"
+       d="m 33.866666,33.3375 c -0.834575,2.611763 7.629721,4.93961 12.7,8.995833 2.625532,2.100427 5.727673,3.766587 8.466666,5.820834 2.753461,2.065096 5.550834,4.6005 8.466667,6.35 2.259219,1.355531 11.1125,7.758813 11.1125,1.5875 0,-1.186757 0.372107,-3.117009 0,-4.233334 -0.279802,-0.839409 -1.619639,-1.090472 -2.116667,-1.5875 C 64.228318,42.003319 53.902741,34.642354 42.333333,31.75 c -2.853114,-0.713279 -6.019747,0.538819 -8.466667,1.5875 z"
+       id="path7" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke-width:0.29553"
+       d="m 173.24014,31.445601 c 0.90096,3.018388 -8.23659,5.708658 -13.71016,10.396394 -2.83437,2.427443 -6.18325,4.353007 -9.14011,6.72708 -2.97247,2.386611 -5.99235,5.316752 -9.1401,7.338631 -2.43892,1.566574 -11.99639,8.966783 -11.99639,1.834658 0,-1.371523 -0.40171,-3.602296 0,-4.892421 0.30205,-0.970097 1.74847,-1.260248 2.28502,-1.834658 8.92512,-9.554684 20.072,-18.061677 32.56163,-21.404342 3.08005,-0.824329 6.49856,0.622708 9.14011,1.834658 z"
+       id="path7-1" />
+  </g>
+</svg>

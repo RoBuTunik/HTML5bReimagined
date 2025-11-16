@@ -90,6 +90,7 @@ let bonusesCleared;
 let gotCoin;
 let gotThisCoin = false;
 let levelpackProgress = {};
+let onlineLevelProgress = {};
 const bfdia5b = window.localStorage;
 let deathCount;
 let timer;
@@ -121,6 +122,19 @@ const difficultyMap = [
 	["Insane", "#ff66d6", 0],
 	["Impossible", "#a38393", 0],
 ];
+
+const specialUserCols = {
+	'largerockit': '#00dcff',
+	'robutunik': '#00dcff',
+	'coppersalts': '#ffb0df',
+	'zelo.dev': "#c685ff",
+	'zelo101': "#c685ff",
+}
+
+function getUsernameColor(u, c) {
+	if (specialUserCols[u] != undefined) return specialUserCols[u];
+	else return c;
+}
 
 function clearVars() {
 	deathCount = timer = coins = bonusProgress = levelProgress = 0;
@@ -247,6 +261,10 @@ function saveLevelpackProgress() {
 	bfdia5b.setItem('levelpackProgress', JSON.stringify(levelpackProgress));
 }
 
+function saveLevelProgress() {
+	bfdia5b.setItem('levelProgress', JSON.stringify(levelProgress));
+}
+
 function getSavedLevelpackProgress() {
 	if (bfdia5b.getItem('levelpackProgress') == undefined) {
 		bfdia5b.setItem('levelpackProgress', '{}');
@@ -254,6 +272,14 @@ function getSavedLevelpackProgress() {
 	levelpackProgress = JSON.parse(bfdia5b.getItem('levelpackProgress'));
 }
 getSavedLevelpackProgress();
+
+function getSavedLevelProgress() {
+	if (bfdia5b.getItem('onlineLevelProgress') == undefined) {
+		bfdia5b.setItem('onlineLevelProgress', '{}');
+	}
+	onlineLevelProgress = JSON.parse(bfdia5b.getItem('onlineLevelProgress'));
+}
+getSavedLevelProgress();
 
 function getTimer() {
 	return _frameCount / 0.06;
@@ -3055,7 +3081,7 @@ function drawLevelMap() {
 			const username = isGuest ? "Guest" : exploreLevelPageLevel.creator.username;
 			
 			ctx.font = 'italic 21px Helvetica';
-			ctx.fillText('by ' + username, 50, 32 + titleLineCount*48);
+			ctx.fillText('@' + username, 50, 32 + titleLineCount*48);
 		}
 
 		ctx.drawImage(svgTiles[12], 568.5, 29.5, 50, 50);
@@ -7026,11 +7052,11 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// ctx.fillText(fitString(ctx, explorePageLevels[i].title, 195.3), x+6.35, y+119.4);
 	// fitString(ctx, explorePageLevels[i].title, 142.3);
 
-	const isGuest = thisExploreLevel.creator === undefined;
+	const isGuest = thisExploreLevel.creator && thisExploreLevel.creator === undefined;
 	const username = isGuest ? "Guest" : thisExploreLevel.creator.username;
 
 	if (pageType < 2) {
-		ctx.fillStyle = '#dadada';
+		ctx.fillStyle = getUsernameColor(username, '#dadada');
 		ctx.font = '10px Helvetica';
 		//ctx.fillText('by ' + username, x + 7, y + 138.3);
 		ctx.textAlign = "left";
@@ -7038,7 +7064,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 
 
 		// Views icon & counter
-		ctx.fillStyle = '#47df47';
+		ctx.fillStyle = '#00d68f';
 		ctx.beginPath();
 		let atX = 178
 		let atY = 98
@@ -7756,7 +7782,7 @@ function draw() {
 	switch (menuScreen) {
 		case -1:
 			ctx.drawImage(preMenuBG, 0, 0, cwidth, cheight);
-			drawMenu0Button('Start Game', (cwidth - menu0ButtonSize.w) / 2, (cheight - menu0ButtonSize.h) / 2, false, playGame);
+			drawMenu0Button('Start Game', (cwidth - 180) / 2, (cheight - menu0ButtonSize.h) / 2, false, playGame, 180);
 			break;
 
 		case 0:
@@ -7807,6 +7833,8 @@ function draw() {
 						else exitLevel();
 					} else {
 						if (playMode == 3) {
+							onlineLevelProgress[exploreLevelPageLevel.id].completed = true;
+							onlineLevelProgress[exploreLevelPageLevel.id].gotCoin = gotThisCoin;
 							exitExploreLevel();
 						} else if (playMode == 2) {
 							exitTestLevel();
@@ -9852,12 +9880,23 @@ function draw() {
 			if (exploreLoading) {
 				drawExploreLoadingText();
 			} else {
+				if (onlineLevelProgress[exploreLevelPageLevel.id] === undefined) {
+					onlineLevelProgress[exploreLevelPageLevel.id] = {
+						completed: false,
+						gotCoin: false,
+						time: Infinity,
+						deaths: 0,
+						attempts: 0,
+					}
+				}
+				let thisLevelProgress = onlineLevelProgress[exploreLevelPageLevel.id]
+
 				const isGuest = exploreLevelPageLevel.creator === "";
 				const username = isGuest ? "Guest" : exploreLevelPageLevel.creator.username;
 
 				ctx.textBaseline = 'top';
 				ctx.textAlign = 'left';
-				ctx.fillStyle = '#b0b0b0';
+				ctx.fillStyle = getUsernameColor(username, '#b0b0b0');
 				ctx.font = '18px Helvetica';
 				ctx.fillText('@' + username, 31.85, 68); //'by ' + 
 
@@ -9897,12 +9936,15 @@ function draw() {
 				ctx.fillText('created ' + exploreLevelPageLevel.created.slice(0,10), 31.85, 325);
 
 				// Views icon & counter
-				ctx.fillStyle = '#47df47';
+				ctx.fillStyle = '#00d68f';
 				ctx.font = 'bold 18px Helvetica';
 				ctx.textAlign = 'right';
 
 				let pluralViewText = exploreLevelPageLevel.plays === 1
 				ctx.fillText(exploreLevelPageLevel.plays + (pluralViewText ? ' play' : ' plays'), 410, 325);
+				ctx.fillStyle = thisLevelProgress.completed ? '#00ff00' : '#a6a6a6';
+				ctx.fillText(thisLevelProgress.completed ? 'Completed!' : 'Uncompleted', 410, 350);
+
 				ctx.textAlign = 'left';
 
 				// Difficulty in levelpacks arent supported yet
@@ -10039,7 +10081,7 @@ function draw() {
 			// Username
 			ctx.textBaseline = 'bottom';
 			ctx.textAlign = 'left';
-			ctx.fillStyle = '#ffffff';
+			ctx.fillStyle = getUsernameColor(exploreUser.username, '#ffffff');
 			ctx.font = 'bold 36px Helvetica';
 			ctx.fillText(exploreUser.username + "'s " + (exploreUserTab == 0 ? 'levels' : 'packs'), 10, 50);
 

@@ -2172,9 +2172,13 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
-let musicSound = new Audio('data/Leopard Print Elevator.mp3');
+let musicSound = new Audio('data/music/Leopard Print Elevator.mp3');
 // let musicSound = new Audio('data/the fiber 16x loop.wav');
 // musicSound.addEventListener('canplaythrough', event => {incrementCounter();});
+
+let soundEffects = {
+	click: new Audio('data/sounds/click.mp3'),
+};
 
 const scaleFactor = 3;
 
@@ -2790,7 +2794,11 @@ function drawMenu0Button(text, x, y, grayed, action, width = menu0ButtonSize.w) 
 			if (!mouseIsDown) fill = '#d4d4d4';
 			if (onRect(lastClickX, lastClickY, x, y, width, menu0ButtonSize.h)) {
 				if (mouseIsDown) fill = '#b8b8b8';
-				else if (mousePressedLastFrame) action();
+				else if (mousePressedLastFrame) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					action();
+				}
 			}
 		}
 	} else fill = '#b8b8b8';
@@ -2817,6 +2825,8 @@ function drawMenu2_3Button(id, x, y, action) {
 	}
 	if (!mouseIsDown && menu2_3ButtonClicked === id) {
 		menu2_3ButtonClicked = -1;
+		soundEffects.click.currentTime = 0;
+		soundEffects.click.play();
 		action();
 	}
 	ctx.fillStyle = fill;
@@ -2868,6 +2878,8 @@ function drawLevelButton(text, x, y, id, color) {
 		if (!mouseIsDown && levelButtonClicked === id) {
 			levelButtonClicked = -1;
 			if (id <= levelProgress) { // || (id > 99 && id < bonusProgress + 100)
+				soundEffects.click.currentTime = 0;
+				soundEffects.click.play();
 				playLevel(id);
 				whiteAlpha = 100;
 			}
@@ -2916,7 +2928,11 @@ function drawSimpleButton(text, action, x, y, w, h, bottomPad, textColor, bgColo
 			ctx.fillStyle = bgHover;
 			if (kwargs.alt) hoverText = kwargs.alt;
 			if (mouseIsDown) ctx.fillStyle = bgActive;
-			else if (pmouseIsDown && onRect(lastClickX, lastClickY, x, y, w, h)) action();
+			else if (pmouseIsDown && onRect(lastClickX, lastClickY, x, y, w, h)) {
+				soundEffects.click.currentTime = 0;
+				soundEffects.click.play();
+				action();
+			}
 		} else ctx.fillStyle = bgColor;
 	} else ctx.fillStyle = bgHover;
 	ctx.fillRect(x, y, w, h);
@@ -6964,7 +6980,9 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			if (thisExploreLevel.featured) ctx.fillStyle = '#ffffff';
 			else ctx.fillStyle = '#a0a0a0';
 		}
-		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x-4, y-4, 200, 116)) {
+		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x - 4, y - 4, 200, 116)) {
+			soundEffects.click.currentTime = 0;
+			soundEffects.click.play();
 			if (pageType == 2) {
 				if (levelpackAddScreen) addLevelToLevelpack(explorePageLevels[i].id);
 				else if (deletingMyLevels) openLevelDeletePopUp(i);
@@ -7059,7 +7077,7 @@ function setExplorePage(page) {
 	exploreLevelTitlesTruncated = new Array(8); // Is this needed?
 	if (exploreTab == 2) getSearchPage(exploreSearchInput, explorePage);
 	else {
-		getExplorePage(explorePage, exploreTab, exploreSort, exploreTab == 3);
+		getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
 		if (exploreTab == 0) getDailyLevel();
 	}
 	// setExploreThumbs();
@@ -7191,7 +7209,7 @@ function exploreDrawThumbTile(context, x, y, tile) {
 	}
 }
 
-function drawExploreLoadingText() {
+function drawExploreLoadingText(text) {
 	ctx.font = 'bold 35px Helvetica';
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
@@ -9697,8 +9715,13 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, tabx, 20, exploreTabWidths[i], 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
 						exploreTab = i;
-						if (exploreTab == 2) exploreSearchInput = '';
+						if (exploreTab == 2) {
+							textBoxes[0][0].text = '';
+							exploreSearchInput = '';
+						}
 						setExplorePage(1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -9710,7 +9733,14 @@ function draw() {
 			}
 
 			// Levels
-			if (exploreLoading) {
+			if (exploreTab == 4) { // favorites are disabled for now
+				ctx.font = 'bold 30px Helvetica';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.fillStyle = '#ffffff';
+				ctx.fillText('The favorited tab is not implemented yet!', cwidth / 2, cheight / 2);
+				//ctx.fillText('You do not have any favorited levels!', cwidth / 2, cheight / 2);
+			} else if (exploreLoading) {
 				drawExploreLoadingText();
 			} else {
 				for (let i = 0; i < explorePageLevels.length; i++) {
@@ -9730,12 +9760,17 @@ function draw() {
 
 			if (exploreTab == 2) {
 				textBoxes[0][0].draw();
-				exploreSearchInput = textBoxes[0][0].text;
+				let tempSearchInput = textBoxes[0][0].text;
 
 				if (onRect(_xmouse, _ymouse, 877, 120, 55, 55)) {
 					ctx.fillStyle = '#404040';
 					onButton = true;
-					if (mousePressedLastFrame) setExplorePage(1);
+					if (mousePressedLastFrame && exploreSearchInput != tempSearchInput) {
+						exploreSearchInput = tempSearchInput;
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
+						setExplorePage(1);
+					}
 				} else ctx.fillStyle = '#333333';
 				ctx.fillRect(877, 120, 55, 55);
 
@@ -9748,44 +9783,53 @@ function draw() {
 				ctx.stroke();
 			}
 
-			if (exploreTab != 2 && exploreTab != 4) { //sorting in the search page is not supported yet. 
-								//also I disabled it for the favorites tab because I didn't feel like it was needed there
+			if (exploreTab != 2 && exploreTab != 4) { //sorting in the search page is not supported.
 				drawMenu0Button('Sort by: ' + exploreSortText[exploreSort], 230, 75, false, changeSortBy, 210);
 			}
 
-			// Page number
-			ctx.textAlign = 'center';
-			ctx.font = '30px Helvetica';
-			ctx.fillStyle = '#ffffff';
-			if (exploreTab == -1) x = 740;
-			else x = cwidth / 2;
-			ctx.fillText(explorePage, x, 505);
+			if (exploreTab != 4) {
+				// Page number
+				ctx.textAlign = 'center';
+				ctx.font = '30px Helvetica';
+				ctx.fillStyle = '#ffffff';
+				if (exploreTab == -1) x = 740;
+				else x = cwidth / 2;
+				ctx.fillText(explorePage, x, 505);
 
-			// Previous page button
-			if (exploreTab == -1) x = 555;
-			else x = cwidth * 0.25;
+				// Previous page button
+				if (exploreTab == -1) x = 555;
+				else x = cwidth * 0.25;
 
-			if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setExplorePage(explorePage - 1);
-			} else ctx.fillStyle = '#999999';
-			drawArrow(x, 495, 25, 30, 3);
+				if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
+						setExplorePage(explorePage - 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(x, 495, 25, 30, 3);
 
-			// Next page button
-			if (exploreTab == -1) {
-				x = 925;
-			} else {
-				x = cwidth * 0.75;
+				// Next page button
+				if (exploreTab == -1) {
+					x = 925;
+				} else {
+					x = cwidth * 0.75;
+				}
+				if (exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
+						setExplorePage(explorePage + 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(x, 495, 25, 30, 1);
 			}
-			if (exploreLoading) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setExplorePage(explorePage + 1);
-			} else ctx.fillStyle = '#999999';
-			drawArrow(x, 495, 25, 30, 1);
 
 			//if (exploreTab == 0) {
 			//drawMenu2_3Button(1, 837.5, 486.95, menu2Back);
@@ -10009,6 +10053,8 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, userTabX, 20, exploreTabWidths[i], 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
 						exploreUserTab = i;
 						setExploreUserPage(1, exploreUserPageNumbers[exploreUserTab]);
 					}
@@ -10041,7 +10087,11 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, cwidth * 0.25, 495, 25, 30)) {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] - 1);
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
+						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] - 1);
+					}
 				} else ctx.fillStyle = '#999999';
 				drawArrow(cwidth * 0.25, 495, 25, 30, 3);
 
@@ -10050,7 +10100,11 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, cwidth * 0.75, 495, 25, 30)) {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] + 1);
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click.currentTime = 0;
+						soundEffects.click.play();
+						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] + 1);
+					}
 				} else ctx.fillStyle = '#999999';
 				drawArrow(cwidth * 0.75, 495, 25, 30, 1);
 
@@ -10205,7 +10259,11 @@ function draw() {
 			else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setMyLevelsPage(myLevelsPage - 1);
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setMyLevelsPage(myLevelsPage - 1);
+				}
 			} else ctx.fillStyle = '#999999';
 			drawArrow(227.5, 487, 25, 30, 3);
 
@@ -10214,7 +10272,11 @@ function draw() {
 			else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setMyLevelsPage(myLevelsPage + 1);
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setMyLevelsPage(myLevelsPage + 1);
+				}
 			} else ctx.fillStyle = '#999999';
 			drawArrow(707.5, 487, 25, 30, 1);
 
@@ -10303,7 +10365,11 @@ function draw() {
 			else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setLevelpackCreatorPage(levelpackCreatorPage - 1);
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setLevelpackCreatorPage(levelpackCreatorPage - 1);
+				}
 			} else ctx.fillStyle = '#999999';
 			drawArrow(227.5, 487, 25, 30, 3);
 
@@ -10312,7 +10378,11 @@ function draw() {
 			else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) setLevelpackCreatorPage(levelpackCreatorPage + 1);
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setLevelpackCreatorPage(levelpackCreatorPage + 1);
+				}
 			} else ctx.fillStyle = '#999999';
 			drawArrow(707.5, 487, 25, 30, 1);
 
@@ -10450,7 +10520,7 @@ function getExplorePage(p, t, s, f) {
 	return fetch('https://5beam.zelo.dev/api/page?page=' + p + '&sort=' + s + '&type=' + t + '&featured=' + f, {method: 'GET'})
 		.then(async response => {
 			explorePageLevels = await response.json();
-			if (exploreTab == 0) setExploreThumbs();
+			if (exploreTab == 0 || exploreTab == 3) setExploreThumbs();
 			truncateLevelTitles(explorePageLevels,0);
 			requestResolved();
 		})
@@ -10552,7 +10622,7 @@ function getExploreUserPage(id, p, t, s) {
 		.then(async response => {
 			exploreUserPageLevels[t] = await response.json();
 			if (t === 0) setExploreThumbsUserPage(t);
-			truncateLevelTitles(exploreUserPageLevels[t],t*4);
+			truncateLevelTitles(exploreUserPageLevels[t],t*8);
 			requestResolved();
 		})
 		.catch(err => {

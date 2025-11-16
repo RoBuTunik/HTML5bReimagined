@@ -38,8 +38,7 @@
               "RelativeToolTip": "style.css",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-11-16T00:51:50.371Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-16T00:51:50.371Z"
             },
             {
               "$type": "Document",
@@ -61,10 +60,14 @@
               "RelativeDocumentMoniker": "5b.js",
               "ToolTip": "C:\\Users\\RoBuT\\Documents\\GitHub\\HTML5bReimagined\\5b.js",
               "RelativeToolTip": "5b.js",
-              "ViewState": "AgIAAB0bAAAAAAAAAAAiwC4bAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAPslAAAAAAAAAAAuwA8mAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-14T23:21:36.463Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }

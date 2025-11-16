@@ -112,14 +112,14 @@ let coinAlpha = 0;
 let searchParams = new URLSearchParams(window.location.href);
 let [levelId, levelpackId] = [searchParams.get("https://robutunik.github.io/HTML5bReimagined/?level"), searchParams.get("https://robutunik.github.io/HTML5bReimagined/?levelpack")]
 const difficultyMap = [
-	["Unknown", "#e6e6e6", 0], //await createImage(resourceData['difficulties/Unkown.svg'])
-	["Easy", "#1981ff", 0], //await createImage(resourceData['difficulties/Easy.svg'])
-	["Normal", "#4dff4d", 0], //await createImage(resourceData['difficulties/Normal.svg'])
-	["Difficult", "#ffff00", 0], //await createImage(resourceData['difficulties/Difficult.svg'])
-	["Hard", "#ffab1a", 0], //await createImage(resourceData['difficulties/Hard.svg'])
-	["Extreme", "#ff7070", 0], //await createImage(resourceData['difficulties/Extreme.svg'])
-	["Insane", "#ff66d6", 0], //await createImage(resourceData['difficulties/Insane.svg'])
-	["Impossible", "#a38393", 0], //await createImage(resourceData['difficulties/Impossible.svg'])
+	["Unknown", "#e6e6e6", 0],
+	["Easy", "#1981ff", 0],
+	["Normal", "#4dff4d", 0],
+	["Difficult", "#ffff00", 0],
+	["Hard", "#ffab1a", 0],
+	["Extreme", "#ff7070", 0],
+	["Insane", "#ff66d6", 0],
+	["Impossible", "#a38393", 0],
 ];
 
 function clearVars() {
@@ -2028,6 +2028,7 @@ let editingExploreLevel = false;
 let exploreOldLevelData = {};
 let previousMenuExplore = 0;
 let exploreUser;
+let exploreUserTab = 0;
 let exploreUserPageNumbers = [];
 let exploreSortText = ['New','Old','Plays'];
 let exploreSortTextWidth = 160;
@@ -2528,8 +2529,8 @@ function addLevelToLevelpack(id) {
 }
 
 function gotoExploreLevelPage(locOnPage) {
-	let newExploreLevelPageLevel = menuScreen==8?exploreUserPageLevels[Math.floor(locOnPage/4)][locOnPage%4]:explorePageLevels[locOnPage];
-	if ((menuScreen == 6 && (exploreTab != 1)) || (menuScreen == 8 && locOnPage < 4)) { //exploreTab == 0 || exploreTab == 2 || exploreTab == 3
+	let newExploreLevelPageLevel = menuScreen==8?exploreUserPageLevels[Math.floor(locOnPage/8)][locOnPage%8]:explorePageLevels[locOnPage];
+	if ((menuScreen == 6 && (exploreTab != 1)) || (menuScreen == 8 && locOnPage < 8)) { //exploreTab == 0 || exploreTab == 2 || exploreTab == 3
 		exploreLevelPageType = 0;
 		exploreLevelPageLevel = newExploreLevelPageLevel;
 		drawExploreThumb(thumbBigctx, thumbBig.width, exploreLevelPageLevel.data, 0.4);
@@ -2659,6 +2660,7 @@ function exploreMoreByThisUser() {
 	menuScreen = 8;
 	// getExploreUser(exploreLevelPageLevel.creator.id);
 	exploreUser = exploreLevelPageLevel.creator;
+	exploreUserTab = 0;
 	setExploreUserPage(0, 1).then(() => setExploreUserPage(1, 1))
 }
 
@@ -2783,6 +2785,7 @@ function drawMenu0Button(text, x, y, grayed, action, width = menu0ButtonSize.w) 
 	let fill = '#ffffff';
 	if (!grayed) {
 		if (!lcPopUp && onRect(_xmouse, _ymouse, x, y, width, menu0ButtonSize.h)) {
+			if (action == exploreCopyLink) copyButton = 3;
 			onButton = true;
 			if (!mouseIsDown) fill = '#d4d4d4';
 			if (onRect(lastClickX, lastClickY, x, y, width, menu0ButtonSize.h)) {
@@ -6952,12 +6955,15 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// 2 - local saved levels page
 
 	if (i == -1) thisExploreLevel = exploreDailyLevel
-	else thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 4] : explorePageLevels[i];
+	else thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 8] : explorePageLevels[i];
 
 	if (onRect(_xmouse, _ymouse, x-4, y-4, 200, 116) && !lcPopUp) {
 		onButton = true;
 		if (pageType == 2 && deletingMyLevels || pageType == 3 && levelpackCreatorRemovingLevels) ctx.fillStyle = '#a00000';
-		else ctx.fillStyle = '#a0a0a0';
+		else {
+			if (thisExploreLevel.featured) ctx.fillStyle = '#ffffff';
+			else ctx.fillStyle = '#a0a0a0';
+		}
 		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x-4, y-4, 200, 116)) {
 			if (pageType == 2) {
 				if (levelpackAddScreen) addLevelToLevelpack(explorePageLevels[i].id);
@@ -6972,7 +6978,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			} else gotoExploreLevelPage(i);
 		}
 	} else {
-		ctx.fillStyle = '#333333';
+		if (thisExploreLevel.featured) ctx.fillStyle = '#ffe200';
+		else ctx.fillStyle = '#333333';
 	}
 	
 	ctx.fillRect(x-4, y-4, 200, 116); //208, 155
@@ -6985,8 +6992,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	}
 
 	let gradient = ctx.createLinearGradient(x, y+80, x, y+108);
-	gradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
-	gradient.addColorStop(1, 'rgba(0, 0, 0, 0.7)');
+	gradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+	gradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
 
 	ctx.fillStyle = gradient;
 	ctx.fillRect(x, y+80, 192, 28);
@@ -7013,10 +7020,10 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 
 
 		// Views icon & counter
-		ctx.fillStyle = '#47cb46';
+		ctx.fillStyle = '#47df47';
 		ctx.beginPath();
 		let atX = 178
-		let atY = 105
+		let atY = 98
 		ctx.moveTo(x + atX + 5,		y + atY-9);
 		ctx.lineTo(x + atX,			y + atY);
 		ctx.lineTo(x + atX + 10,	y + atY);
@@ -7027,14 +7034,20 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.fillText(thisExploreLevel.plays, x + atX - 3, y + atY - 8);
 		ctx.textAlign = "left";
 
-		// Difficulty face
+		// Difficulty dot
 		if (levelType == 0) {
-			ctx.drawImage(difficultyMap[thisExploreLevel.difficulty][2], x + 183, y + 89, 5, 5);
-			//ctx.beginPath();
-			//ctx.arc(x + 183, y + 89, 5, 0, 2 * Math.PI);
-			//ctx.fillStyle = difficultyMap[thisExploreLevel.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
-			//ctx.closePath();
-			//ctx.fill();
+			//ctx.drawImage(difficultyMap[thisExploreLevel.difficulty][2], x + 150, y + 5, 40, 40);
+			ctx.beginPath();
+			ctx.arc(x + 180, y + 12, 9, 0, 2 * Math.PI);
+			ctx.fillStyle = '#333333';
+			ctx.closePath();
+			ctx.fill();
+
+			ctx.beginPath();
+			ctx.arc(x + 180, y + 12, 6, 0, 2 * Math.PI);
+			ctx.fillStyle = difficultyMap[thisExploreLevel.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
+			ctx.closePath();
+			ctx.fill();
 		}
 	}
 
@@ -7047,7 +7060,7 @@ function setExplorePage(page) {
 	if (exploreTab == 2) getSearchPage(exploreSearchInput, explorePage);
 	else {
 		getExplorePage(explorePage, exploreTab, exploreSort, exploreTab == 3);
-		getDailyLevel();
+		if (exploreTab == 0) getDailyLevel();
 	}
 	// setExploreThumbs();
 }
@@ -7089,7 +7102,7 @@ function setExploreThumbs() {
 
 function setExploreThumbsUserPage(t) {
 	for (let i = 0; i < exploreUserPageLevels[t].length; i++) {
-		drawExploreThumb(thumbsctx[i+t*4], thumbs[i+t*4].width, exploreUserPageLevels[t][i].data, 0.2);
+		drawExploreThumb(thumbsctx[i+t*8], thumbs[i+t*8].width, exploreUserPageLevels[t][i].data, 0.2);
 	}
 }
 
@@ -9744,10 +9757,8 @@ function draw() {
 			ctx.textAlign = 'center';
 			ctx.font = '30px Helvetica';
 			ctx.fillStyle = '#ffffff';
-
 			if (exploreTab == -1) x = 740;
 			else x = cwidth / 2;
-
 			ctx.fillText(explorePage, x, 505);
 
 			// Previous page button
@@ -9781,9 +9792,9 @@ function draw() {
 			// if (enableExperimentalFeatures) drawMenu2_3Button(2, 10, 486.95, logInExplore);
 			drawMenu0Button('Exit', 10, 75, false, menu2Back, 80);
 			if (loggedInExploreUser5beamID === -1) {
-				drawMenu0Button('Log In', 100, 75, false, logInExplore, 120);
+				drawMenu0Button('Log In', 100, 75, true, logInExplore, 120); // fix later
 			} else {
-				drawMenu0Button('Log Out', 100, 75, false, logOutExplore, 120);
+				drawMenu0Button('Log Out', 100, 75, true, logOutExplore, 120); // fix later
 			}
 
 			break;
@@ -9842,7 +9853,7 @@ function draw() {
 				ctx.fillText('created ' + exploreLevelPageLevel.created.slice(0,10), 31.85, 325);
 
 				// Views icon & counter
-				ctx.fillStyle = '#47cb46';
+				ctx.fillStyle = '#47df47';
 				ctx.font = 'bold 18px Helvetica';
 				ctx.textAlign = 'right';
 
@@ -9853,13 +9864,15 @@ function draw() {
 				// Difficulty in levelpacks arent supported yet
 				if (exploreLevelPageType === 0) {
 					// difficulty circle
-					ctx.beginPath();
-					ctx.arc(40, 360, 8, 0, 2 * Math.PI);
-					ctx.fillStyle = (editingExploreLevel && exploreLevelPageLevel.difficulty == 7)?'#ffffff':difficultyMap[exploreLevelPageLevel.difficulty][1];
-					ctx.closePath();
-					ctx.fill();
+					//ctx.beginPath();
+					//ctx.arc(40, 360, 8, 0, 2 * Math.PI);
+					//ctx.fillStyle = (editingExploreLevel && exploreLevelPageLevel.difficulty == 7)?'#ffffff':difficultyMap[exploreLevelPageLevel.difficulty][1];
+					//ctx.closePath();
+					//ctx.fill();
 
-					ctx.fillText(difficultyMap[exploreLevelPageLevel.difficulty][0], 54, 352);
+					ctx.drawImage(difficultyMap[exploreLevelPageLevel.difficulty][2], 35, 352, 40, 40);
+					ctx.fillStyle = difficultyMap[exploreLevelPageLevel.difficulty][1];
+					ctx.fillText(difficultyMap[exploreLevelPageLevel.difficulty][0], 85, 362);
 				}
 
 				ctx.drawImage(thumbBig, 30, 98, 384, 216);
@@ -9879,37 +9892,43 @@ function draw() {
 					ctx.closePath();
 					ctx.fill();
 					ctx.drawImage(svgTools[0], 40, 108);
-
 				}
 
-				ctx.font = '20px Helvetica';
+				//ctx.font = '20px Helvetica';
 				if (!showingExploreNewGame2) {
-					drawSimpleButton(exploreLevelPageType===0?'Play Level':'New Game', playExploreLevel===0?playExploreLevel:openExploreNewGame2, 30, 379, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+					drawMenu0Button(exploreLevelPageType === 0 ? 'Play Level' : 'New Game', 30, 400, false, playExploreLevel === 0 ? playExploreLevel : openExploreNewGame2, 188);
+					//drawSimpleButton(exploreLevelPageType===0?'Play Level':'New Game', playExploreLevel===0?playExploreLevel:openExploreNewGame2, 30, 400, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
 
 					if (exploreLevelPageType != 0) {
-						drawSimpleButton('Continue Game', continueExploreLevelpack, 30, 417, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080', {enabled:typeof levelpackProgress[exploreLevelPageLevel.id] !== 'undefined'});
+						drawMenu0Button('Continue', 30, 445, typeof levelpackProgress[exploreLevelPageLevel.id] === 'undefined', continueExploreLevelpack, 188);
+						//drawSimpleButton('Continue Game', continueExploreLevelpack, 30, 438, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080', {enabled:typeof levelpackProgress[exploreLevelPageLevel.id] !== 'undefined'});
 					}
 				} else {
-					drawSimpleButton('Yes', exploreNewGame2yes, 30, 417, 90, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
-					drawSimpleButton('No', exploreNewGame2no, 128, 417, 90, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+					drawMenu0Button('Yes', 30, 445, false, exploreNewGame2yes, 90);
+					//drawSimpleButton('Yes', exploreNewGame2yes, 30, 438, 90, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+					drawMenu0Button('No', 128, 445, false, exploreNewGame2no, 90);
+					//drawSimpleButton('No', exploreNewGame2no, 128, 438, 90, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+					ctx.font = '20px Helvetica';
 					ctx.fillStyle ='#ffffff';
 					ctx.textBaseline = 'middle';
-					ctx.fillText('Are you sure?', 124, 396);
+					ctx.fillText('Are you sure?', 124, 417);
 				}
 
-				if (drawSimpleButton('Copy Link', exploreCopyLink, 226, 379, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080').hover) copyButton = 3;
+				drawMenu0Button('Copy Link', 226, 400, false, exploreCopyLink, 188);
+				//if (drawSimpleButton('Copy Link', exploreCopyLink, 226, 400, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080').hover) copyButton = 3;
 
 				if (!isGuest) {
-					drawSimpleButton('More By This User', exploreMoreByThisUser, 226, 417, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+					drawMenu0Button('View Profile', 226, 445, false, exploreMoreByThisUser, 188);
+					//drawSimpleButton('More By This User', exploreMoreByThisUser, 226, 438, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
 				}
 
-				if (exploreLevelPageType != 1 && loggedInExploreUser5beamID === exploreLevelPageLevel.creator.id) {
-					drawSimpleButton(editingExploreLevel?'Save Changes':'Edit', editExploreLevel, 226, 455, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
-					if (editingExploreLevel) {
-						drawSimpleButton('Cancel', cancelEditExploreLevel, 226, 493, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
-						;
-					}
-				}
+				// disabled for now with uploading too
+				//if (exploreLevelPageType != 1 && loggedInExploreUser5beamID === exploreLevelPageLevel.creator.id) {
+				//	drawSimpleButton(editingExploreLevel?'Save Changes':'Edit', editExploreLevel, 226, 455, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+				//	if (editingExploreLevel) {
+				//		drawSimpleButton('Cancel', cancelEditExploreLevel, 226, 493, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
+				//	}
+				//}
 
 				if (showImpossibleNotice && !lcPopUp) {
 					ctx.fillStyle = '#a0a0a0';
@@ -9978,45 +9997,69 @@ function draw() {
 			ctx.textAlign = 'left';
 			ctx.fillStyle = '#ffffff';
 			ctx.font = 'bold 36px Helvetica';
-			ctx.fillText(exploreUser.username, 10, 60);
+			ctx.fillText(exploreUser.username + "'s " + (exploreUserTab == 0 ? 'levels' : 'packs'), 10, 50);
 
-			ctx.font = '21px Helvetica';
+			// Tabs
+			ctx.font = 'bold 35px Helvetica';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			let userTabX = 600;
+			for (i = 0; i < 2; i++) {
+				if (i == exploreUserTab) ctx.fillStyle = '#666666';
+				else if (onRect(_xmouse, _ymouse, userTabX, 20, exploreTabWidths[i], 45)) {
+					ctx.fillStyle = '#b3b3b3';
+					if (mouseIsDown && !pmouseIsDown) {
+						exploreUserTab = i;
+						setExploreUserPage(1, exploreUserPageNumbers[exploreUserTab]);
+					}
+				} else ctx.fillStyle = '#999999';
+				ctx.fillRect(userTabX, 20, exploreTabWidths[i], 45);
+				ctx.fillStyle = '#ffffff';
+				ctx.fillText(exploreTabNames[i], userTabX + exploreTabWidths[i] / 2, 45);
+				userTabX += exploreTabWidths[i] + 5;
+			}
+
+			//ctx.textBaseline = 'bottom';
+			//ctx.textAlign = 'left';
+			//ctx.fillStyle = '#ffffff';
+			//ctx.font = '30px Helvetica';
+			//ctx.fillText(exploreUserTab == 0 ? 'Levels' : 'Levelpacks', 55, 140);
 
 			if (exploreLoading) {
 				drawExploreLoadingText();
 			} else {
 				// Levels
-				for (let j = 0; j < 2; j++) {
-					let y = j * 205 + 115;
 
-					ctx.textBaseline = 'bottom';
-					ctx.textAlign = 'left';
-					ctx.fillStyle = '#ffffff';
-					ctx.font = '25px Helvetica';
-					ctx.fillText(j==0?'Levels':'Levelpacks', 55, y-3);
+				// Page number
+				ctx.textAlign = 'center';
+				ctx.font = '30px Helvetica';
+				ctx.fillStyle = '#ffffff';
+				ctx.fillText(exploreUserPageNumbers[exploreUserTab], cwidth / 2, 505);
 
-					// Previous page button
-					if (exploreUserPageNumbers[j] <= 1 || exploreLoading) ctx.fillStyle = '#505050';
-					else if (onRect(_xmouse, _ymouse, 15, y + 60, 25, 30)) {
-						ctx.fillStyle = '#cccccc';
-						onButton = true;
-						if (mouseIsDown && !pmouseIsDown) setExploreUserPage(j, exploreUserPageNumbers[j] - 1);
-					} else ctx.fillStyle = '#999999';
-					drawArrow(15, y + 60, 25, 30, 3);
+				// Previous page button
+				if (exploreUserPageNumbers[exploreUserTab] <= 1 || exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, cwidth * 0.25, 495, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] - 1);
+				} else ctx.fillStyle = '#999999';
+				drawArrow(cwidth * 0.25, 495, 25, 30, 3);
 
-					// Next page button
-					if (exploreLoading) ctx.fillStyle = '#505050';
-					else if (onRect(_xmouse, _ymouse, 920, y + 60, 25, 30)) {
-						ctx.fillStyle = '#cccccc';
-						onButton = true;
-						if (mouseIsDown && !pmouseIsDown) setExploreUserPage(j, exploreUserPageNumbers[j] + 1);
-					} else ctx.fillStyle = '#999999';
-					drawArrow(920, y + 60, 25, 30, 1);
+				// Next page button
+				if (exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, cwidth * 0.75, 495, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] + 1);
+				} else ctx.fillStyle = '#999999';
+				drawArrow(cwidth * 0.75, 495, 25, 30, 1);
 
-					for (let i = 0; i < exploreUserPageLevels[j].length; i++) {
-						//drawExploreLevel(y, 214 * i + 55, i+j*4, (i+j*4)>=4?1:0, 1);
-						drawExploreLevel(214 * i + 55, y, i+j*4, (i+j*4)>=4?1:0, 1);
-					}
+				for (let i = 0; i < exploreUserPageLevels[exploreUserTab].length; i++) {
+					//drawExploreLevel(y, 214 * (i % 8) + 55, i+exploreUserTab*8, (i+exploreUserTab*8)>=8?1:0, 1);
+					//drawExploreLevel(214 * i + 55, y, i + exploreUserTab * 8, (i + exploreUserTab * 8) >= 8 ? 1 : 0, 1);
+					x = 215 * (i % 4) + 50;
+					y = Math.floor(i / 4) * 130 + 170;
+					drawExploreLevel(x, y, i + exploreUserTab * 8, exploreUserTab, 1);
 				}
 			}
 

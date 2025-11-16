@@ -7,14 +7,14 @@
 	padding:0;
 }
 a{
-	color: white;
+	color: #bbb;
 	-webkit-transition: 0.5s ease;  
 	-moz-transition: 0.5s ease;  
 	-o-transition: 0.5s ease;  
 	transition: 0.5s ease;
 }
 a:hover{
-	color: #666;
+	color: #fff;
 	-webkit-transition: 0.2s ease;  
 	-moz-transition: 0.2s ease;  
 	-o-transition: 0.2s ease;  
@@ -31,8 +31,9 @@ body{
 	min-height:600px;
 	position:relative;
 }
-p{
-	margin:0 0 0.7em;
+p {
+	color: #888;
+	margin: 0 0 0.7em;
 }
 #center{
 	position:absolute;

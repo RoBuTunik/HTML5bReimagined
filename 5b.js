@@ -150,6 +150,9 @@ function saveGame() {
 		levelpackProgress[exploreLevelPageLevel.id].timer = timer;
 		saveLevelpackProgress();
 		return;
+	} else if (playMode == 3) {
+		saveOnlineLevelProgress();
+		return;
 	}
 	bfdia5b.setItem('gotCoin', gotCoin);
 	bfdia5b.setItem('coins', coins);
@@ -259,6 +262,10 @@ function getSavedLevelpacks() {
 
 function saveLevelpackProgress() {
 	bfdia5b.setItem('levelpackProgress', JSON.stringify(levelpackProgress));
+}
+
+function saveOnlineLevelProgress() {
+	bfdia5b.setItem('onlineLevelProgress', JSON.stringify(onlineLevelProgress));
 }
 
 function saveLevelProgress() {
@@ -2004,8 +2011,13 @@ let lcZoom = lcZoomFactor;
 let lcPan = [0,0];
 // const exploreTabNames = ['Featured', 'New', 'Top', '🔍'];
 // const exploreTabWidths = [190, 115, 115, 45]; 
-const exploreTabNames = ['▶︎', '❒', '🔍︎', '★', '❤']; //['Levels', 'Levelpacks', 'Search'];
-const exploreTabWidths = [45, 45, 45, 45, 45]; //[125, 200, 125, 50];
+const exploreTabNames = [
+	['▶︎', 'Levels'],
+	['❒', 'Packs'],
+	['🔍︎', 'Search'],
+	['★', 'Featured']
+];
+const exploreTabWidths = [45, 45, 45, 45]; //[125, 200, 125, 50];
 let power = 1;
 let jumpPower = 11;
 let qPress = false;
@@ -2601,7 +2613,7 @@ function playExploreLevel(continueGame=false) {
 	getExplorePlay(exploreLevelPageLevel.id);
 
 	if (exploreLevelPageType == 0) {
-		readExploreLevelString(exploreLevelPageLevel.data);
+		readExploreLevelString(exploreLevelPageLevel.data, false);
 		testLevelCreator();
 		playingLevelpack = false;
 		playMode = 3;
@@ -3295,6 +3307,8 @@ function resetLevel() {
 
 		currentLevelDisplayName = myLevelInfo.name;
 	} else if (playMode == 3) {
+		onlineLevelProgress[exploreLevelPageLevel.id].attempts++;
+
 		charCount = myLevelChars[1].length;
 		levelWidth = myLevel[1][0].length;
 		levelHeight = myLevel[1].length;
@@ -4801,6 +4815,7 @@ function endDeath(i) {
 		charsAtEnd--;
 		char[i].atEnd = false;
 	}
+	if (playMode == 3) onlineLevelProgress[exploreLevelPageLevel.id].deaths++;
 	deathCount++;
 	saveGame();
 	if (i == control) changeControl();
@@ -6621,7 +6636,7 @@ function readLevelString(str) {
 	myLevelNecessaryDeaths = parseInt(lines[i], 10);
 }
 
-function readExploreLevelString(str) {
+function readExploreLevelString(str, getCoin) {
 	myLevelChars = new Array(3);
 	myLevel = new Array(3);
 	myLevelDialogue = new Array(3);
@@ -6674,6 +6689,9 @@ function readExploreLevelString(str) {
 					myLevel[1][y][x] =
 						111 * tileIDFromChar(lines[i + y].charCodeAt(x * 2)) +
 						tileIDFromChar(lines[i + y].charCodeAt(x * 2 + 1));
+					if (myLevel[1][y][x] == 12 && getCoin) {
+						return true;
+					}
 					if (myLevel[1][y][x] > blockProperties.length || myLevel[1][y][x] < 0) myLevel[1][y][x] = 0;
 				}
 			}
@@ -6686,11 +6704,15 @@ function readExploreLevelString(str) {
 					myLevel[1][y][x] = 0;
 				} else {
 					myLevel[1][y][x] = tileIDFromChar(lines[i + y].charCodeAt(x));
+					if (myLevel[1][y][x] == 12 && getCoin) {
+						return true;
+					}
 					if (myLevel[1][y][x] > blockProperties.length || myLevel[1][y][x] < 0) myLevel[1][y][x] = 0;
 				}
 			}
 		}
 	}
+	if (getCoin) return false;
 	// setCoinAndDoorPos();
 	// updateLCtiles();
 	i += levelHeight;
@@ -6803,7 +6825,6 @@ function readExploreLevelString(str) {
 
 	myLevelNecessaryDeaths = parseInt(lines[i], 10);
 }
-
 function setLCMessage(text) {
 	lcMessageTimer = 1;
 	lcMessageText = text;
@@ -7056,18 +7077,18 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	const username = isGuest ? "Guest" : thisExploreLevel.creator.username;
 
 	if (pageType < 2) {
+
 		ctx.fillStyle = getUsernameColor(username, '#dadada');
 		ctx.font = '10px Helvetica';
 		//ctx.fillText('by ' + username, x + 7, y + 138.3);
 		ctx.textAlign = "left";
 		ctx.fillText('@' + username, x + 2, y + 83);
 
-
 		// Views icon & counter
 		ctx.fillStyle = '#00d68f';
 		ctx.beginPath();
-		let atX = 178
-		let atY = 98
+		let atX = 179
+		let atY = 93
 		ctx.moveTo(x + atX + 5,		y + atY-9);
 		ctx.lineTo(x + atX,			y + atY);
 		ctx.lineTo(x + atX + 10,	y + atY);
@@ -7078,20 +7099,46 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.fillText(thisExploreLevel.plays, x + atX - 3, y + atY - 8);
 		ctx.textAlign = "left";
 
-		// Difficulty dot
 		if (levelType == 0) {
+			// Difficulty dot
 			//ctx.drawImage(difficultyMap[thisExploreLevel.difficulty][2], x + 150, y + 5, 40, 40);
 			ctx.beginPath();
-			ctx.arc(x + 180, y + 12, 9, 0, 2 * Math.PI);
+			ctx.arc(x + 180, y + 12, 7, 0, 2 * Math.PI);
 			ctx.fillStyle = '#333333';
 			ctx.closePath();
 			ctx.fill();
 
 			ctx.beginPath();
-			ctx.arc(x + 180, y + 12, 6, 0, 2 * Math.PI);
+			ctx.arc(x + 180, y + 12, 5, 0, 2 * Math.PI);
 			ctx.fillStyle = difficultyMap[thisExploreLevel.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
 			ctx.closePath();
 			ctx.fill();
+		}
+			
+		// Completion indicator
+
+		if (levelType == 0) {
+			thisLevelProgress = onlineLevelProgress[thisExploreLevel.id];
+			completedThisLevel = thisLevelProgress && thisLevelProgress.completed
+			thisLevelHasCoin = readExploreLevelString(thisExploreLevel.data, true);
+		} else {
+			thisLevelProgress = levelpackProgress[thisExploreLevel.id];
+			completedThisLevel = thisLevelProgress && (thisLevelProgress.levelProgress == thisExploreLevel.levels.length)
+		}
+
+		ctx.font = '12px Helvetica';
+		ctx.fillStyle = completedThisLevel ? "#00ff00" : "#ff0000";
+		ctx.textAlign = "right";
+		ctx.fillText(completedThisLevel ? "✔" : "✖", x + 189, y + 95);
+
+		if (levelType == 0 && thisLevelHasCoin) {
+			//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
+			//ctx.fillText('Win Token', 410, 375);
+			ctx.globalAlpha = (thisLevelProgress && thisLevelProgress.gotCoin) ? 1 : 0.7;
+			if (!(thisLevelProgress && thisLevelProgress.gotCoin)) ctx.filter = 'brightness(70%)';
+			ctx.drawImage(svgTiles[12], x + 165, y + 94, 12, 12);
+			ctx.globalAlpha = 1;
+			ctx.filter = 'brightness(100%)';
 		}
 	}
 
@@ -7183,7 +7230,7 @@ function drawExploreThumb(context, size, data, scale) {
 			}
 		} else {
 			let thispmenuScreen = menuScreen; // terrible variable name
-			readExploreLevelString(data);
+			readExploreLevelString(data, false);
 			testLevelCreator();
 			// Reset a few things that were set by testLevelCreator() that we don't want.
 			menuScreen = thispmenuScreen;
@@ -7835,6 +7882,8 @@ function draw() {
 						if (playMode == 3) {
 							onlineLevelProgress[exploreLevelPageLevel.id].completed = true;
 							onlineLevelProgress[exploreLevelPageLevel.id].gotCoin = gotThisCoin;
+							if (getTimer() - levelTimer2 < onlineLevelProgress[exploreLevelPageLevel.id].time)
+								onlineLevelProgress[exploreLevelPageLevel.id].time = getTimer() - levelTimer2;
 							exitExploreLevel();
 						} else if (playMode == 2) {
 							exitTestLevel();
@@ -9755,10 +9804,13 @@ function draw() {
 				} else ctx.fillStyle = '#999999';
 				ctx.fillRect(tabx, 20, exploreTabWidths[i], 45);
 				ctx.fillStyle = '#ffffff';
-				ctx.fillText(exploreTabNames[i], tabx + exploreTabWidths[i] / 2, 45);
-				// exploreTabNames[i];
+				ctx.fillText(exploreTabNames[i][0], tabx + exploreTabWidths[i] / 2, 45);
 				tabx += exploreTabWidths[i] + 5;
 			}
+
+			ctx.textAlign = 'left';
+			ctx.fillStyle = '#ffffff';
+			ctx.fillText(exploreTabNames[exploreTab][1], tabx + 5, 45);
 
 			// Levels
 			if (exploreTab == 4) { // favorites are disabled for now
@@ -9880,16 +9932,6 @@ function draw() {
 			if (exploreLoading) {
 				drawExploreLoadingText();
 			} else {
-				if (onlineLevelProgress[exploreLevelPageLevel.id] === undefined) {
-					onlineLevelProgress[exploreLevelPageLevel.id] = {
-						completed: false,
-						gotCoin: false,
-						time: Infinity,
-						deaths: 0,
-						attempts: 0,
-					}
-				}
-				let thisLevelProgress = onlineLevelProgress[exploreLevelPageLevel.id]
 
 				const isGuest = exploreLevelPageLevel.creator === "";
 				const username = isGuest ? "Guest" : exploreLevelPageLevel.creator.username;
@@ -9937,13 +9979,39 @@ function draw() {
 
 				// Views icon & counter
 				ctx.fillStyle = '#00d68f';
-				ctx.font = 'bold 18px Helvetica';
+				ctx.font = 'bold 20px Helvetica';
 				ctx.textAlign = 'right';
 
 				let pluralViewText = exploreLevelPageLevel.plays === 1
 				ctx.fillText(exploreLevelPageLevel.plays + (pluralViewText ? ' play' : ' plays'), 410, 325);
-				ctx.fillStyle = thisLevelProgress.completed ? '#00ff00' : '#a6a6a6';
-				ctx.fillText(thisLevelProgress.completed ? 'Completed!' : 'Uncompleted', 410, 350);
+
+				if (onlineLevelProgress[exploreLevelPageLevel.id] === undefined) {
+					onlineLevelProgress[exploreLevelPageLevel.id] = {
+						completed: false,
+						gotCoin: false,
+						time: Infinity,
+						deaths: 0,
+						attempts: 0,
+					}
+				}
+				let thisLevelProgress = onlineLevelProgress[exploreLevelPageLevel.id];
+
+				thisLevelHasCoin = exploreLevelPageType == 0 && readExploreLevelString(exploreLevelPageLevel.data, true);
+				if (exploreLevelPageType == 0) completedThisLevel = thisLevelProgress.completed;
+				else completedThisLevel = levelpackProgress[exploreLevelPageLevel.id].levelProgress == exploreLevelPageLevel.levels.length;
+
+				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
+				ctx.fillText(completedThisLevel ? 'Completed!' : 'Uncompleted', thisLevelHasCoin ? 385 : 410, 350);
+
+				if (thisLevelHasCoin) {
+					//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
+					//ctx.fillText('Win Token', 410, 375);
+					ctx.globalAlpha = thisLevelProgress.gotCoin ? 1 : 0.4;
+					if (!thisLevelProgress.gotCoin) ctx.filter = 'brightness(70%)';
+					ctx.drawImage(svgTiles[12], 390, 350, 20, 20);
+					ctx.filter = 'brightness(100%)';
+					ctx.globalAlpha = 1;
+				}
 
 				ctx.textAlign = 'left';
 
@@ -10103,7 +10171,7 @@ function draw() {
 				} else ctx.fillStyle = '#999999';
 				ctx.fillRect(userTabX, 20, exploreTabWidths[i], 45);
 				ctx.fillStyle = '#ffffff';
-				ctx.fillText(exploreTabNames[i], userTabX + exploreTabWidths[i] / 2, 45);
+				ctx.fillText(exploreTabNames[i][0], userTabX + exploreTabWidths[i] / 2, 45);
 				userTabX += exploreTabWidths[i] + 5;
 			}
 

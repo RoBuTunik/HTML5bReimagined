@@ -260,6 +260,15 @@ function getSavedLevelpacks() {
 	nextLevelpackId = bfdia5b.getItem('nextLevelpackId');
 }
 
+function clearLevelpackProgress() {
+	levelpackProgress[exploreLevelPageLevel.id] = {
+		levelProgress: 0,
+		coins: [false],
+		deaths: 0,
+		timer: 0
+	}
+}
+
 function saveLevelpackProgress() {
 	bfdia5b.setItem('levelpackProgress', JSON.stringify(levelpackProgress));
 }
@@ -2211,11 +2220,44 @@ let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
 let musicSound = new Audio('data/music/Leopard Print Elevator.mp3');
+musicSound.volume = 0.5;
+
+let windLoop = new Audio('data/sounds/windloop.mp3');
+windLoop.volume = 0;
+
 // let musicSound = new Audio('data/the fiber 16x loop.wav');
 // musicSound.addEventListener('canplaythrough', event => {incrementCounter();});
 
+let soundsEnabled = true;
 let soundEffects = {
+	// UI
 	click: new Audio('data/sounds/click.mp3'),
+
+	// HPRC
+	hprc1: new Audio('data/sounds/hprc1.mp3'),
+	hprc2: new Audio('data/sounds/hprc2.mp3'),
+	hprc3: new Audio('data/sounds/hprc3.mp3'),
+	crank: new Audio('data/sounds/crank.mp3'),
+	recovered: new Audio('data/sounds/recovered.mp3'),
+
+	// Tiles
+	buttonPress: new Audio('data/sounds/press.mp3'),
+	buttonUnpress: new Audio('data/sounds/unpress.mp3'),
+	ding: new Audio('data/sounds/ding.mp3'),
+	bounce1: new Audio('data/sounds/bounce1.mp3'),
+	bounce2: new Audio('data/sounds/bounce2.mp3'),
+	bounce3: new Audio('data/sounds/bounce3.mp3'),
+
+	// Actions
+	pickup: new Audio('data/sounds/pickup.mp3'),
+	throw: new Audio('data/sounds/throw.mp3'),
+
+	// Deaths
+	rubyDeath: new Audio('data/sounds/rubydeath.mp3'),
+	bookDeath: new Audio('data/sounds/bookdeath.mp3'),
+	iceCubeDeath: new Audio('data/sounds/icecubedeath.mp3'),
+	pencilDeath: new Audio('data/sounds/pencildeath.mp3'),
+	bubblePop: new Audio('data/sounds/bubblepop.mp3'),
 };
 
 const scaleFactor = 3;
@@ -2450,7 +2492,7 @@ function menuNewGame2yes() {
 }
 
 function openExploreNewGame2() {
-	if (typeof levelpackProgress[exploreLevelPageLevel.id] !== 'undefined') showingExploreNewGame2 = true;
+	if (levelpackProgress[exploreLevelPageLevel.id] > 0) showingExploreNewGame2 = true;
 	else playExploreLevel();
 }
 
@@ -2615,8 +2657,10 @@ function playExploreLevel(continueGame=false) {
 	if (exploreLevelPageType == 0) {
 		readExploreLevelString(exploreLevelPageLevel.data, false);
 		testLevelCreator();
+		onlineLevelProgress[exploreLevelPageLevel.id].attempts++;
 		playingLevelpack = false;
 		playMode = 3;
+		saveGame();
 	} else {
 		loadLevelpack(exploreLevelPageLevel.levels);
 		clearVars();
@@ -2635,12 +2679,7 @@ function playExploreLevel(continueGame=false) {
 				timer = levelpackProgress[exploreLevelPageLevel.id].timer;
 			}
 		} else {
-			levelpackProgress[exploreLevelPageLevel.id] = {
-				levelProgress: 0,
-				coins: [false],
-				deaths: 0,
-				timer: 0
-			};
+			clearLevelpackProgress();
 			saveLevelpackProgress();
 		}
 		menuScreen = 2;
@@ -2758,12 +2797,17 @@ function enterBaseLevelpackLevelSelect() {
 
 }
 
-function toggleSound() {
+function toggleMusic() {
 	if (!musicSound.paused) {
 		musicSound.pause();
 	} else {
 		musicSound.play();
 	}
+	soundsEnabled = !soundsEnabled;
+}
+
+function toggleSounds() {
+	soundsEnabled = !soundsEnabled;
 }
 
 function setQual() {
@@ -2785,6 +2829,8 @@ function playGame() {
 	menuScreen = 0;
 	musicSound.play();
 	musicSound.loop = true;
+	windLoop.play();
+	windLoop.loop = true;
 }
 
 function testLevelCreator() {
@@ -3062,7 +3108,7 @@ function drawLevelMapBorder() {
 	ctx.drawImage(svgMenu2border, 0, 0, cwidth, cheight);
 
 	drawMenu2_3Button(3, 587, 469, setQual);
-	drawMenu2_3Button(2, 705, 469, toggleSound);
+	drawMenu2_3Button(2, 705, 469, toggleMusic);
 	drawMenu2_3Button(1, 823, 469, menu2Back);
 	//setQual
 }
@@ -4306,6 +4352,8 @@ function checkButton(i) {
 					num = blockProperties[thisLevel[yTile][j]][11];
 					if (num >= 13) {
 						if (tileFrames[yTile][j].cf != 1) {
+							soundEffects.buttonPress.currentTime = 0;
+							soundEffects.buttonPress.play();
 							leverSwitch(num - 13);
 							tileFrames[yTile][j].cf = 1;
 							tileFrames[yTile][j].playing = false;
@@ -4352,6 +4400,8 @@ function checkButton2(i, bypass) {
 				if (okay) {
 					if (bypass) leverSwitch2(blockProperties[thisLevel[y][x]][11] - 13, i);
 					else leverSwitch(blockProperties[thisLevel[y][x]][11] - 13);
+					soundEffects.buttonUnpress.currentTime = 0;
+					soundEffects.buttonUnpress.play();
 					tileFrames[y][x].cf = 2;
 					tileFrames[y][x].playing = true;
 				}
@@ -4409,7 +4459,7 @@ function leverSwitch2(j, c) {
 
 function checkDeath(i) {
 	for (let y = Math.floor((char[i].y - char[i].h) / 30); y <= Math.floor((char[i].y - 0.01) / 30); y++) {
-		for (let x = Math.floor((char[i].x - char[i].w) / 30); x <= Math.floor((char[i].x + char[i].w) / 30); x++) {
+		for (let x = Math.floor((char[i].x - char[i].w) / 30); x <= Math.floor((char[i].x + char[i].w - 0.01) / 30); x++) {
 			if (!outOfRange(x, y)) {
 				if (
 					blockProperties[thisLevel[y][x]][4] ||
@@ -4784,8 +4834,31 @@ function displayLine(level, line) {
 	csText = cLevelDialogueText[line];
 }
 
+function deathSound(s, p) {
+	soundEffects[s].currentTime = 0;
+	if (p) soundEffects[s].play();
+	else soundEffects[s].pause();
+}
+
+function playDeathSound(i, p) {
+	let snd = 'none';
+	if (i == 0) {
+		snd = 'rubyDeath';
+	} else if (i == 1) {
+		snd = 'bookDeath';
+	} else if (i == 2) {
+		snd = 'iceCubeDeath';
+	} else if (i == 4) {
+		snd = 'pencilDeath';
+	} else if (i == 5) {
+		snd = 'bubblePop';
+	}
+	if (snd != 'none') deathSound(snd, p);
+}
+
 function startDeath(i) {
 	if (char[i].deathTimer >= 30 && (char[i].charState >= 7 || char[i].temp >= 50)) {
+		playDeathSound(char[i].id, true);
 		if (ifCarried(i)) {
 			char[char[i].carriedBy].vy = 0;
 			char[char[i].carriedBy].vx = 0;
@@ -4805,6 +4878,7 @@ function startDeath(i) {
 }
 
 function endDeath(i) {
+	//playDeathSound(char[i].id, false);
 	putDown(i);
 	char[i].temp = 0;
 	if (!quirksMode) char[i].heated = 0;
@@ -4832,6 +4906,9 @@ function bounce(i) {
 	char[i].onob = false;
 	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
+	let randSnd = 1 + Math.floor(Math.random() * 3);
+	soundEffects['bounce' + randSnd].currentTime = 0;
+	soundEffects['bounce' + randSnd].play();
 }
 
 function bumpHead(i) {
@@ -4939,6 +5016,8 @@ function putDown(i) {
 }
 
 function charThrow(i) {
+	soundEffects.throw.currentTime = 0;
+	soundEffects.throw.play();
 	char[i].weight2 = char[i].weight;
 	char[char[i].carryObject].weight2 = char[char[i].carryObject].weight;
 	char[char[i].carryObject].vy = -7.5;
@@ -5114,11 +5193,21 @@ function recoverCycle(i, dire) {
 		hprcBubbleAnimationTimer = 0;
 		recover = false;
 		recover2 = 0;
-	} else if (numberOfDead() == 1) {
-		HPRCBubbleFrame = 2;
 	} else {
-		HPRCBubbleFrame = 3;
-		hprcBubbleAnimationTimer = dire;
+		if (dire == 0) {
+			soundEffects.hprc3.currentTime = 0;
+			soundEffects.hprc3.play();
+		}
+		if (numberOfDead() == 1) {
+			HPRCBubbleFrame = 2;
+		} else {
+			HPRCBubbleFrame = 3;
+			hprcBubbleAnimationTimer = dire;
+			if (dire != 0) {
+				soundEffects.hprc2.currentTime = 0;
+				soundEffects.hprc2.play();
+			}
+		}
 	}
 }
 
@@ -7073,10 +7162,9 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// ctx.fillText(fitString(ctx, explorePageLevels[i].title, 195.3), x+6.35, y+119.4);
 	// fitString(ctx, explorePageLevels[i].title, 142.3);
 
-	const isGuest = thisExploreLevel.creator && thisExploreLevel.creator === undefined;
-	const username = isGuest ? "Guest" : thisExploreLevel.creator.username;
-
 	if (pageType < 2) {
+		const isGuest = thisExploreLevel.creator && thisExploreLevel.creator === undefined;
+		const username = isGuest ? "Guest" : thisExploreLevel.creator.username;
 
 		ctx.fillStyle = getUsernameColor(username, '#dadada');
 		ctx.font = '10px Helvetica';
@@ -7127,9 +7215,14 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		}
 
 		ctx.font = '12px Helvetica';
-		ctx.fillStyle = completedThisLevel ? "#00ff00" : "#ff0000";
+		ctx.fillStyle = completedThisLevel ? "#00ff00" : "#9b9b9b";
+		completionIcon = completedThisLevel ? "✔" : "✖";
+		if (levelType == 1 && thisLevelProgress && !completedThisLevel && thisLevelProgress.levelProgress > 0) {
+			ctx.fillStyle = "#ffff00";
+			completionIcon = "⬤";
+		}
 		ctx.textAlign = "right";
-		ctx.fillText(completedThisLevel ? "✔" : "✖", x + 189, y + 95);
+		ctx.fillText(completionIcon, x + 189, y + 95);
 
 		if (levelType == 0 && thisLevelHasCoin) {
 			//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
@@ -7916,11 +8009,15 @@ function draw() {
 						char[control].justChanged = 2;
 						if (recoverTimer == 0) {
 							if (_keysDown[37]) {
-								if (!leftPress) recoverCycle(HPRC2, -1);
+								if (!leftPress) {
+									recoverCycle(HPRC2, -1);
+								}
 								leftPress = true;
 							} else leftPress = false;
 							if (_keysDown[39]) {
-								if (!rightPress) recoverCycle(HPRC2, 1);
+								if (!rightPress) {
+									recoverCycle(HPRC2, 1);
+								}
 								rightPress = true;
 							} else rightPress = false;
 						}
@@ -7937,6 +8034,10 @@ function draw() {
 					if (_keysDown[38]) {
 						if (!upPress) {
 							if (recover && recoverTimer == 0) {
+								soundEffects.hprc1.currentTime = 0;
+								soundEffects.hprc1.play();
+								soundEffects.crank.currentTime = 0;
+								soundEffects.crank.play();
 								recoverTimer = 60;
 								char[recover2].charState = 2;
 								char[recover2].x = char[HPRC1] ? char[HPRC1].x : 0;
@@ -7960,10 +8061,13 @@ function draw() {
 											near(control, i) &&
 											char[i].charState >= 6 &&
 											char[control].standingOn != i &&
-											onlyMovesOneBlock(i, control)
+											onlyMovesOneBlock(i, control) &&
+											char[i].deathTimer >= 30
 										) {
 											if (char[i].carry) putDown(i);
 											if (ifCarried(i)) putDown(char[i].carriedBy);
+											soundEffects.pickup.currentTime = 0;
+											soundEffects.pickup.play();
 											char[control].carry = true;
 											char[control].carryObject = i;
 											swapDepths(i, charCount * 2 + 1);
@@ -7994,6 +8098,8 @@ function draw() {
 							if (char[control].carry) putDown(control);
 							else if (recover) {
 								if (recoverTimer == 0) {
+									soundEffects.hprc3.currentTime = 0;
+									soundEffects.hprc3.play();
 									recover = false;
 									HPRCBubbleFrame = 0;
 								}
@@ -8140,6 +8246,9 @@ function draw() {
 					let trans = (60 - recoverTimer) / 60;
 					char[i].x = inter(char[HPRC1] ? char[HPRC1].x : 0, goal, trans);
 					if (recoverTimer <= 0) {
+						soundEffects.crank.pause();
+						soundEffects.recovered.currentTime = 0;
+						soundEffects.recovered.play();
 						recoverTimer = 0;
 						recover = false;
 						char[recover2].dire = 4;
@@ -8174,6 +8283,8 @@ function draw() {
 												(rot > 0 && tileFrames[y][x].rotation < 0)
 											) {
 												leverSwitch((blockProperties[thisLevel[y][x]][11] - 1) % 6);
+												soundEffects.buttonPress.currentTime = 0;
+												soundEffects.buttonPress.play();
 											}
 											tileFrames[y][x].rotation = rot;
 										}
@@ -8301,6 +8412,7 @@ function draw() {
 						char[i].x = x;
 						char[i].vx = 0;
 						stopCarrierX(i, x);
+						char[i].stopMoving();
 					}
 					if (stopY != 0) {
 						if (stopY == 1) {
@@ -8485,6 +8597,8 @@ function draw() {
 							Math.abs(char[i].y - (locations[1] * 30 + 10)) <= 50
 						) {
 							if (!char[i].atEnd) {
+								soundEffects.ding.currentTime = 0;
+								soundEffects.ding.play();
 								charsAtEnd++;
 								doorLightFadeDire[charsAtEnd - 1] = 1;
 								if (charsAtEnd >= charCount2) {
@@ -9863,53 +9977,52 @@ function draw() {
 				ctx.stroke();
 			}
 
-			if (exploreTab != 2 && exploreTab != 4) { //sorting in the search page is not supported.
+			if (exploreTab != 2) { //sorting in the search page is not supported.
 				drawMenu0Button('Sort by: ' + exploreSortText[exploreSort], 230, 75, false, changeSortBy, 210);
 			}
 
-			if (exploreTab != 4) {
-				// Page number
-				ctx.textAlign = 'center';
-				ctx.font = '30px Helvetica';
-				ctx.fillStyle = '#ffffff';
-				if (exploreTab == -1) x = 740;
-				else x = cwidth / 2;
-				ctx.fillText(explorePage, x, 505);
+			// Page number
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.font = '30px Helvetica';
+			ctx.fillStyle = '#ffffff';
+			if (exploreTab == -1) x = 740;
+			else x = cwidth / 2;
+			ctx.fillText(explorePage, x, 510);
 
-				// Previous page button
-				if (exploreTab == -1) x = 555;
-				else x = cwidth * 0.25;
+			// Previous page button
+			if (exploreTab == -1) x = 555;
+			else x = cwidth * 0.25;
 
-				if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
-				else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-					ctx.fillStyle = '#cccccc';
-					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
-						setExplorePage(explorePage - 1);
-					}
-				} else ctx.fillStyle = '#999999';
-				drawArrow(x, 495, 25, 30, 3);
-
-				// Next page button
-				if (exploreTab == -1) {
-					x = 925;
-				} else {
-					x = cwidth * 0.75;
+			if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
+			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
+				ctx.fillStyle = '#cccccc';
+				onButton = true;
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setExplorePage(explorePage - 1);
 				}
-				if (exploreLoading) ctx.fillStyle = '#505050';
-				else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-					ctx.fillStyle = '#cccccc';
-					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
-						setExplorePage(explorePage + 1);
-					}
-				} else ctx.fillStyle = '#999999';
-				drawArrow(x, 495, 25, 30, 1);
+			} else ctx.fillStyle = '#999999';
+			drawArrow(x, 495, 25, 30, 3);
+
+			// Next page button
+			if (exploreTab == -1) {
+				x = 925;
+			} else {
+				x = cwidth * 0.75;
 			}
+			if (exploreLoading) ctx.fillStyle = '#505050';
+			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
+				ctx.fillStyle = '#cccccc';
+				onButton = true;
+				if (mouseIsDown && !pmouseIsDown) {
+					soundEffects.click.currentTime = 0;
+					soundEffects.click.play();
+					setExplorePage(explorePage + 1);
+				}
+			} else ctx.fillStyle = '#999999';
+			drawArrow(x, 495, 25, 30, 1);
 
 			//if (exploreTab == 0) {
 			//drawMenu2_3Button(1, 837.5, 486.95, menu2Back);
@@ -9973,17 +10086,17 @@ function draw() {
 					wrapText(exploreLevelPageLevel.description, 430, 98, 500, 22);
 				}
 
-				ctx.fillStyle = '#333333';
-				ctx.font = 'italic 18px Helvetica';
-				ctx.fillText('created ' + exploreLevelPageLevel.created.slice(0,10), 31.85, 325);
+				// Date and views counter
 
-				// Views icon & counter
-				ctx.fillStyle = '#00d68f';
-				ctx.font = 'bold 20px Helvetica';
 				ctx.textAlign = 'right';
 
-				let pluralViewText = exploreLevelPageLevel.plays === 1
-				ctx.fillText(exploreLevelPageLevel.plays + (pluralViewText ? ' play' : ' plays'), 410, 325);
+				ctx.fillStyle = '#333333';
+				ctx.font = 'italic 18px Helvetica';
+				ctx.fillText('created ' + exploreLevelPageLevel.created.slice(0, 10), 950, 10); //32, 325
+				
+				ctx.fillStyle = '#00d68f';
+				ctx.font = 'bold 20px Helvetica';
+				ctx.fillText(exploreLevelPageLevel.plays + (exploreLevelPageLevel.plays === 1 ? ' play' : ' plays'), 950, 35); //410, 325
 
 				if (onlineLevelProgress[exploreLevelPageLevel.id] === undefined) {
 					onlineLevelProgress[exploreLevelPageLevel.id] = {
@@ -9998,20 +10111,42 @@ function draw() {
 
 				thisLevelHasCoin = exploreLevelPageType == 0 && readExploreLevelString(exploreLevelPageLevel.data, true);
 				if (exploreLevelPageType == 0) completedThisLevel = thisLevelProgress.completed;
-				else completedThisLevel = levelpackProgress[exploreLevelPageLevel.id].levelProgress == exploreLevelPageLevel.levels.length;
+				else completedThisLevel = levelpackProgress[exploreLevelPageLevel.id] && levelpackProgress[exploreLevelPageLevel.id].levelProgress == exploreLevelPageLevel.levels.length;
 
+				ctx.textAlign = 'left';
 				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
-				ctx.fillText(completedThisLevel ? 'Completed!' : 'Uncompleted', thisLevelHasCoin ? 385 : 410, 350);
+				ctx.fillText(completedThisLevel ? 'Completed!' : 'Uncompleted', thisLevelHasCoin ? 57 : 32, 325);
 
 				if (thisLevelHasCoin) {
 					//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
 					//ctx.fillText('Win Token', 410, 375);
 					ctx.globalAlpha = thisLevelProgress.gotCoin ? 1 : 0.4;
 					if (!thisLevelProgress.gotCoin) ctx.filter = 'brightness(70%)';
-					ctx.drawImage(svgTiles[12], 390, 350, 20, 20);
+					ctx.drawImage(svgTiles[12], 32, 325, 20, 20);
 					ctx.filter = 'brightness(100%)';
 					ctx.globalAlpha = 1;
 				}
+
+				// Timer and attempts + deaths
+				ctx.textAlign = 'right';
+
+				if (exploreLevelPageType == 0) {
+					thisLevelTime = onlineLevelProgress[exploreLevelPageLevel.id].time;
+					thisLevelAttempts = onlineLevelProgress[exploreLevelPageLevel.id].attempts;
+					thisLevelDeaths = onlineLevelProgress[exploreLevelPageLevel.id].deaths;
+				} else {
+					if (levelpackProgress[exploreLevelPageLevel.id] == undefined) {
+						clearLevelpackProgress();
+					}
+					thisLevelTime = levelpackProgress[exploreLevelPageLevel.id].timer;
+					thisLevelDeaths = levelpackProgress[exploreLevelPageLevel.id].deaths;
+				}
+
+				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
+				ctx.fillText(completedThisLevel ? toHMS(thisLevelTime) : "No best time", 410, 325);
+				ctx.fillStyle = '#ffffff';
+				if (exploreLevelPageType == 0) ctx.fillText(thisLevelAttempts + (thisLevelAttempts === 1 ? ' attempt' : ' attempts'), 410, 350);
+				ctx.fillText(thisLevelDeaths + (thisLevelDeaths === 1 ? ' death' : ' deaths'), 410, exploreLevelPageType == 0 ? 375 : 350);
 
 				ctx.textAlign = 'left';
 
@@ -10024,9 +10159,9 @@ function draw() {
 					//ctx.closePath();
 					//ctx.fill();
 
-					ctx.drawImage(difficultyMap[exploreLevelPageLevel.difficulty][2], 35, 352, 40, 40);
+					ctx.drawImage(difficultyMap[exploreLevelPageLevel.difficulty][2], 32, 352, 40, 40);
 					ctx.fillStyle = difficultyMap[exploreLevelPageLevel.difficulty][1];
-					ctx.fillText(difficultyMap[exploreLevelPageLevel.difficulty][0], 85, 362);
+					ctx.fillText(difficultyMap[exploreLevelPageLevel.difficulty][0], 82, 362);
 				}
 
 				ctx.drawImage(thumbBig, 30, 98, 384, 216);
@@ -10054,7 +10189,7 @@ function draw() {
 					//drawSimpleButton(exploreLevelPageType===0?'Play Level':'New Game', playExploreLevel===0?playExploreLevel:openExploreNewGame2, 30, 400, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080');
 
 					if (exploreLevelPageType != 0) {
-						drawMenu0Button('Continue', 30, 445, typeof levelpackProgress[exploreLevelPageLevel.id] === 'undefined', continueExploreLevelpack, 188);
+						drawMenu0Button('Continue', 30, 445, levelpackProgress[exploreLevelPageLevel.id].levelProgress === 0, continueExploreLevelpack, 188); //(typeof levelpackProgress[exploreLevelPageLevel.id] === 'undefined') || 
 						//drawSimpleButton('Continue Game', continueExploreLevelpack, 30, 438, 188, 30, 3, '#ffffff', '#404040', '#808080', '#808080', {enabled:typeof levelpackProgress[exploreLevelPageLevel.id] !== 'undefined'});
 					}
 				} else {
@@ -10556,11 +10691,20 @@ function draw() {
 			shakeY = 0;
 		}
 	}
+
 	if (whiteAlpha > 0 && screenFlashes) {
 		ctx.fillStyle = '#ffffff';
 		ctx.globalAlpha = whiteAlpha / 100;
 		ctx.fillRect(0, 0, cwidth, cheight);
 		ctx.globalAlpha = 1;
+	}
+
+	let windVolume = wipeTimer < 30 ? wipeTimer : 30 - (wipeTimer - 30)
+	if (screenShake) windLoop.volume = windVolume / 30;
+	else windLoop.volume = 0;
+
+	for (var i in soundEffects) {
+		soundEffects[i].volume = soundsEnabled ? 1 : 0;
 	}
 
 	if (draggingScrollbar) setCursor('grabbing');

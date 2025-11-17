@@ -2232,6 +2232,7 @@ let soundsEnabled = true;
 let soundEffects = {
 	// UI
 	click: new Audio('data/sounds/click.mp3'),
+	pop: new Audio('data/sounds/pop.mp3'),
 
 	// HPRC
 	hprc1: new Audio('data/sounds/hprc1.mp3'),
@@ -2244,6 +2245,7 @@ let soundEffects = {
 	buttonPress: new Audio('data/sounds/press.mp3'),
 	buttonUnpress: new Audio('data/sounds/unpress.mp3'),
 	ding: new Audio('data/sounds/ding.mp3'),
+	coin: new Audio('data/sounds/coin.mp3'),
 	bounce1: new Audio('data/sounds/bounce1.mp3'),
 	bounce2: new Audio('data/sounds/bounce2.mp3'),
 	bounce3: new Audio('data/sounds/bounce3.mp3'),
@@ -3501,7 +3503,8 @@ function resetLevel() {
 	levelTimer = 0;
 	recoverTimer = 0;
 	levelTimer2 = getTimer();
-	if (char[0].charState <= 9) changeControl();
+
+	if (char[0].charState <= 9) changeControl(0, false);
 
 	doorLightFade = new Array(charCount2).fill(0);
 	doorLightFadeDire = new Array(charCount2).fill(0);
@@ -4095,6 +4098,10 @@ function setBody(i) {
 }
 
 function getTileDepths() {
+	locations[0] = -999;
+	locations[1] = -999;
+	locations[2] = -999;
+	locations[3] = -999;
 	for (let i = 0; i < 6; i++) {
 		switchable[i] = [];
 	}
@@ -4319,6 +4326,8 @@ function getCoin(i) {
 			Math.floor((char[i].y - char[i].h) / 30) <= locations[3] &&
 			Math.ceil(char[i].y / 30) - 1 >= locations[3]
 		) {
+			soundEffects.coin.currentTime = 0;
+			soundEffects.coin.play();
 			gotThisCoin = true;
 		}
 	}
@@ -4832,6 +4841,8 @@ function displayLine(level, line) {
 		char[p].diaMouthFrame = 0;
 	}
 	csText = cLevelDialogueText[line];
+	soundEffects.pop.currentTime = 0;
+	soundEffects.pop.play();
 }
 
 function deathSound(s, p) {
@@ -4892,7 +4903,7 @@ function endDeath(i) {
 	if (playMode == 3) onlineLevelProgress[exploreLevelPageLevel.id].deaths++;
 	deathCount++;
 	saveGame();
-	if (i == control) changeControl();
+	if (i == control) changeControl(0, true);
 }
 
 function bounce(i) {
@@ -5125,7 +5136,7 @@ function aboveFallOff(i) {
 	}
 }
 
-function changeControl() {
+function changeControl(dire, snd) {
 	if (char[control].charState >= 7) {
 		char[control].stopMoving();
 		swapDepths(control, (charCount - control - 1) * 2);
@@ -5144,6 +5155,10 @@ function changeControl() {
 	}
 
 	if (control < 1000) {
+		if (snd) {
+			soundEffects.pop.currentTime = 0;
+			soundEffects.pop.play()
+		}
 		if (ifCarried(control)) {
 			putDown(char[control].carriedBy);
 		}
@@ -8121,7 +8136,7 @@ function draw() {
 					} else downPress = false;
 					if (_keysDown[90]) {
 						if (!qPress && !recover) {
-							changeControl();
+							changeControl(0, true);
 							qTimer = 6;
 						}
 						qPress = true;

@@ -113,13 +113,13 @@ let coinAlpha = 0;
 let searchParams = new URLSearchParams(window.location.href);
 let [levelId, levelpackId] = [searchParams.get("https://robutunik.github.io/HTML5bReimagined/?level"), searchParams.get("https://robutunik.github.io/HTML5bReimagined/?levelpack")]
 const difficultyMap = [
-	["Unknown", "#e6e6e6", 0],
-	["Easy", "#1981ff", 0],
-	["Normal", "#4dff4d", 0],
-	["Difficult", "#ffff00", 0],
-	["Hard", "#ffab1a", 0],
-	["Extreme", "#ff7070", 0],
-	["Insane", "#ff66d6", 0],
+	["None", "#9f9f9f", 0],
+	["Easy", "#00a0ff", 0],
+	["Casual", "#6df000", 0],
+	["Hard", "#f2ee00", 0],
+	["Tough", "#ff2b00", 0],
+	["Insane", "#ff7070", 0],
+	["Extreme", "#ff66d6", 0],
 	["Impossible", "#a38393", 0],
 ];
 
@@ -2339,13 +2339,13 @@ async function loadingScreen() {
 	let resourceData = await req.json();
 
 	// Difficulty faces
-	difficultyMap[0][2] = await createImage(resourceData['difficulties/Unkown.svg']);
+	difficultyMap[0][2] = await createImage(resourceData['difficulties/None.svg']);
 	difficultyMap[1][2] = await createImage(resourceData['difficulties/Easy.svg']);
-	difficultyMap[2][2] = await createImage(resourceData['difficulties/Normal.svg']);
-	difficultyMap[3][2] = await createImage(resourceData['difficulties/Difficult.svg']);
-	difficultyMap[4][2] = await createImage(resourceData['difficulties/Hard.svg']);
-	difficultyMap[5][2] = await createImage(resourceData['difficulties/Extreme.svg']);
-	difficultyMap[6][2] = await createImage(resourceData['difficulties/Insane.svg']);
+	difficultyMap[2][2] = await createImage(resourceData['difficulties/Casual.svg']);
+	difficultyMap[3][2] = await createImage(resourceData['difficulties/Hard.svg']);
+	difficultyMap[4][2] = await createImage(resourceData['difficulties/Tough.svg']);
+	difficultyMap[5][2] = await createImage(resourceData['difficulties/Insane.svg']);
+	difficultyMap[6][2] = await createImage(resourceData['difficulties/Extreme.svg']);
 	difficultyMap[7][2] = await createImage(resourceData['difficulties/Impossible.svg']);
 
 	svgCSBubble = await createImage(resourceData['ui/csbubble/dia.svg']);
@@ -3420,6 +3420,7 @@ function resetLevel() {
 		levelHeight = levels[currentLevel].length;
 
 		if (currentLevel === 0 && !playingLevelpack) levels[0][13][29] = levels[0][13][30] = levels[0][13][31] = quirksMode ? 16 : 1; // Adds converyors back to level 1 on quirks mode.
+		char = new Array(charCount);
 
 		copyLevel(levels[currentLevel]);
 		charCount2 = 0;
@@ -4776,12 +4777,14 @@ function startCutScene() {
 		if (toSeeCS) {
 			cutScene = 1;
 			cutSceneLine = 0;
+			console.log(char)
 			for (let i = 0; i < char.length; i++) {
 				if (char[i].charState >= 7 && char[i].id < 35)
 					char[i].diaMouthFrame =
 						diaMouths[char[i].expr + charModels[char[i].id].mouthType * 2].frameorder.length - 1;
 			}
 			displayLine(currentLevel, cutSceneLine);
+			char[control].stopMoving();
 			char[control].dire = Math.ceil(char[control].dire / 2) * 2;
 		} else {
 			rescue();

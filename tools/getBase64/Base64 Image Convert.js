@@ -1117,11 +1117,11 @@ const filePaths = [
 	'ui/mylevels/icon0004.svg',
 	'difficulties/Unkown.svg',
 	'difficulties/Easy.svg',
-	'difficulties/Normal.svg',
-	'difficulties/Difficult.svg',
+	'difficulties/Casual.svg',
 	'difficulties/Hard.svg',
-	'difficulties/Extreme.svg',
+	'difficulties/Tough.svg',
 	'difficulties/Insane.svg',
+	'difficulties/Extreme.svg',
 	'difficulties/Impossible.svg',
 ];
 const base64out = {};

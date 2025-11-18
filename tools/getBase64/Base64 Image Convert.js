@@ -1115,7 +1115,7 @@ const filePaths = [
 	'ui/mylevels/icon0002.svg',
 	'ui/mylevels/icon0003.svg',
 	'ui/mylevels/icon0004.svg',
-	'difficulties/Unkown.svg',
+	'difficulties/None.svg',
 	'difficulties/Easy.svg',
 	'difficulties/Casual.svg',
 	'difficulties/Hard.svg',

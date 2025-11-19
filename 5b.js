@@ -2343,7 +2343,7 @@ async function loadingScreen() {
 	levelsString = await req.text();
 	loadLevels();
 
-	req = await fetch('data/images6.json');
+	req = await fetch('data/images.json');
 	let resourceData = await req.json();
 
 	// Difficulty faces

@@ -35,8 +35,8 @@ let osc3, osctx3;
 let osc4, osctx4;
 let osc5, osctx5;
 // explore level thumbnails
-const thumbs = new Array(8);
-const thumbsctx = new Array(8);
+const thumbs = new Array(9);
+const thumbsctx = new Array(9);
 let thumbBig, thumbBigctx;
 
 let _xmouse = 0;
@@ -2259,8 +2259,12 @@ let soundEffects = {
 	pickup: [new Audio('data/sounds/pickup.mp3'), 1],
 	throw: [new Audio('data/sounds/throw.mp3'), 1],
 	extinguish: [new Audio('data/sounds/extinguish.mp3'), 0.9],
-	land1: [new Audio('data/sounds/land1.mp3'), 0.7],
-	land2: [new Audio('data/sounds/land2.mp3'), 0.7],
+
+	land1: [new Audio('data/sounds/pickup.mp3'), 0.5],
+	land2: [new Audio('data/sounds/land1.mp3'), 0.7],
+	land3: [new Audio('data/sounds/land2.mp3'), 0.7],
+
+	jump: [new Audio('data/sounds/throw.mp3'), 0.7],
 
 	// Deaths
 	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.7],
@@ -2623,11 +2627,12 @@ function addLevelToLevelpack(id) {
 }
 
 function gotoExploreLevelPage(locOnPage) {
+	locationOnPage = locOnPage;
 	let newExploreLevelPageLevel = menuScreen==8?exploreUserPageLevels[Math.floor(locOnPage/8)][locOnPage%8]:explorePageLevels[locOnPage];
-	if ((menuScreen == 6 && (exploreTab != 1)) || (menuScreen == 8 && locOnPage < 8)) { //exploreTab == 0 || exploreTab == 2 || exploreTab == 3
+	if ((menuScreen == 6 && (exploreTab != 1)) || (menuScreen == 8 && (locOnPage < 8 || exploreTab == 0))) { //exploreTab == 0 || exploreTab == 2 || exploreTab == 3
 		exploreLevelPageType = 0;
 		exploreLevelPageLevel = newExploreLevelPageLevel;
-		drawExploreThumb(thumbBigctx, thumbBig.width, exploreLevelPageLevel.data, 0.4);
+		drawExploreThumb(thumbBigctx, thumbBig.width, locOnPage == 8 ? exploreLevelPageLevel.level.data : exploreLevelPageLevel.data, 0.4);
 	} else {
 		exploreLevelPageType = 1;
 		getExploreLevelpack(newExploreLevelPageLevel.id);
@@ -2661,13 +2666,15 @@ function cancelChangeLevelString() {
 
 function playExploreLevel(continueGame=false) {
 	cancelEditExploreLevel();
+	const isDaily = locationOnPage == 8 && exploreTab == 0
+	const levelData = isDaily ? exploreLevelPageLevel.level : exploreLevelPageLevel
 	// increment play counter
-	getExplorePlay(exploreLevelPageLevel.id);
+	getExplorePlay(levelData.id);
 
 	if (exploreLevelPageType == 0) {
-		readExploreLevelString(exploreLevelPageLevel.data, false);
+		readExploreLevelString(levelData.data, false);
 		testLevelCreator();
-		onlineLevelProgress[exploreLevelPageLevel.id].attempts++;
+		onlineLevelProgress[levelData.id].attempts++;
 		playingLevelpack = false;
 		playMode = 3;
 		saveGame();
@@ -3202,8 +3209,10 @@ function drawLevelButtons() {
 	ctx.textAlign = 'left';
 	ctx.textBaseline = 'top';
 	ctx.font = 'bold 32px Helvetica';
+	ctx.filter = 'drop-shadow(0px 0px 6px #000000)';
 	ctx.fillText(currentLevelDisplayName, 12.85, 495.45);
 	drawMenu2_3Button(0, 837.5, 486.95, playMode == 3 ? exitExploreLevel : playMode == 2 ? exitTestLevel : menu3Menu);
+	ctx.filter = 'none';
 }
 
 //https://thewebdev.info/2021/05/15/how-to-add-line-breaks-into-the-html5-canvas-with-filltext/
@@ -3368,7 +3377,7 @@ function resetLevel() {
 
 		currentLevelDisplayName = myLevelInfo.name;
 	} else if (playMode == 3) {
-		onlineLevelProgress[exploreLevelPageLevel.id].attempts++;
+		onlineLevelProgress[locationOnPage == 8 ? exploreLevelPageLevel.level.id : exploreLevelPageLevel.id].attempts++;
 
 		charCount = myLevelChars[1].length;
 		levelWidth = myLevel[1][0].length;
@@ -3565,6 +3574,7 @@ function drawLevelBG() {
 	osc4.width = Math.floor((bgScale / 100) * cwidth * pixelRatio);
 	osc4.height = Math.floor((bgScale / 100) * cheight * pixelRatio);
 	osctx4.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+	osctx4.filter = "blur(3px)";
 	osctx4.drawImage(
 		imgBgs[playMode >= 2 ? selectedBg : bgs[currentLevel]],
 		0,
@@ -3572,23 +3582,29 @@ function drawLevelBG() {
 		(bgScale / 100) * cwidth,
 		(bgScale / 100) * cheight
 	);
+	osctx4.filter = "none";
 }
 
 function drawLevel(context) {
+	const f = 'drop-shadow(0px 0px 10px #00000055)';
+	context.filter = f;
 	// Draw Static tiles
 	context.drawImage(osc1, 0, 0, osc1.width / pixelRatio, osc1.height / pixelRatio);
 	// Draw Normal Animated Tiles
+	context.filter = 'none';
 	for (let j = 0; j < tileDepths[1].length; j++) {
 		addTileMovieClip(tileDepths[1][j].x, tileDepths[1][j].y, context);
 	}
 	// Draw Borders and Shadows
 	context.drawImage(osc2, 0, 0, osc2.width / pixelRatio, osc2.height / pixelRatio);
 	// Draw Active2 Switches & Buttons
+	context.filter = f;
 	for (let j = 0; j < tileDepths[2].length; j++) {
 		addTileMovieClip(tileDepths[2][j].x, tileDepths[2][j].y, context);
 	}
 	// We draw the characters in here so we can layer liquids above them.
 	drawCharacters(context);
+	context.filter = 'none';
 	// Draw Liquids
 	for (let j = 0; j < tileDepths[3].length; j++) {
 		addTileMovieClip(tileDepths[3][j].x, tileDepths[3][j].y, context);
@@ -4741,10 +4757,15 @@ function horizontalType(i, sign, prop) {
 }
 
 function landSound(vy) {
-	if (vy > 15) {
-		if (vy > 20) {
-			soundEffects.land2[0].currentTime = 0;
-			soundEffects.land2[0].play();
+	if (vy > 8) {
+		if (vy > 15) {
+			if (vy > 20) {
+				soundEffects.land3[0].currentTime = 0;
+				soundEffects.land3[0].play();
+			} else {
+				soundEffects.land2[0].currentTime = 0;
+				soundEffects.land2[0].play();
+			}
 		} else {
 			soundEffects.land1[0].currentTime = 0;
 			soundEffects.land1[0].play();
@@ -4929,7 +4950,7 @@ function endDeath(i) {
 		charsAtEnd--;
 		char[i].atEnd = false;
 	}
-	if (playMode == 3) onlineLevelProgress[exploreLevelPageLevel.id].deaths++;
+	if (playMode == 3) onlineLevelProgress[locationOnPage == 8 ? exploreLevelPageLevel.level.id : exploreLevelPageLevel.id].deaths++;
 	deathCount++;
 	saveGame();
 	if (i == control) changeControl(0, true);
@@ -5382,15 +5403,16 @@ function resetLCOSC() {
 	osctx1.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 	setLCBG();
 
-	let bgpr = 2;
-	let bgw = 96;
-	let bgh = 54;
-	let bgdist = 110;
+	let bgpr = 3;
+	let bgw = 80;
+	let bgh = 45;
+	let bgdist = 92;
+	let bgdist2 = 57;
 	osc2.width = Math.floor(300 * pixelRatio);
 	osc2.height = Math.floor(Math.floor(imgBgs.length / bgpr + 1) * bgdist * pixelRatio);
 	osctx2.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 	for (let i = 0; i < imgBgs.length; i++) {
-		osctx2.drawImage(imgBgs[i],bgdist - bgw + (i % bgpr) * bgdist,bgdist - bgh + Math.floor(i / bgpr) * bgdist,bgw,bgh);
+		osctx2.drawImage(imgBgs[i], bgdist - bgw + (i % bgpr) * bgdist, bgdist2 - bgh + Math.floor(i / bgpr) * bgdist2,bgw,bgh);
 	}
 
 	osc3.width = Math.floor(cwidth * pixelRatio);
@@ -5405,7 +5427,9 @@ function resetLCOSC() {
 
 function setLCBG() {
 	lcChangesMade = true;
+	osctx1.filter = 'blur(6px)';
 	osctx1.drawImage(imgBgs[selectedBg], -97, 0, 854, 480);
+	osctx1.filter = 'none';
 }
 
 function drawLCGrid() {
@@ -6464,7 +6488,8 @@ function copyLevelString() {
 }
 
 function exploreCopyLink() {
-	copyText('https://robutunik.github.io/HTML5bReimagined/?' + (exploreLevelPageType===0?'level=':'levelpack=') + exploreLevelPageLevel.id);
+	copyText('https://robutunik.github.io/HTML5bReimagined/?' + (exploreLevelPageType === 0 ? 'level=' : 'levelpack=') +
+		(locationOnPage == 8 && exploreTab == 0 ? exploreLevelPageLevel.level.id : exploreLevelPageLevel.id));
 }
 
 function copyText(textIn) {
@@ -7135,29 +7160,39 @@ function drawRemoveButton(x, y, s, p) {
 function truncateLevelTitles(arr, offset) {
 	ctx.font = '20px Helvetica';
 	for (let i = 0; i < arr.length; i++) {
-		if (arr[i].featured) title = '★ ' + arr[i].title;
-		else title = arr[i].title;
+		title = exploreTab == 0 && i == 8 ? arr[i].level.title : arr[i].title;
+		if (arr[i].featured) title = '★ ' + title;
 		exploreLevelTitlesTruncated[i + offset] = fitString(ctx, title, 200);
 	}
 }
 
 function drawExploreLevel(x, y, i, levelType, pageType) {
-	// special ids:
-	// -1 - daily level
 
 	// page types:
 	// 0 - main explore page
 	// 1 - explore user page
 	// 2 - local saved levels page
 
-	if (i == -1) thisExploreLevel = exploreDailyLevel
-	else thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 8] : explorePageLevels[i];
+	const isDaily = i == 8 && levelType == 0
+	thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 8] : explorePageLevels[i];
+	const levelData = isDaily ? thisExploreLevel.level : thisExploreLevel;
+
+	ctx.textBaseline = 'top';
+	ctx.textAlign = 'left';
+	ctx.font = 'bold 20px Helvetica';
+
+	if (isDaily) {
+		ctx.fillStyle = '#888888';
+		ctx.fillRect(x - 8, y - 32, 208, 148);
+		ctx.fillStyle = '#ffffff';
+		ctx.fillText('Daily level!', x, y - 26);
+	}
 
 	if (onRect(_xmouse, _ymouse, x-4, y-4, 200, 116) && !lcPopUp) {
 		onButton = true;
 		if (pageType == 2 && deletingMyLevels || pageType == 3 && levelpackCreatorRemovingLevels) ctx.fillStyle = '#a00000';
 		else {
-			if (thisExploreLevel.featured) ctx.fillStyle = '#ffffff';
+			if (thisExploreLevel.featured || isDaily) ctx.fillStyle = '#ffffff';
 			else ctx.fillStyle = '#a0a0a0';
 		}
 		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x - 4, y - 4, 200, 116)) {
@@ -7176,7 +7211,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			} else gotoExploreLevelPage(i);
 		}
 	} else {
-		if (thisExploreLevel.featured) ctx.fillStyle = '#ffe200';
+		if (isDaily) ctx.fillStyle = '#00ff59';
+		else if (thisExploreLevel.featured) ctx.fillStyle = '#ffe200';
 		else ctx.fillStyle = '#333333';
 	}
 	
@@ -7196,10 +7232,9 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	ctx.fillStyle = gradient;
 	ctx.fillRect(x, y+80, 192, 28);
 
-	if (thisExploreLevel.featured) ctx.fillStyle = '#ffe200';
+	if (isDaily) ctx.fillStyle = '#00ff59';
+	else if (thisExploreLevel.featured) ctx.fillStyle = '#ffe200';
 	else ctx.fillStyle = '#ffffff';
-	ctx.textBaseline = 'top';
-	ctx.textAlign = 'left';
 	ctx.font = '15px Helvetica'; //'20px Helvetica';
 	ctx.fillText(exploreLevelTitlesTruncated[i], x + 2, y + 94);
 	//ctx.fillText(exploreLevelTitlesTruncated[i], x + 6.35, y + 119.4);
@@ -7207,8 +7242,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// fitString(ctx, explorePageLevels[i].title, 142.3);
 
 	if (pageType < 2) {
-		const isGuest = thisExploreLevel.creator && thisExploreLevel.creator === undefined;
-		const username = isGuest ? "Guest" : thisExploreLevel.creator.username;
+		const isGuest = levelData.creator && levelData.creator === undefined;
+		const username = isGuest ? "Guest" : levelData.creator.username;
 
 		ctx.fillStyle = getUsernameColor(username, '#dadada');
 		ctx.font = '10px Helvetica';
@@ -7228,7 +7263,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.fill();
 
 		ctx.textAlign = "right";
-		ctx.fillText(thisExploreLevel.plays, x + atX - 3, y + atY - 8);
+		ctx.fillText(levelData.plays, x + atX - 3, y + atY - 8);
 		ctx.textAlign = "left";
 
 		if (levelType == 0) {
@@ -7242,7 +7277,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 
 			ctx.beginPath();
 			ctx.arc(x + 180, y + 12, 5, 0, 2 * Math.PI);
-			ctx.fillStyle = difficultyMap[thisExploreLevel.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
+			ctx.fillStyle = difficultyMap[levelData.difficulty][1]; //(thisExploreLevel.difficulty == 7) ? '#ffffff' : difficultyMap[thisExploreLevel.difficulty][1];
 			ctx.closePath();
 			ctx.fill();
 		}
@@ -7250,9 +7285,9 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		// Completion indicator
 
 		if (levelType == 0) {
-			thisLevelProgress = onlineLevelProgress[thisExploreLevel.id];
+			thisLevelProgress = onlineLevelProgress[isDaily ? thisExploreLevel.level.id : thisExploreLevel.id];
 			completedThisLevel = thisLevelProgress && thisLevelProgress.completed
-			thisLevelHasCoin = readExploreLevelString(thisExploreLevel.data, true);
+			thisLevelHasCoin = readExploreLevelString(levelData.data, true);
 		} else {
 			thisLevelProgress = levelpackProgress[thisExploreLevel.id];
 			completedThisLevel = thisLevelProgress && (thisLevelProgress.levelProgress == thisExploreLevel.levels.length)
@@ -7288,7 +7323,6 @@ function setExplorePage(page) {
 	if (exploreTab == 2) getSearchPage(exploreSearchInput, explorePage);
 	else {
 		getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
-		if (exploreTab == 0) getDailyLevel();
 	}
 	// setExploreThumbs();
 }
@@ -7328,7 +7362,7 @@ function setLevelpackCreatorPage(page) {
 
 function setExploreThumbs() {
 	for (let i = 0; i < explorePageLevels.length; i++) {
-		drawExploreThumb(thumbsctx[i], thumbs[i].width, explorePageLevels[i].data, 0.2);
+		drawExploreThumb(thumbsctx[i], thumbs[i].width, i == 8 ? explorePageLevels[i].level.data : explorePageLevels[i].data, 0.2);
 	}
 }
 
@@ -7354,7 +7388,9 @@ function drawExploreThumb(context, size, data, scale) {
 			let thumbLevelHead = lines[1].split(',');
 			let thumbLevelW = parseInt(thumbLevelHead[0]);
 			let thumbLevelH = parseInt(thumbLevelHead[1]);
+			context.filter = 'blur(2px)';
 			context.drawImage(imgBgs[parseInt(thumbLevelHead[3])], 0, 0, cwidth, cheight);
+			context.filter = 'none';
 
 			if (thumbLevelHead[4] == 'H') {
 				for (let y = 0; y < Math.min(thumbLevelH, 18); y++) {
@@ -7376,7 +7412,9 @@ function drawExploreThumb(context, size, data, scale) {
 			// Reset a few things that were set by testLevelCreator() that we don't want.
 			menuScreen = thispmenuScreen;
 			wipeTimer = 0;
+			context.filter = 'blur(2px)';
 			context.drawImage(imgBgs[selectedBg], 0, 0, cwidth, cheight);
+			context.filter = 'none';
 			setCamera();
 			context.save();
 			context.translate(-cameraX, -cameraY);
@@ -7434,8 +7472,8 @@ function drawExploreLoadingText(text) {
 		ctx.fillText('✖', x, 270);
 	} else {
 		let loadFrames = ['◜', '◝', '◞', '◟'];
-		ctx.fillText(loadFrames[Math.floor(_frameCount / 3) % loadFrames.length], x, 270);
-		if (_frameCount / 3 % 1 < 0.5) ctx.fillText(loadFrames[(Math.floor(_frameCount / 3)-1) % loadFrames.length], x, 270);
+		ctx.fillText(loadFrames[Math.floor(_frameCount / 5) % loadFrames.length], x, 270);
+		ctx.fillText(loadFrames[Math.floor(_frameCount / 5 + 1) % loadFrames.length], x, 270);
 	}
 	ctx.font = 'bold 35px Helvetica';
 	ctx.fillText(text, x, 330);
@@ -7469,7 +7507,7 @@ function editExploreLevel() {
 		exploreLevelPageLevel.description = textBoxes[0][1].text;
 		exploreLevelPageLevel.title = textBoxes[0][2].text;
 
-		postExploreModifyLevel(exploreLevelPageLevel.id, exploreLevelPageLevel.title, exploreLevelPageLevel.description, exploreLevelPageLevel.difficulty, (exploreLevelPageLevel.data == exploreOldLevelData.data)?'':exploreLevelPageLevel.data);
+		postExploreModifyLevel(locationOnPage == 8 && exploreTab == 0 ? exploreLevelPageLevel.level.id : exploreLevelPageLevel.id, exploreLevelPageLevel.title, exploreLevelPageLevel.description, exploreLevelPageLevel.difficulty, (exploreLevelPageLevel.data == exploreOldLevelData.data)?'':exploreLevelPageLevel.data);
 	} else {
 		exploreOldLevelData = {description: exploreLevelPageLevel.description, title: exploreLevelPageLevel.title, difficulty: exploreLevelPageLevel.difficulty, data: exploreLevelPageLevel.data}
 		editingExploreLevel = true;
@@ -8029,11 +8067,12 @@ function draw() {
 						else exitLevel();
 					} else {
 						if (playMode == 3) {
-							onlineLevelProgress[exploreLevelPageLevel.id].completed = true;
-							if (gotThisCoin) onlineLevelProgress[exploreLevelPageLevel.id].gotCoin = true;
-							if (onlineLevelProgress[exploreLevelPageLevel.id].time == 0 || onlineLevelProgress[exploreLevelPageLevel.id].time == null ||
-								getTimer() - levelTimer2 < onlineLevelProgress[exploreLevelPageLevel.id].time)
-								onlineLevelProgress[exploreLevelPageLevel.id].time = getTimer() - levelTimer2;
+							const levelData = locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel
+							onlineLevelProgress[levelData.id].completed = true;
+							if (gotThisCoin) onlineLevelProgress[levelData.id].gotCoin = true;
+							if (onlineLevelProgress[levelData.id].time == 0 || onlineLevelProgress[levelData.id].time == null ||
+								getTimer() - levelTimer2 < onlineLevelProgress[levelData.id].time)
+								onlineLevelProgress[levelData.id].time = getTimer() - levelTimer2;
 							exitExploreLevel();
 						} else if (playMode == 2) {
 							exitTestLevel();
@@ -8190,7 +8229,11 @@ function draw() {
 							!recover
 						) {
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
-							else char[control].jump(-jumpPower);
+							else {
+								char[control].jump(-jumpPower);
+								soundEffects.jump[0].currentTime = 0;
+								soundEffects.jump[0].play();
+							}
 							char[control].onob = false;
 							char[control].cTime = 999;
 							fallOff(control);
@@ -9218,7 +9261,7 @@ function draw() {
 								hoverText = tileNames[i];
 								if (i != selectedTile) {
 									onButton = true;
-									ctx.fillStyle = '#dfdfdf';
+									ctx.fillStyle = '#ececec';
 									// ctx.fillRect(660 + (bdist-bs) + (j%bpr)*bdist - bpr/2, (selectedTab+1)*tabHeight + (bdist-bs) + Math.floor(j/bpr)*bdist - bpr/2, bs + bpr, bs + bpr);
 									ctx.fillRect(
 										660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
@@ -9307,21 +9350,31 @@ function draw() {
 				case 3:
 					// Background
 					// let j = 0;
-					let bgpr = 2;
-					let bgw = 96;
-					let bgh = 54;
-					let bgdist = 110;
+					let bgpr = 3;
+					let bgw = 80;
+					let bgh = 45;
+					let bgdist = 92;
+					let bgdist2 = 57;
 					// let h = _frameCount;
 					ctx.save();
 					ctx.translate(0, -bgsTabScrollBar);
 					for (var i = 0; i < imgBgs.length; i++) {
 						if (i == selectedBg) {
-							ctx.fillStyle = '#a0a0a0';
+							ctx.fillStyle = '#8c8c8c';
 							ctx.fillRect(
 								660 + (bgdist - bgw) + (i % bgpr) * bgdist - (bgdist - bgw) / 2,
-								tabWindowY + (bgdist - bgh) + Math.floor(i / bgpr) * bgdist - (bgdist - bgh) / 2,
+								tabWindowY + (bgdist2 - bgh) + Math.floor(i / bgpr) * bgdist2 - (bgdist2 - bgh) / 2,
 								bgw + bgdist - bgw,
-								bgh + bgdist - bgh
+								bgh + bgdist2 - bgh
+							);
+							ctx.strokeStyle = '#ffffff';
+							ctx.setLineDash([6, 6])
+							ctx.lineWidth = 2;
+							ctx.strokeRect(
+								660 + (bgdist - bgw) + (i % bgpr) * bgdist - (bgdist - bgw) / 2,
+								tabWindowY + (bgdist2 - bgh) + Math.floor(i / bgpr) * bgdist2 - (bgdist2 - bgh) / 2,
+								bgw + bgdist - bgw,
+								bgh + bgdist2 - bgh
 							);
 						} else if (
 							mouseOnTabWindow &&
@@ -9330,18 +9383,18 @@ function draw() {
 								_xmouse,
 								_ymouse + bgsTabScrollBar,
 								660 + (bgdist - bgw) + (i % bgpr) * bgdist,
-								tabWindowY + (bgdist - bgh) + Math.floor(i / bgpr) * bgdist,
+								tabWindowY + (bgdist2 - bgh) + Math.floor(i / bgpr) * bgdist2,
 								bgw,
 								bgh
 							)
 						) {
 							onButton = true;
-							ctx.fillStyle = '#dddddd';
+							ctx.fillStyle = '#ececec';
 							ctx.fillRect(
 								660 + (bgdist - bgw) + (i % bgpr) * bgdist - (bgdist - bgw) / 2,
-								tabWindowY + (bgdist - bgh) + Math.floor(i / bgpr) * bgdist - (bgdist - bgh) / 2,
+								tabWindowY + (bgdist2 - bgh) + Math.floor(i / bgpr) * bgdist2 - (bgdist2 - bgh) / 2,
 								bgw + bgdist - bgw,
-								bgh + bgdist - bgh
+								bgh + bgdist2 - bgh
 							);
 							if (mouseIsDown && !pmouseIsDown) {
 								selectedBg = i;
@@ -9359,7 +9412,7 @@ function draw() {
 					ctx.drawImage(osc2, 660, tabWindowY, osc2.width / pixelRatio, osc2.height / pixelRatio);
 					ctx.restore();
 
-					var tabContentsHeight = bgdist - bgh + Math.floor((i - 1) / bgpr + 1) * bgdist;
+					var tabContentsHeight = bgdist - bgh + Math.floor((i - 1) / bgpr + 1) * bgdist2;
 					var scrollBarH = (tabWindowH / tabContentsHeight) * tabWindowH;
 					var scrollBarY =
 						(selectedTab + 1) * tabHeight +
@@ -10018,19 +10071,19 @@ function draw() {
 				drawExploreLoadingText('Something went wrong.');
 				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
-				for (let i = 0; i < explorePageLevels.length; i++) {
-					if (exploreTab == -1) {
-						x = (i % 2) * 205 + (exploreTab == 2 ? 500 : 555);
-						y = 120 * Math.floor(i / 2) + 8;
+				for (let i = 0; i < explorePageLevels.length - (exploreTab == 0 ? 1 : 0); i++) {
+					if (exploreTab == 0) {
+						x = 215 * (i % 4) + 60;
+						y = Math.floor(i / 4) * 130 + 270;
+						//x = (i % 2) * 205 + (exploreTab == 2 ? 500 : 555);
+						//y = 120 * Math.floor(i / 2) + 70;
 					} else {
-						x = 215 * (i % 4) + 50;
+						x = 215 * (i % 4) + 60;
 						y = Math.floor(i / 4) * 130 + (exploreTab == 2 ? 190 : 170);
 					}
 					drawExploreLevel(x, y, i, exploreTab == 1 ? 1 : 0, 0);
 				}
-				if (exploreTab == 0) { // daily
-					//drawExploreLevel(0, 0, -1, 0, 0);
-				}
+				if (exploreTab == 0) drawExploreLevel(705, 125, 8, 0, 0); //Daily level
 			}
 
 			if (exploreTab == 2) {
@@ -10062,48 +10115,64 @@ function draw() {
 				drawMenu0Button('Sort by: ' + exploreSortText[exploreSort], 230, 75, false, changeSortBy, 210);
 			}
 
-			// Page number
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'middle';
-			ctx.font = '30px Helvetica';
-			ctx.fillStyle = '#ffffff';
-			if (exploreTab == -1) x = 740;
-			else x = cwidth / 2;
-			ctx.fillText(explorePage, x, 510);
+			if (!exploreLoading) {
+				// Page number
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.font = '30px Helvetica';
+				ctx.fillStyle = '#ffffff';
 
-			// Previous page button
-			if (exploreTab == -1) x = 555;
-			else x = cwidth * 0.25;
-
-			if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
-					setExplorePage(explorePage - 1);
+				if (exploreTab == 0) {
+					x = cwidth / 2;
+					y = 215;
+				} else {
+					x = cwidth / 2;
+					y = 510;
 				}
-			} else ctx.fillStyle = '#999999';
-			drawArrow(x, 495, 25, 30, 3);
+				ctx.fillText(explorePage, x, y);
 
-			// Next page button
-			if (exploreTab == -1) {
-				x = 925;
-			} else {
-				x = cwidth * 0.75;
+				// Previous page button
+				if (exploreTab == 0) {
+					x = cwidth * 0.4 - 25 / 2;
+					y = 200;
+				} else {
+					x = cwidth * 0.25;
+					y = 495;
+				}
+
+				if (explorePage <= 1 || exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, x, y, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
+						setExplorePage(explorePage - 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(x, y, 25, 30, 3);
+
+				// Next page button
+				if (exploreTab == 0) {
+					x = cwidth * 0.6 - 25 / 2;
+					y = 200;
+				} else {
+					x = cwidth * 0.75;
+					y = 495;
+				}
+
+				if (exploreLoading) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, x, y, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
+						setExplorePage(explorePage + 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(x, y, 25, 30, 1);
 			}
-			if (exploreLoading) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, x, 495, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
-					setExplorePage(explorePage + 1);
-				}
-			} else ctx.fillStyle = '#999999';
-			drawArrow(x, 495, 25, 30, 1);
 
 			//if (exploreTab == 0) {
 			//drawMenu2_3Button(1, 837.5, 486.95, menu2Back);
@@ -10129,8 +10198,10 @@ function draw() {
 				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 
-				const isGuest = exploreLevelPageLevel.creator === "";
-				const username = isGuest ? "Guest" : exploreLevelPageLevel.creator.username;
+				//console.log(locationOnPage)
+				const levelData = exploreTab == 0 && locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel
+				const isGuest = levelData.creator === "";
+				const username = isGuest ? "Guest" : levelData.creator.username;
 
 				ctx.textBaseline = 'top';
 				ctx.textAlign = 'left';
@@ -10146,27 +10217,30 @@ function draw() {
 						ctx.fillStyle = '#404040';
 						onButton = true;
 						if (pmouseIsDown && !mouseIsDown && onRect(lastClickX, lastClickY, 30, 347, 188, 26)) {
-							exploreLevelPageLevel.difficulty = (exploreLevelPageLevel.difficulty + 1) % difficultyMap.length;
+							levelData.difficulty = (levelData.difficulty + 1) % difficultyMap.length;
 						}
-						if (exploreLevelPageLevel.difficulty == 7) {
+						if (levelData.difficulty == 7) {
 							showImpossibleNotice = true;
 						}
 					} else ctx.fillStyle = '#333333';
 					ctx.fillRect(30, 347, 188, 26);
 				} else {
-					if (exploreLevelPageLevel.featured) {
+					if (locationOnPage == 8 && exploreTab == 0) {
+						ctx.fillStyle = '#00ff59';
+						title = '[DAILY] ' + levelData.title;
+					} else if (exploreLevelPageLevel.featured) {
 						ctx.fillStyle = '#ffe200';
-						title = '★ ' + exploreLevelPageLevel.title;
+						title = '★ ' + levelData.title;
 					} else {
 						ctx.fillStyle = '#ffffff';
-						title = exploreLevelPageLevel.title;
+						title = levelData.title;
 					}
-					ctx.font = '38px Helvetica';
+					ctx.font = 'bold 38px Helvetica';
 					ctx.fillText(title, 29.15, 27.4);
 
 					ctx.fillStyle = '#ffffff';
 					ctx.font = '20px Helvetica';
-					wrapText(exploreLevelPageLevel.description, 430, 98, 500, 22);
+					wrapText(levelData.description, 430, 98, 500, 22);
 				}
 
 				// Date and views counter
@@ -10179,10 +10253,10 @@ function draw() {
 				
 				ctx.fillStyle = '#00d68f';
 				ctx.font = 'bold 20px Helvetica';
-				ctx.fillText(exploreLevelPageLevel.plays + (exploreLevelPageLevel.plays === 1 ? ' play' : ' plays'), 950, 35); //410, 325
+				ctx.fillText(levelData.plays + (levelData.plays === 1 ? ' play' : ' plays'), 950, 35); //410, 325
 
-				if (onlineLevelProgress[exploreLevelPageLevel.id] === undefined) {
-					onlineLevelProgress[exploreLevelPageLevel.id] = {
+				if (onlineLevelProgress[levelData.id] === undefined) {
+					onlineLevelProgress[levelData.id] = {
 						completed: false,
 						gotCoin: false,
 						time: Infinity,
@@ -10190,11 +10264,11 @@ function draw() {
 						attempts: 0,
 					}
 				}
-				let thisLevelProgress = onlineLevelProgress[exploreLevelPageLevel.id];
+				let thisLevelProgress = onlineLevelProgress[levelData.id];
 
-				thisLevelHasCoin = exploreLevelPageType == 0 && readExploreLevelString(exploreLevelPageLevel.data, true);
+				thisLevelHasCoin = exploreLevelPageType == 0 && readExploreLevelString(levelData.data, true);
 				if (exploreLevelPageType == 0) completedThisLevel = thisLevelProgress.completed;
-				else completedThisLevel = levelpackProgress[exploreLevelPageLevel.id] && levelpackProgress[exploreLevelPageLevel.id].levelProgress == exploreLevelPageLevel.levels.length;
+				else completedThisLevel = levelpackProgress[levelData.id] && levelpackProgress[levelData.id].levelProgress == exploreLevelPageLevel.levels.length;
 
 				ctx.textAlign = 'left';
 				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
@@ -10214,15 +10288,15 @@ function draw() {
 				ctx.textAlign = 'right';
 
 				if (exploreLevelPageType == 0) {
-					thisLevelTime = onlineLevelProgress[exploreLevelPageLevel.id].time;
-					thisLevelAttempts = onlineLevelProgress[exploreLevelPageLevel.id].attempts;
-					thisLevelDeaths = onlineLevelProgress[exploreLevelPageLevel.id].deaths;
+					thisLevelTime = onlineLevelProgress[levelData.id].time;
+					thisLevelAttempts = onlineLevelProgress[levelData.id].attempts;
+					thisLevelDeaths = onlineLevelProgress[levelData.id].deaths;
 				} else {
-					if (levelpackProgress[exploreLevelPageLevel.id] == undefined) {
+					if (levelpackProgress[levelData.id] == undefined) {
 						clearLevelpackProgress();
 					}
-					thisLevelTime = levelpackProgress[exploreLevelPageLevel.id].timer;
-					thisLevelDeaths = levelpackProgress[exploreLevelPageLevel.id].deaths;
+					thisLevelTime = levelpackProgress[levelData.id].timer;
+					thisLevelDeaths = levelpackProgress[levelData.id].deaths;
 				}
 
 				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
@@ -10242,9 +10316,9 @@ function draw() {
 					//ctx.closePath();
 					//ctx.fill();
 
-					ctx.drawImage(difficultyMap[exploreLevelPageLevel.difficulty][2], 32, 352, 40, 40);
-					ctx.fillStyle = difficultyMap[exploreLevelPageLevel.difficulty][1];
-					ctx.fillText(difficultyMap[exploreLevelPageLevel.difficulty][0], 82, 362);
+					ctx.drawImage(difficultyMap[levelData.difficulty][2], 32, 352, 40, 40);
+					ctx.fillStyle = difficultyMap[levelData.difficulty][1];
+					ctx.fillText(difficultyMap[levelData.difficulty][0], 82, 362);
 				}
 
 				ctx.drawImage(thumbBig, 30, 98, 384, 216);
@@ -10255,7 +10329,7 @@ function draw() {
 						if (pmouseIsDown && !mouseIsDown && onRect(lastClickX, lastClickY, 34, 102, 52, 52)) {
 							lcPopUpNextFrame = true;
 						}
-						if (exploreLevelPageLevel.difficulty == 7) {
+						if (levelData.difficulty == 7) {
 							showImpossibleNotice = true;
 						}
 					} else ctx.fillStyle = '#333333';
@@ -10577,38 +10651,40 @@ function draw() {
 				drawExploreLevel(232 * (i % 4) + 28, Math.floor(i / 4) * 182 + 130, i, myLevelsTab, 2);
 			}
 
-			// Page number
-			ctx.fillStyle = '#ffffff';
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'top';
-			ctx.font = '30px Helvetica';
-			ctx.fillText((myLevelsPage + 1) + ' / ' + myLevelsPageCount, cwidth / 2, 490);
+			if (!exploreLoading) {
+				// Page number
+				ctx.fillStyle = '#ffffff';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'top';
+				ctx.font = '30px Helvetica';
+				ctx.fillText((myLevelsPage + 1) + ' / ' + myLevelsPageCount, cwidth / 2, 490);
 
-			// Previous page button
-			if (myLevelsPage <= 0) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
-					setMyLevelsPage(myLevelsPage - 1);
-				}
-			} else ctx.fillStyle = '#999999';
-			drawArrow(227.5, 487, 25, 30, 3);
+				// Previous page button
+				if (myLevelsPage <= 0) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
+						setMyLevelsPage(myLevelsPage - 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(227.5, 487, 25, 30, 3);
 
-			// Next page button
-			if (myLevelsPage >= myLevelsPageCount - 1) ctx.fillStyle = '#505050';
-			else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
-				ctx.fillStyle = '#cccccc';
-				onButton = true;
-				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
-					setMyLevelsPage(myLevelsPage + 1);
-				}
-			} else ctx.fillStyle = '#999999';
-			drawArrow(707.5, 487, 25, 30, 1);
+				// Next page button
+				if (myLevelsPage >= myLevelsPageCount - 1) ctx.fillStyle = '#505050';
+				else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
+					ctx.fillStyle = '#cccccc';
+					onButton = true;
+					if (mouseIsDown && !pmouseIsDown) {
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
+						setMyLevelsPage(myLevelsPage + 1);
+					}
+				} else ctx.fillStyle = '#999999';
+				drawArrow(707.5, 487, 25, 30, 1);
+			}
 
 			if (lcPopUp && !lcPopUpNextFrame) {
 				ctx.globalAlpha = 0.2;
@@ -10860,8 +10936,9 @@ function getExplorePage(p, t, s, f) {
 		.then(async response => {
 			exploreError = false;
 			explorePageLevels = await response.json();
+			if (exploreTab == 0) getDailyLevel();
 			if (exploreTab == 0 || exploreTab == 3) setExploreThumbs();
-			truncateLevelTitles(explorePageLevels,0);
+			truncateLevelTitles(explorePageLevels, 0);
 			requestResolved();
 		})
 		.catch(err => {
@@ -10878,10 +10955,17 @@ function getDailyLevel() {
 	requestAdded();
 	return fetch('https://5beam.zelo.dev/api/daily', { method: 'GET' })
 		.then(async response => {
+			exploreError = false;
 			exploreDailyLevel = await response.json();
+			explorePageLevels.push(exploreDailyLevel[0]);
+			if (exploreTab == 0 || exploreTab == 3) setExploreThumbs();
+			truncateLevelTitles(explorePageLevels, 0);
 			requestResolved();
 		})
 		.catch(err => {
+			soundEffects.error[0].currentTime = 0;
+			soundEffects.error[0].play();
+			exploreError = true;
 			console.log(err);
 			requestError();
 		});
@@ -10913,7 +10997,7 @@ function getExploreLevel(id) {
 		.then(async response => {
 			exploreError = false;
 			exploreLevelPageLevel = await response.json();
-			drawExploreThumb(thumbBigctx, thumbBig.width, exploreLevelPageLevel.data, 0.4);
+			drawExploreThumb(thumbBigctx, thumbBig.width, locationOnPage == 8 ? exploreLevelPageLevel.level.data : exploreLevelPageLevel.data, 0.4);
 			requestResolved();
 		})
 		.catch(err => {

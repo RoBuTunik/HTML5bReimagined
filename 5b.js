@@ -2153,17 +2153,18 @@ let doorLightX = [
 let doorLightFade = [];
 let doorLightFadeDire = [];
 
-function toHMS(i) {
+function toHMS(i, milli) {
+	const mul = milli ? 1 : 1000;
 	const roundedMs = Math.round(i);
-	const h = Math.floor(roundedMs / 3600000);
-	const m = Math.floor(roundedMs / 60000) % 60;
-	const s = Math.floor(roundedMs / 1000) % 60;
+	const h = Math.floor(roundedMs / 3600000 * mul);
+	const m = Math.floor(roundedMs / 60000 * mul) % 60;
+	const s = Math.floor(roundedMs / 1000 * mul) % 60;
 	const ms = roundedMs % 1000;
 	return (
 		h.toString().padStart(2, '0') + ':' +
 		m.toString().padStart(2, '0') + ':' +
-		s.toString().padStart(2, '0') + '.' +
-		ms.toString().padStart(3, '0')
+		s.toString().padStart(2, '0') +
+		(milli ? '.' + ms.toString().padStart(3, '0') : '')
 	);
 }
 
@@ -2267,10 +2268,10 @@ let soundEffects = {
 	jump: [new Audio('data/sounds/throw.mp3'), 0.7],
 
 	// Deaths
-	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.7],
-	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.8],
-	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 1],
-	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 1],
+	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.5],
+	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.7],
+	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 0.9],
+	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 0.8],
 	bubblePop: [new Audio('data/sounds/bubblepop.mp3'), 1],
 };
 
@@ -3170,7 +3171,7 @@ function drawLevelMap() {
 	}
 
 	ctx.font = '21px Helvetica';
-	ctx.fillText(toHMS(timer), 767.3, 27.5);
+	ctx.fillText(toHMS(timer, true), 767.3, 27.5);
 	ctx.fillText(deathCount.toLocaleString(), 767.3, 55.9);
 	ctx.textAlign = 'right';
 	ctx.fillText('Time:', 757.05, 27.5);
@@ -3574,7 +3575,7 @@ function drawLevelBG() {
 	osc4.width = Math.floor((bgScale / 100) * cwidth * pixelRatio);
 	osc4.height = Math.floor((bgScale / 100) * cheight * pixelRatio);
 	osctx4.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-	osctx4.filter = "blur(3px)";
+	osctx4.filter = "blur(2px)";
 	osctx4.drawImage(
 		imgBgs[playMode >= 2 ? selectedBg : bgs[currentLevel]],
 		0,
@@ -4956,9 +4957,9 @@ function endDeath(i) {
 	if (i == control) changeControl(0, true);
 }
 
-function bounce(i) {
+function bounce(i, snd) {
 	if (ifCarried(i)) {
-		bounce(char[i].carriedBy);
+		bounce(char[i].carriedBy, false);
 	}
 	if (char[i].dire % 2 == 0) {
 		char[i].fricGoal = 0;
@@ -4968,8 +4969,10 @@ function bounce(i) {
 	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
 	let randSnd = 1 + Math.floor(Math.random() * 3);
-	soundEffects['bounce' + randSnd][0].currentTime = 0;
-	soundEffects['bounce' + randSnd][0].play();
+	if (snd) {
+		soundEffects['bounce' + randSnd][0].currentTime = 0;
+		soundEffects['bounce' + randSnd][0].play();
+	}
 }
 
 function bumpHead(i) {
@@ -5427,7 +5430,7 @@ function resetLCOSC() {
 
 function setLCBG() {
 	lcChangesMade = true;
-	osctx1.filter = 'blur(6px)';
+	osctx1.filter = 'blur(3px)';
 	osctx1.drawImage(imgBgs[selectedBg], -97, 0, 854, 480);
 	osctx1.filter = 'none';
 }
@@ -7185,7 +7188,10 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.fillStyle = '#888888';
 		ctx.fillRect(x - 8, y - 32, 208, 148);
 		ctx.fillStyle = '#ffffff';
-		ctx.fillText('Daily level!', x, y - 26);
+		const len = 86400;
+		const date = Math.floor(Date.now() / 1000);
+		const time = toHMS(len - date % len, false);
+		ctx.fillText('Daily level! ' + time, x, y - 26);
 	}
 
 	if (onRect(_xmouse, _ymouse, x-4, y-4, 200, 116) && !lcPopUp) {
@@ -7388,7 +7394,7 @@ function drawExploreThumb(context, size, data, scale) {
 			let thumbLevelHead = lines[1].split(',');
 			let thumbLevelW = parseInt(thumbLevelHead[0]);
 			let thumbLevelH = parseInt(thumbLevelHead[1]);
-			context.filter = 'blur(2px)';
+			context.filter = 'blur(1px)';
 			context.drawImage(imgBgs[parseInt(thumbLevelHead[3])], 0, 0, cwidth, cheight);
 			context.filter = 'none';
 
@@ -7412,7 +7418,7 @@ function drawExploreThumb(context, size, data, scale) {
 			// Reset a few things that were set by testLevelCreator() that we don't want.
 			menuScreen = thispmenuScreen;
 			wipeTimer = 0;
-			context.filter = 'blur(2px)';
+			context.filter = 'blur(1px)';
 			context.drawImage(imgBgs[selectedBg], 0, 0, cwidth, cheight);
 			context.filter = 'none';
 			setCamera();
@@ -8616,7 +8622,7 @@ function draw() {
 					char[i].py = char[i].y;
 					if (char[i].justChanged >= 1 && char[i].charState >= 5) {
 						if (toBounce) {
-							bounce(i);
+							bounce(i, true);
 						}
 						getCoin(i);
 					}
@@ -10178,11 +10184,12 @@ function draw() {
 			//drawMenu2_3Button(1, 837.5, 486.95, menu2Back);
 			// if (enableExperimentalFeatures) drawMenu2_3Button(2, 10, 486.95, logInExplore);
 			drawMenu0Button('Exit', 10, 75, false, menu2Back, 80);
-			if (loggedInExploreUser5beamID === -1) {
-				drawMenu0Button('Log In', 100, 75, true, logInExplore, 120); // fix later
-			} else {
-				drawMenu0Button('Log Out', 100, 75, true, logOutExplore, 120); // fix later
-			}
+			drawMenu0Button('Refresh', 100, 75, false, refreshExplorePage, 120);
+			//if (loggedInExploreUser5beamID === -1) {
+				//drawMenu0Button('Log In', 100, 75, true, logInExplore, 120); // fix later
+			//} else {
+				//drawMenu0Button('Log Out', 100, 75, true, logOutExplore, 120); // fix later
+			//}
 
 			break;
 
@@ -10300,7 +10307,7 @@ function draw() {
 				}
 
 				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
-				ctx.fillText(completedThisLevel ? toHMS(thisLevelTime) : "No best time", 410, 325);
+				ctx.fillText(completedThisLevel ? toHMS(thisLevelTime, true) : "No best time", 410, 325);
 				ctx.fillStyle = '#ffffff';
 				if (exploreLevelPageType == 0) ctx.fillText(thisLevelAttempts + (thisLevelAttempts === 1 ? ' attempt' : ' attempts'), 410, 350);
 				ctx.fillText(thisLevelDeaths + (thisLevelDeaths === 1 ? ' death' : ' deaths'), 410, exploreLevelPageType == 0 ? 375 : 350);

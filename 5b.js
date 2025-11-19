@@ -102,7 +102,7 @@ let screenShake = true;
 let screenFlashes = true;
 let frameRateThrottling = true;
 let slowTintsEnabled = true;
-let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Features','Frame Rate Throttling', 'High Quality Tints'];
+let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Features','Frame Rate Throttling', 'High Quality Heating Effect'];
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
 let nextLevelId;
@@ -113,13 +113,13 @@ let coinAlpha = 0;
 let searchParams = new URLSearchParams(window.location.href);
 let [levelId, levelpackId] = [searchParams.get("https://robutunik.github.io/HTML5bReimagined/?level"), searchParams.get("https://robutunik.github.io/HTML5bReimagined/?levelpack")]
 const difficultyMap = [
-	["None", "#9f9f9f", 0],
+	["None", "#adadad", 0],
 	["Easy", "#00a0ff", 0],
 	["Casual", "#6df000", 0],
 	["Hard", "#f2ee00", 0],
 	["Tough", "#ff2b00", 0],
-	["Insane", "#ff7070", 0],
-	["Extreme", "#ff66d6", 0],
+	["Insane", "#f80060", 0],
+	["Extreme", "#e500e6", 0],
 	["Impossible", "#a38393", 0],
 ];
 
@@ -2225,41 +2225,49 @@ musicSound.volume = 0.5;
 let windLoop = new Audio('data/sounds/windloop.mp3');
 windLoop.volume = 0;
 
+let burningSound = new Audio('data/sounds/burning.mp3');
+burningSound.volume = 0
+
 // let musicSound = new Audio('data/the fiber 16x loop.wav');
 // musicSound.addEventListener('canplaythrough', event => {incrementCounter();});
 
-let soundsEnabled = true;
+let soundVolume = 1;
 let soundEffects = {
 	// UI
-	click: new Audio('data/sounds/click.mp3'),
-	pop: new Audio('data/sounds/pop.mp3'),
+	click: [new Audio('data/sounds/click.mp3'), 1],
+	pop: [new Audio('data/sounds/pop.mp3'), 1],
+	dialoguePop: [new Audio('data/sounds/diapop.mp3'), 0.4],
+	error: [new Audio('data/sounds/error.mp3'), 0.3],
 
 	// HPRC
-	hprc1: new Audio('data/sounds/hprc1.mp3'),
-	hprc2: new Audio('data/sounds/hprc2.mp3'),
-	hprc3: new Audio('data/sounds/hprc3.mp3'),
-	crank: new Audio('data/sounds/crank.mp3'),
-	recovered: new Audio('data/sounds/recovered.mp3'),
+	hprc1: [new Audio('data/sounds/hprc1.mp3'), 0.6],
+	hprc2: [new Audio('data/sounds/hprc2.mp3'), 0.6],
+	hprc3: [new Audio('data/sounds/hprc3.mp3'), 0.6],
+	crank: [new Audio('data/sounds/crank.mp3'), 0.6],
+	recovered: [new Audio('data/sounds/recovered.mp3'), 0.6],
 
 	// Tiles
-	buttonPress: new Audio('data/sounds/press.mp3'),
-	buttonUnpress: new Audio('data/sounds/unpress.mp3'),
-	ding: new Audio('data/sounds/ding.mp3'),
-	coin: new Audio('data/sounds/coin.mp3'),
-	bounce1: new Audio('data/sounds/bounce1.mp3'),
-	bounce2: new Audio('data/sounds/bounce2.mp3'),
-	bounce3: new Audio('data/sounds/bounce3.mp3'),
+	buttonPress: [new Audio('data/sounds/press.mp3'), 0.8],
+	buttonUnpress: [new Audio('data/sounds/unpress.mp3'), 0.8],
+	ding: [new Audio('data/sounds/ding.mp3'), 0.8],
+	coin: [new Audio('data/sounds/coin.mp3'), 1],
+	bounce1: [new Audio('data/sounds/bounce1.mp3'), 0.8],
+	bounce2: [new Audio('data/sounds/bounce2.mp3'), 0.8],
+	bounce3: [new Audio('data/sounds/bounce3.mp3'), 0.8],
 
 	// Actions
-	pickup: new Audio('data/sounds/pickup.mp3'),
-	throw: new Audio('data/sounds/throw.mp3'),
+	pickup: [new Audio('data/sounds/pickup.mp3'), 1],
+	throw: [new Audio('data/sounds/throw.mp3'), 1],
+	extinguish: [new Audio('data/sounds/extinguish.mp3'), 0.9],
+	land1: [new Audio('data/sounds/land1.mp3'), 0.7],
+	land2: [new Audio('data/sounds/land2.mp3'), 0.7],
 
 	// Deaths
-	rubyDeath: new Audio('data/sounds/rubydeath.mp3'),
-	bookDeath: new Audio('data/sounds/bookdeath.mp3'),
-	iceCubeDeath: new Audio('data/sounds/icecubedeath.mp3'),
-	pencilDeath: new Audio('data/sounds/pencildeath.mp3'),
-	bubblePop: new Audio('data/sounds/bubblepop.mp3'),
+	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.7],
+	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.8],
+	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 1],
+	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 1],
+	bubblePop: [new Audio('data/sounds/bubblepop.mp3'), 1],
 };
 
 const scaleFactor = 3;
@@ -2802,14 +2810,11 @@ function enterBaseLevelpackLevelSelect() {
 function toggleMusic() {
 	if (!musicSound.paused) {
 		musicSound.pause();
+		soundVolume = 0;
 	} else {
 		musicSound.play();
+		soundVolume = 1;
 	}
-	soundsEnabled = !soundsEnabled;
-}
-
-function toggleSounds() {
-	soundsEnabled = !soundsEnabled;
 }
 
 function setQual() {
@@ -2824,15 +2829,21 @@ function setQual() {
 }
 
 function exitLevel() {
+	burningSound.volume = 0;
 	menuScreen = 2;
 }
 
 function playGame() {
 	menuScreen = 0;
+
 	musicSound.play();
 	musicSound.loop = true;
+
 	windLoop.play();
 	windLoop.loop = true;
+
+	burningSound.play();
+	burningSound.loop = true;
 }
 
 function testLevelCreator() {
@@ -2857,6 +2868,7 @@ function testLevelCreator() {
 }
 
 function exitTestLevel() {
+	burningSound.volume = 0;
 	menuScreen = 5;
 	lcTextBoxes();
 	cameraX = 0;
@@ -2866,6 +2878,7 @@ function exitTestLevel() {
 }
 
 function exitExploreLevel() {
+	burningSound.volume = 0;
 	menuScreen = 7;
 	cameraX = 0;
 	cameraY = 0;
@@ -2881,8 +2894,8 @@ function drawMenu0Button(text, x, y, grayed, action, width = menu0ButtonSize.w) 
 			if (onRect(lastClickX, lastClickY, x, y, width, menu0ButtonSize.h)) {
 				if (mouseIsDown) fill = '#b8b8b8';
 				else if (mousePressedLastFrame) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					action();
 				}
 			}
@@ -2911,8 +2924,8 @@ function drawMenu2_3Button(id, x, y, action) {
 	}
 	if (!mouseIsDown && menu2_3ButtonClicked === id) {
 		menu2_3ButtonClicked = -1;
-		soundEffects.click.currentTime = 0;
-		soundEffects.click.play();
+		soundEffects.click[0].currentTime = 0;
+		soundEffects.click[0].play();
 		action();
 	}
 	ctx.fillStyle = fill;
@@ -2964,8 +2977,8 @@ function drawLevelButton(text, x, y, id, color) {
 		if (!mouseIsDown && levelButtonClicked === id) {
 			levelButtonClicked = -1;
 			if (id <= levelProgress) { // || (id > 99 && id < bonusProgress + 100)
-				soundEffects.click.currentTime = 0;
-				soundEffects.click.play();
+				soundEffects.click[0].currentTime = 0;
+				soundEffects.click[0].play();
 				playLevel(id);
 				whiteAlpha = 100;
 			}
@@ -3015,8 +3028,8 @@ function drawSimpleButton(text, action, x, y, w, h, bottomPad, textColor, bgColo
 			if (kwargs.alt) hoverText = kwargs.alt;
 			if (mouseIsDown) ctx.fillStyle = bgActive;
 			else if (pmouseIsDown && onRect(lastClickX, lastClickY, x, y, w, h)) {
-				soundEffects.click.currentTime = 0;
-				soundEffects.click.play();
+				soundEffects.click[0].currentTime = 0;
+				soundEffects.click[0].play();
 				action();
 			}
 		} else ctx.fillStyle = bgColor;
@@ -4209,7 +4222,7 @@ function addTileMovieClip(x, y, context) {
 	} else if (t == 12) {
 		// Coin
 		if (!gotThisCoin) {
-			if (locations[4] < 200) {
+			if (coinAlpha > 0) {//(locations[4] < 200) {
 				context.save();
 				context.translate(x * 30 + 15, y * 30 + 15);
 				let wtrot = Math.sin((_frameCount * Math.PI) / 20) * 0.5235987756;
@@ -4327,8 +4340,8 @@ function getCoin(i) {
 			Math.floor((char[i].y - char[i].h) / 30) <= locations[3] &&
 			Math.ceil(char[i].y / 30) - 1 >= locations[3]
 		) {
-			soundEffects.coin.currentTime = 0;
-			soundEffects.coin.play();
+			soundEffects.coin[0].currentTime = 0;
+			soundEffects.coin[0].play();
 			gotThisCoin = true;
 		}
 	}
@@ -4362,8 +4375,8 @@ function checkButton(i) {
 					num = blockProperties[thisLevel[yTile][j]][11];
 					if (num >= 13) {
 						if (tileFrames[yTile][j].cf != 1) {
-							soundEffects.buttonPress.currentTime = 0;
-							soundEffects.buttonPress.play();
+							soundEffects.buttonPress[0].currentTime = 0;
+							soundEffects.buttonPress[0].play();
 							leverSwitch(num - 13);
 							tileFrames[yTile][j].cf = 1;
 							tileFrames[yTile][j].playing = false;
@@ -4410,8 +4423,8 @@ function checkButton2(i, bypass) {
 				if (okay) {
 					if (bypass) leverSwitch2(blockProperties[thisLevel[y][x]][11] - 13, i);
 					else leverSwitch(blockProperties[thisLevel[y][x]][11] - 13);
-					soundEffects.buttonUnpress.currentTime = 0;
-					soundEffects.buttonUnpress.play();
+					soundEffects.buttonUnpress[0].currentTime = 0;
+					soundEffects.buttonUnpress[0].play();
 					tileFrames[y][x].cf = 2;
 					tileFrames[y][x].playing = true;
 				}
@@ -4485,7 +4498,7 @@ function checkDeath(i) {
 }
 
 function heat(i) {
-	if (char[i].submerged == 0) {
+	if (char[i].submerged == 0 && !(char[i].id == 3 && char[i].temp >= 50)) {
 		char[i].temp += char[i].heatSpeed;
 	}
 	char[i].justChanged = 2;
@@ -4531,6 +4544,7 @@ function extinguish(i) {
 				char[j].y > char[i].y - char[i].h &&
 				char[j].y < char[i].y + char[j].h
 			) {
+				soundEffects.extinguish[0].play();
 				char[j].temp = 0;
 			}
 		}
@@ -4726,11 +4740,24 @@ function horizontalType(i, sign, prop) {
 	return false;
 }
 
+function landSound(vy) {
+	if (vy > 15) {
+		if (vy > 20) {
+			soundEffects.land2[0].currentTime = 0;
+			soundEffects.land2[0].play();
+		} else {
+			soundEffects.land1[0].currentTime = 0;
+			soundEffects.land1[0].play();
+		}
+	}
+}
+
 function land(i, y, vy) {
 	char[i].y = y;
 	if (char[i].weight2 <= 0) {
 		char[i].vy = -Math.abs(vy);
 	} else {
+		landSound(char[i].vy);
 		char[i].vy = vy;
 		char[i].onob = true;
 		char[i].cTime = 0;
@@ -4777,7 +4804,6 @@ function startCutScene() {
 		if (toSeeCS) {
 			cutScene = 1;
 			cutSceneLine = 0;
-			console.log(char)
 			for (let i = 0; i < char.length; i++) {
 				if (char[i].charState >= 7 && char[i].id < 35)
 					char[i].diaMouthFrame =
@@ -4844,14 +4870,14 @@ function displayLine(level, line) {
 		char[p].diaMouthFrame = 0;
 	}
 	csText = cLevelDialogueText[line];
-	soundEffects.pop.currentTime = 0;
-	soundEffects.pop.play();
+	soundEffects.dialoguePop[0].currentTime = 0;
+	soundEffects.dialoguePop[0].play();
 }
 
 function deathSound(s, p) {
-	soundEffects[s].currentTime = 0;
-	if (p) soundEffects[s].play();
-	else soundEffects[s].pause();
+	soundEffects[s][0].currentTime = 0;
+	if (p) soundEffects[s][0].play();
+	else soundEffects[s][0].pause();
 }
 
 function playDeathSound(i, p) {
@@ -4921,8 +4947,8 @@ function bounce(i) {
 	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
 	let randSnd = 1 + Math.floor(Math.random() * 3);
-	soundEffects['bounce' + randSnd].currentTime = 0;
-	soundEffects['bounce' + randSnd].play();
+	soundEffects['bounce' + randSnd][0].currentTime = 0;
+	soundEffects['bounce' + randSnd][0].play();
 }
 
 function bumpHead(i) {
@@ -5030,8 +5056,8 @@ function putDown(i) {
 }
 
 function charThrow(i) {
-	soundEffects.throw.currentTime = 0;
-	soundEffects.throw.play();
+	soundEffects.throw[0].currentTime = 0;
+	soundEffects.throw[0].play();
 	char[i].weight2 = char[i].weight;
 	char[char[i].carryObject].weight2 = char[char[i].carryObject].weight;
 	char[char[i].carryObject].vy = -7.5;
@@ -5159,8 +5185,8 @@ function changeControl(dire, snd) {
 
 	if (control < 1000) {
 		if (snd) {
-			soundEffects.pop.currentTime = 0;
-			soundEffects.pop.play()
+			soundEffects.pop[0].currentTime = 0;
+			soundEffects.pop[0].play()
 		}
 		if (ifCarried(control)) {
 			putDown(char[control].carriedBy);
@@ -5213,8 +5239,8 @@ function recoverCycle(i, dire) {
 		recover2 = 0;
 	} else {
 		if (dire == 0) {
-			soundEffects.hprc3.currentTime = 0;
-			soundEffects.hprc3.play();
+			soundEffects.hprc3[0].currentTime = 0;
+			soundEffects.hprc3[0].play();
 		}
 		if (numberOfDead() == 1) {
 			HPRCBubbleFrame = 2;
@@ -5222,8 +5248,8 @@ function recoverCycle(i, dire) {
 			HPRCBubbleFrame = 3;
 			hprcBubbleAnimationTimer = dire;
 			if (dire != 0) {
-				soundEffects.hprc2.currentTime = 0;
-				soundEffects.hprc2.play();
+				soundEffects.hprc2[0].currentTime = 0;
+				soundEffects.hprc2[0].play();
 			}
 		}
 	}
@@ -7135,8 +7161,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			else ctx.fillStyle = '#a0a0a0';
 		}
 		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x - 4, y - 4, 200, 116)) {
-			soundEffects.click.currentTime = 0;
-			soundEffects.click.play();
+			soundEffects.click[0].currentTime = 0;
+			soundEffects.click[0].play();
 			if (pageType == 2) {
 				if (levelpackAddScreen) addLevelToLevelpack(explorePageLevels[i].id);
 				else if (deletingMyLevels) openLevelDeletePopUp(i);
@@ -7246,7 +7272,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
 			//ctx.fillText('Win Token', 410, 375);
 			ctx.globalAlpha = (thisLevelProgress && thisLevelProgress.gotCoin) ? 1 : 0.7;
-			if (!(thisLevelProgress && thisLevelProgress.gotCoin)) ctx.filter = 'brightness(70%)';
+			if (!(thisLevelProgress && thisLevelProgress.gotCoin)) ctx.filter = 'brightness(50%)';
 			ctx.drawImage(svgTiles[12], x + 165, y + 94, 12, 12);
 			ctx.globalAlpha = 1;
 			ctx.filter = 'brightness(100%)';
@@ -7265,6 +7291,10 @@ function setExplorePage(page) {
 		if (exploreTab == 0) getDailyLevel();
 	}
 	// setExploreThumbs();
+}
+
+function refreshExplorePage() {
+	setExplorePage(explorePage);
 }
 
 function setMyLevelsPage(page) {
@@ -7394,13 +7424,21 @@ function exploreDrawThumbTile(context, x, y, tile) {
 }
 
 function drawExploreLoadingText(text) {
-	ctx.font = 'bold 35px Helvetica';
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
 	ctx.fillStyle = '#ffffff';
 	if (exploreTab == -1) x = 740;
 	else x = cwidth / 2;
-	ctx.fillText('loading...', x, cheight / 2);
+	ctx.font = 'bold 90px Helvetica';
+	if (!exploreLoading && exploreError) {
+		ctx.fillText('✖', x, 270);
+	} else {
+		let loadFrames = ['◜', '◝', '◞', '◟'];
+		ctx.fillText(loadFrames[Math.floor(_frameCount / 3) % loadFrames.length], x, 270);
+		if (_frameCount / 3 % 1 < 0.5) ctx.fillText(loadFrames[(Math.floor(_frameCount / 3)-1) % loadFrames.length], x, 270);
+	}
+	ctx.font = 'bold 35px Helvetica';
+	ctx.fillText(text, x, 330);
 }
 
 function drawArrow(x, y, w, h, dir) {
@@ -7953,7 +7991,7 @@ function draw() {
 				if (_ymouse <= 180) {
 					cameraY = Math.min(Math.max(cameraY - (180 - _ymouse) * 0.1, 0), 1080);
 				} else if (_ymouse >= 360) {
-					cameraY = Math.min(Math.max(cameraY + (_ymouse - 360) * 0.1, ), 1080);
+					cameraY = Math.min(Math.max(cameraY + (_ymouse - 360) * 0.1,), 1080);
 				}
 			}
 			break;
@@ -7967,7 +8005,7 @@ function draw() {
 			// 	osc4.width / pixelRatio,
 			// 	osc4.height / pixelRatio
 			// );
-			ctx.drawImage(osc4, -Math.floor(-cameraX + shakeX) + Math.floor( (-cameraX+shakeX)/3), -Math.floor(-cameraY + shakeY) + Math.floor( Math.max( -cameraY/3 - ((bgXScale>bgYScale)?Math.max(0,(bgXScale*5.4-540)/2):0), 540 - osc4.height / pixelRatio) + shakeY/3), osc4.width / pixelRatio, osc4.height / pixelRatio);
+			ctx.drawImage(osc4, -Math.floor(-cameraX + shakeX) + Math.floor((-cameraX + shakeX) / 3), -Math.floor(-cameraY + shakeY) + Math.floor(Math.max(-cameraY / 3 - ((bgXScale > bgYScale) ? Math.max(0, (bgXScale * 5.4 - 540) / 2) : 0), 540 - osc4.height / pixelRatio) + shakeY / 3), osc4.width / pixelRatio, osc4.height / pixelRatio);
 			drawLevel(ctx);
 
 			if (wipeTimer == 30) {
@@ -7992,8 +8030,9 @@ function draw() {
 					} else {
 						if (playMode == 3) {
 							onlineLevelProgress[exploreLevelPageLevel.id].completed = true;
-							onlineLevelProgress[exploreLevelPageLevel.id].gotCoin = gotThisCoin;
-							if (getTimer() - levelTimer2 < onlineLevelProgress[exploreLevelPageLevel.id].time)
+							if (gotThisCoin) onlineLevelProgress[exploreLevelPageLevel.id].gotCoin = true;
+							if (onlineLevelProgress[exploreLevelPageLevel.id].time == 0 || onlineLevelProgress[exploreLevelPageLevel.id].time == null ||
+								getTimer() - levelTimer2 < onlineLevelProgress[exploreLevelPageLevel.id].time)
 								onlineLevelProgress[exploreLevelPageLevel.id].time = getTimer() - levelTimer2;
 							exitExploreLevel();
 						} else if (playMode == 2) {
@@ -8052,10 +8091,10 @@ function draw() {
 					if (_keysDown[38]) {
 						if (!upPress) {
 							if (recover && recoverTimer == 0) {
-								soundEffects.hprc1.currentTime = 0;
-								soundEffects.hprc1.play();
-								soundEffects.crank.currentTime = 0;
-								soundEffects.crank.play();
+								soundEffects.hprc1[0].currentTime = 0;
+								soundEffects.hprc1[0].play();
+								soundEffects.crank[0].currentTime = 0;
+								soundEffects.crank[0].play();
 								recoverTimer = 60;
 								char[recover2].charState = 2;
 								char[recover2].x = char[HPRC1] ? char[HPRC1].x : 0;
@@ -8084,8 +8123,8 @@ function draw() {
 										) {
 											if (char[i].carry) putDown(i);
 											if (ifCarried(i)) putDown(char[i].carriedBy);
-											soundEffects.pickup.currentTime = 0;
-											soundEffects.pickup.play();
+											soundEffects.pickup[0].currentTime = 0;
+											soundEffects.pickup[0].play();
 											char[control].carry = true;
 											char[control].carryObject = i;
 											swapDepths(i, charCount * 2 + 1);
@@ -8116,8 +8155,8 @@ function draw() {
 							if (char[control].carry) putDown(control);
 							else if (recover) {
 								if (recoverTimer == 0) {
-									soundEffects.hprc3.currentTime = 0;
-									soundEffects.hprc3.play();
+									soundEffects.hprc3[0].currentTime = 0;
+									soundEffects.hprc3[0].play();
 									recover = false;
 									HPRCBubbleFrame = 0;
 								}
@@ -8187,6 +8226,7 @@ function draw() {
 					if (char[i].deathTimer >= 30) char[i].charMove();
 					if (char[i].id == 3) {
 						if (char[i].temp > 50) {
+							char[i].temp++;
 							for (let j = 0; j < charCount; j++) {
 								if (char[j].charState >= 5 && j != i) {
 									if (
@@ -8264,9 +8304,9 @@ function draw() {
 					let trans = (60 - recoverTimer) / 60;
 					char[i].x = inter(char[HPRC1] ? char[HPRC1].x : 0, goal, trans);
 					if (recoverTimer <= 0) {
-						soundEffects.crank.pause();
-						soundEffects.recovered.currentTime = 0;
-						soundEffects.recovered.play();
+						soundEffects.crank[0].pause();
+						soundEffects.recovered[0].currentTime = 0;
+						soundEffects.recovered[0].play();
 						recoverTimer = 0;
 						recover = false;
 						char[recover2].dire = 4;
@@ -8301,8 +8341,8 @@ function draw() {
 												(rot > 0 && tileFrames[y][x].rotation < 0)
 											) {
 												leverSwitch((blockProperties[thisLevel[y][x]][11] - 1) % 6);
-												soundEffects.buttonPress.currentTime = 0;
-												soundEffects.buttonPress.play();
+												soundEffects.buttonPress[0].currentTime = 0;
+												soundEffects.buttonPress[0].play();
 											}
 											tileFrames[y][x].rotation = rot;
 										}
@@ -8445,6 +8485,8 @@ function draw() {
 								startDeath(i);
 							}
 							if (char[i].id == 3 && char[i].temp > 50) {
+								soundEffects.extinguish[0].currentTime = 0;
+								soundEffects.extinguish[0].play();
 								char[i].temp = 0;
 							}
 							y = Math.ceil((char[i].y - char[i].h) / 30) * 30 + char[i].h;
@@ -8574,12 +8616,12 @@ function draw() {
 						ctx.translate(char[i].x, char[i].y - char[i].h - 5);
 						ctx.scale(1.43, 1.43);
 						if (HPRCBubbleFrame == 1) {
-							ctx.drawImage(svgHPRCBubble[0], -svgHPRCBubble[0].width / (scaleFactor*2), bounceY(5.874, 30, _frameCount) - 5.874 - svgHPRCBubble[0].height / scaleFactor, svgHPRCBubble[0].width / scaleFactor, svgHPRCBubble[0].height / scaleFactor);
+							ctx.drawImage(svgHPRCBubble[0], -svgHPRCBubble[0].width / (scaleFactor * 2), bounceY(5.874, 30, _frameCount) - 5.874 - svgHPRCBubble[0].height / scaleFactor, svgHPRCBubble[0].width / scaleFactor, svgHPRCBubble[0].height / scaleFactor);
 						} else if (HPRCBubbleFrame == 2) {
-							ctx.drawImage(svgHPRCBubble[1], -svgHPRCBubble[1].width / (scaleFactor*2), -svgHPRCBubble[1].height / scaleFactor, svgHPRCBubble[1].width / scaleFactor, svgHPRCBubble[1].height / scaleFactor);
+							ctx.drawImage(svgHPRCBubble[1], -svgHPRCBubble[1].width / (scaleFactor * 2), -svgHPRCBubble[1].height / scaleFactor, svgHPRCBubble[1].width / scaleFactor, svgHPRCBubble[1].height / scaleFactor);
 							drawHPRCBubbleCharImg(recover2, 1, 0);
 						} else if (HPRCBubbleFrame == 3) {
-							ctx.drawImage(svgHPRCBubble[2], -svgHPRCBubble[2].width / (scaleFactor*2), -svgHPRCBubble[2].height / scaleFactor, svgHPRCBubble[2].width / scaleFactor, svgHPRCBubble[2].height / scaleFactor);
+							ctx.drawImage(svgHPRCBubble[2], -svgHPRCBubble[2].width / (scaleFactor * 2), -svgHPRCBubble[2].height / scaleFactor, svgHPRCBubble[2].width / scaleFactor, svgHPRCBubble[2].height / scaleFactor);
 							if (hprcBubbleAnimationTimer > 0) {
 								drawHPRCBubbleCharImg(nextDeadPerson(recover2, -1), inter(1, 0.6, hprcBubbleAnimationTimer / 16), inter(0, -31.45, hprcBubbleAnimationTimer / 16));
 								drawHPRCBubbleCharImg(recover2, inter(0.6, 1, hprcBubbleAnimationTimer / 16), inter(31.45, 0, hprcBubbleAnimationTimer / 16));
@@ -8599,9 +8641,9 @@ function draw() {
 							}
 						} else if (HPRCBubbleFrame == 4 && hprcBubbleAnimationTimer <= 64) {
 							if (hprcBubbleAnimationTimer > 30) ctx.globalAlpha = (-hprcBubbleAnimationTimer + 64) / 33;
-							ctx.drawImage(svgHPRCBubble[3], -svgHPRCBubble[3].width / (scaleFactor*2), -svgHPRCBubble[3].height / scaleFactor, svgHPRCBubble[3].width / scaleFactor, svgHPRCBubble[3].height / scaleFactor);
+							ctx.drawImage(svgHPRCBubble[3], -svgHPRCBubble[3].width / (scaleFactor * 2), -svgHPRCBubble[3].height / scaleFactor, svgHPRCBubble[3].width / scaleFactor, svgHPRCBubble[3].height / scaleFactor);
 							ctx.globalAlpha = 1;
-							ctx.drawImage(svgHPRCBubble[4], -svgHPRCBubble[4].width / (scaleFactor*2), -svgHPRCBubble[4].height / scaleFactor, svgHPRCBubble[4].width / scaleFactor, svgHPRCBubble[4].height / scaleFactor);
+							ctx.drawImage(svgHPRCBubble[4], -svgHPRCBubble[4].width / (scaleFactor * 2), -svgHPRCBubble[4].height / scaleFactor, svgHPRCBubble[4].width / scaleFactor, svgHPRCBubble[4].height / scaleFactor);
 							hprcBubbleAnimationTimer++;
 						}
 						ctx.restore();
@@ -8615,8 +8657,8 @@ function draw() {
 							Math.abs(char[i].y - (locations[1] * 30 + 10)) <= 50
 						) {
 							if (!char[i].atEnd) {
-								soundEffects.ding.currentTime = 0;
-								soundEffects.ding.play();
+								soundEffects.ding[0].currentTime = 0;
+								soundEffects.ding[0].play();
 								charsAtEnd++;
 								doorLightFadeDire[charsAtEnd - 1] = 1;
 								if (charsAtEnd >= charCount2) {
@@ -8661,7 +8703,12 @@ function draw() {
 					x += (Math.random() - 0.5) * char[control].temp * 0.2;
 					y += (Math.random() - 0.5) * char[control].temp * 0.2;
 				}
-			}
+				let burnVolume = Math.min(Math.max(char[control].temp / 50, 0), 1) * soundVolume / 2
+				if (char[control].temp > 50 && char[control].id == 3)
+					burningSound.volume = Math.min(Math.max((50 - (char[control].temp - 50)) / 50, 0), 1) * soundVolume / 2;
+				else if (char[control].deathTimer >= 30) burningSound.volume = burnVolume;
+				else burningSound.volume = burnVolume * (char[control].deathTimer/30);
+			} else burningSound.volume = 0;
 			if (screenShake) {
 				shakeX = x + cameraX;
 				shakeY = y + cameraY;
@@ -8781,7 +8828,7 @@ function draw() {
 					var scrollBarY =
 						(selectedTab + 1) * tabHeight +
 						(charsTabScrollBar / (tabContentsHeight == tabWindowH ? 1 : tabContentsHeight - tabWindowH)) *
-							(tabWindowH - scrollBarH);
+						(tabWindowH - scrollBarH);
 					if (
 						!draggingScrollbar &&
 						!lcPopUp &&
@@ -8798,7 +8845,7 @@ function draw() {
 							Math.max(
 								Math.min(
 									((_ymouse - valueAtClick - tabWindowY) / (tabWindowH - scrollBarH)) *
-										(tabContentsHeight - tabWindowH),
+									(tabContentsHeight - tabWindowH),
 									tabContentsHeight - tabWindowH
 								),
 								0
@@ -9122,9 +9169,9 @@ function draw() {
 				case 2:
 					// Tiles
 					let j = 0;
-					let bpr = 5;
-					let bs = 40;
-					let bdist = 53;
+					let bpr = 7;
+					let bs = 32;
+					let bdist = 40;
 					ctx.save();
 					ctx.translate(0, -tileTabScrollBar);
 					if (mouseOnTabWindow && !lcPopUp) {
@@ -9144,13 +9191,25 @@ function draw() {
 					for (let i = 0; i < blockProperties.length; i++) {
 						if (blockProperties[i][15]) {
 							if (i == selectedTile) {
-								ctx.fillStyle = '#a0a0a0';
+								ctx.fillStyle = '#8c8c8c';//'#a0a0a0';
 								ctx.fillRect(
 									660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
 									(selectedTab + 1) * tabHeight +
-										(bdist - bs) +
-										Math.floor(j / bpr) * bdist -
-										(bdist - bs) / 2,
+									(bdist - bs) +
+									Math.floor(j / bpr) * bdist -
+									(bdist - bs) / 2,
+									bs + bdist - bs,
+									bs + bdist - bs
+								);
+								ctx.setLineDash([6, 6]);
+								ctx.strokeStyle = '#ffffff';
+								ctx.lineWidth = 2;
+								ctx.strokeRect(
+									660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
+									(selectedTab + 1) * tabHeight +
+									(bdist - bs) +
+									Math.floor(j / bpr) * bdist -
+									(bdist - bs) / 2,
 									bs + bdist - bs,
 									bs + bdist - bs
 								);
@@ -9159,14 +9218,14 @@ function draw() {
 								hoverText = tileNames[i];
 								if (i != selectedTile) {
 									onButton = true;
-									ctx.fillStyle = '#dddddd';
+									ctx.fillStyle = '#dfdfdf';
 									// ctx.fillRect(660 + (bdist-bs) + (j%bpr)*bdist - bpr/2, (selectedTab+1)*tabHeight + (bdist-bs) + Math.floor(j/bpr)*bdist - bpr/2, bs + bpr, bs + bpr);
 									ctx.fillRect(
 										660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
 										(selectedTab + 1) * tabHeight +
-											(bdist - bs) +
-											Math.floor(j / bpr) * bdist -
-											(bdist - bs) / 2,
+										(bdist - bs) +
+										Math.floor(j / bpr) * bdist -
+										(bdist - bs) / 2,
 										bs + bdist - bs,
 										bs + bdist - bs
 									);
@@ -9202,10 +9261,10 @@ function draw() {
 										ctx.drawImage(svgLevers[(blockProperties[i][11] - 1) % 6], tlx, tly, bs, bs);
 										ctx.restore();
 									}
-									ctx.drawImage(img, tlx + vb[0]*sc, tly + vb[1]*sc, vb[2]*sc, vb[3]*sc);
+									ctx.drawImage(img, tlx + vb[0] * sc, tly + vb[1] * sc, vb[2] * sc, vb[3] * sc);
 								} else {
 									let sc = bs / vb[2];
-									ctx.drawImage(img, 660 + (bdist-bs) + (j%bpr)*bdist - (vb[2]*sc)/2 + bs/2, (selectedTab+1) * tabHeight + (bdist-bs) + Math.floor(j/bpr)*bdist - (vb[3]*sc)/2 + bs/2, vb[2]*sc, vb[3]*sc);
+									ctx.drawImage(img, 660 + (bdist - bs) + (j % bpr) * bdist - (vb[2] * sc) / 2 + bs / 2, (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist - (vb[3] * sc) / 2 + bs / 2, vb[2] * sc, vb[3] * sc);
 								}
 							}
 							j++;
@@ -9233,7 +9292,7 @@ function draw() {
 							Math.max(
 								Math.min(
 									((_ymouse - valueAtClick - tabWindowY) / (tabWindowH - scrollBarH)) *
-										(tabContentsHeight - tabWindowH),
+									(tabContentsHeight - tabWindowH),
 									tabContentsHeight - tabWindowH
 								),
 								0
@@ -9321,7 +9380,7 @@ function draw() {
 							Math.max(
 								Math.min(
 									((_ymouse - valueAtClick - tabWindowY) / (tabWindowH - scrollBarH)) *
-										(tabContentsHeight - tabWindowH),
+									(tabContentsHeight - tabWindowH),
 									tabContentsHeight - tabWindowH
 								),
 								0
@@ -9343,7 +9402,7 @@ function draw() {
 					var scrollBarY =
 						(selectedTab + 1) * tabHeight +
 						(diaTabScrollBar / (tabContentsHeight == tabWindowH ? 1 : tabContentsHeight - tabWindowH)) *
-							(tabWindowH - scrollBarH);
+						(tabWindowH - scrollBarH);
 					if (
 						!draggingScrollbar &&
 						!lcPopUp &&
@@ -9360,7 +9419,7 @@ function draw() {
 							Math.max(
 								Math.min(
 									((_ymouse - valueAtClick - tabWindowY) / (tabWindowH - scrollBarH)) *
-										(tabContentsHeight - tabWindowH),
+									(tabContentsHeight - tabWindowH),
 									tabContentsHeight - tabWindowH
 								),
 								0
@@ -9376,10 +9435,10 @@ function draw() {
 					// ctx.textBaseline = 'middle';
 					// ctx.font = '20px Helvetica';
 					//myLevelDialogue[1][i].linecount
-					dialogueTabCharHover = [-1,0];
+					dialogueTabCharHover = [-1, 0];
 					let diaInfoY = (selectedTab + 1) * tabHeight + 5 - diaTabScrollBar;
 					for (let i = 0; i < myLevelDialogue[1].length; i++) {
-						if ((reorderDiaUp || reorderDiaDown) && onRect(_xmouse,_ymouse - diaTabScrollBar,665,diaInfoY,260,diaInfoHeight * myLevelDialogue[1][i].linecount)) {
+						if ((reorderDiaUp || reorderDiaDown) && onRect(_xmouse, _ymouse - diaTabScrollBar, 665, diaInfoY, 260, diaInfoHeight * myLevelDialogue[1][i].linecount)) {
 							ctx.fillStyle = '#e8e8e8';
 							ctx.fillRect(660, diaInfoY - 5, 270, diaInfoHeight * myLevelDialogue[1][i].linecount + 10);
 						}
@@ -9390,7 +9449,7 @@ function draw() {
 						// ctx.fillText(myLevelChars[1][i], 660, 60+i*20);
 					}
 					addButtonPressed = false;
-					if (!lcPopUp && onRect(_xmouse,_ymouse,660 + 5,cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20,15,15)) {
+					if (!lcPopUp && onRect(_xmouse, _ymouse, 660 + 5, cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20, 15, 15)) {
 						onButton = true;
 						hoverText = 'Add New Dialogue Line';
 						if (mouseIsDown && !pmouseIsDown) {
@@ -9399,12 +9458,12 @@ function draw() {
 							editingTextBox = false;
 							deselectAllTextBoxes();
 							setUndo();
-							myLevelDialogue[1].push({char: 99, face: 2, text: 'Enter text', linecount: 1});
+							myLevelDialogue[1].push({ char: 99, face: 2, text: 'Enter text', linecount: 1 });
 							generateDialogueTextBoxes();
 						}
 						addButtonPressed = true;
 					}
-					if (!lcPopUp && onRect(_xmouse,_ymouse,660 + 25,cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20,15,15)) {
+					if (!lcPopUp && onRect(_xmouse, _ymouse, 660 + 25, cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20, 15, 15)) {
 						if (myLevelChars[1].length < 50) {
 							onButton = true;
 							hoverText = 'Move Dialogue Line Up';
@@ -9418,7 +9477,7 @@ function draw() {
 						addButtonPressed = true;
 					}
 					if (reorderDiaUp && !addButtonPressed && mouseIsDown && !pmouseIsDown) reorderDiaUp = false;
-					if (!lcPopUp && onRect(_xmouse,_ymouse,660 + 45,cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20,15,15)) {
+					if (!lcPopUp && onRect(_xmouse, _ymouse, 660 + 45, cheight - (tabNames.length - selectedTab - 1) * tabHeight - 20, 15, 15)) {
 						if (myLevelChars[1].length < 50) {
 							onButton = true;
 							hoverText = 'Move Dialogue Line Down';
@@ -9445,7 +9504,7 @@ function draw() {
 							let allowedDiaCharIndices = [99, 55, 52, 51, 50];
 							for (let i = myLevelChars[1].length - 1; i >= 0; i--)
 								// if (myLevelChars[1][i][3] > 6)
-									allowedDiaCharIndices.push(i);
+								allowedDiaCharIndices.push(i);
 							let ourCurrentIndex = allowedDiaCharIndices.indexOf(myLevelDialogue[1][diaDropdown].char);
 							if (_keysDown[16]) {
 								ourCurrentIndex++;
@@ -9481,11 +9540,11 @@ function draw() {
 					drawSimpleButton('Load String', openLevelLoader, 815, tabWindowY + 10, 130, 30, 3, '#ffffff', '#404040', '#666666', '#555555');
 					drawSimpleButton('Test Level', testLevelCreator, 675, tabWindowY + 50, 130, 30, 3, '#ffffff', '#404040', '#666666', '#555555');
 					// if (enableExperimentalFeatures) {
-					let isNew = lcCurrentSavedLevel==-1;
+					let isNew = lcCurrentSavedLevel == -1;
 					if (!isNew) ctx.font = '18px Helvetica';
-					drawSimpleButton(isNew?'Save Level':'Save Changes', saveLevelCreator, 675, tabWindowY + 90, 130, 30, isNew?3:5, '#ffffff', '#404040', '#666666', '#555555', {enabled:lcChangesMade});
+					drawSimpleButton(isNew ? 'Save Level' : 'Save Changes', saveLevelCreator, 675, tabWindowY + 90, 130, 30, isNew ? 3 : 5, '#ffffff', '#404040', '#666666', '#555555', { enabled: lcChangesMade });
 					ctx.font = '23px Helvetica';
-					drawSimpleButton('Save Copy', saveLevelCreatorCopy, 815, tabWindowY + 90, 130, 30, 3, '#ffffff', '#404040', '#666666', '#555555', {enabled:!isNew});
+					drawSimpleButton('Save Copy', saveLevelCreatorCopy, 815, tabWindowY + 90, 130, 30, 3, '#ffffff', '#404040', '#666666', '#555555', { enabled: !isNew });
 					drawSimpleButton('New Blank Level', resetLevelCreator, 675, tabWindowY + 130, 270, 30, 3, '#ffffff', '#404040', '#666666', '#555555');
 					drawSimpleButton('My Levels', menuMyLevels, 675, tabWindowY + 170, 270, 30, 3, '#ffffff', '#404040', '#666666', '#555555');
 					// }
@@ -9530,7 +9589,7 @@ function draw() {
 					if (i == tool || (i == 9 && copied)) ctx.fillStyle = '#999999';
 					else ctx.fillStyle = '#666666';
 					ctx.fillRect(35 + i * 50, 490, 40, 40);
-					ctx.drawImage(svgTools[i==10&&undid?8:i], 35 + i*50, 490, svgTools[i].width/scaleFactor, svgTools[i].height/scaleFactor);
+					ctx.drawImage(svgTools[i == 10 && undid ? 8 : i], 35 + i * 50, 490, svgTools[i].width / scaleFactor, svgTools[i].height / scaleFactor);
 
 					if (!lcPopUp && _ymouse > 480 && onRect(_xmouse, _ymouse, 35 + i * 50, 490, 40, 40)) {
 						onButton = true;
@@ -9572,7 +9631,7 @@ function draw() {
 				let dialogueTabCharHoverChar = myLevelChars[1][myLevelDialogue[1][dialogueTabCharHover[0]].char][0];
 				ctx.fillStyle = '#666666';
 				drawArrow(660 + diaInfoHeight - 5, dialogueTabCharHover[1] - 10, 10, 10, 2);
-				ctx.fillRect(660 + diaInfoHeight - charInfoHeight/2, dialogueTabCharHover[1] - 10 - charInfoHeight, charInfoHeight, charInfoHeight);
+				ctx.fillRect(660 + diaInfoHeight - charInfoHeight / 2, dialogueTabCharHover[1] - 10 - charInfoHeight, charInfoHeight, charInfoHeight);
 
 				let charimgmat = charModels[dialogueTabCharHoverChar].charimgmat;
 				if (typeof charimgmat !== 'undefined') {
@@ -9586,9 +9645,9 @@ function draw() {
 						charimgmat.c,
 						charimgmat.d * sc,
 						(charimgmat.tx * sc) / 2 + 660 + diaInfoHeight,
-						(charimgmat.ty * sc) / 2 + dialogueTabCharHover[1] - 10 - charInfoHeight/2
+						(charimgmat.ty * sc) / 2 + dialogueTabCharHover[1] - 10 - charInfoHeight / 2
 					);
-					ctx.drawImage(charimg, -charimg.width / (2*scaleFactor), -charimg.height / (2*scaleFactor), charimg.width / scaleFactor, charimg.height / scaleFactor);
+					ctx.drawImage(charimg, -charimg.width / (2 * scaleFactor), -charimg.height / (2 * scaleFactor), charimg.width / scaleFactor, charimg.height / scaleFactor);
 					ctx.restore();
 				}
 			}
@@ -9649,13 +9708,14 @@ function draw() {
 					// levelCreator.rectSelect.clear();
 					let y2;
 					let y3;
-					osctx5.lineWidth = (2 * scale) / 9;
+					osctx5.lineWidth = (1.5 * scale) / 9;
+					osctx5.setLineDash([10 * scale / 25, 6 * scale / 25]);
 					if (closeToEdgeY()) {
-						osctx5.strokeStyle = '#008000';
+						osctx5.strokeStyle = '#00ff00';
 						y2 = Math.round((_ymouse - lcPan[1] - (240 - (scale * levelHeight) / 2)) / scale);
 						y3 = 0;
 					} else {
-						osctx5.strokeStyle = '#800000';
+						osctx5.strokeStyle = '#c00000';
 						y2 = Math.floor((_ymouse - lcPan[1] - (240 - (scale * levelHeight) / 2)) / scale);
 						y3 = 0.5;
 					}
@@ -9667,13 +9727,14 @@ function draw() {
 					// levelCreator.rectSelect.clear();
 					let x2;
 					let x3;
-					osctx5.lineWidth = (2 * scale) / 9;
+					osctx5.lineWidth = (1.5 * scale) / 9;
+					osctx5.setLineDash([10 * scale / 25, 6 * scale / 25]);
 					if (closeToEdgeX()) {
-						osctx5.strokeStyle = '#008000';
+						osctx5.strokeStyle = '#00ff00';
 						x2 = Math.round((_xmouse - lcPan[0] - (330 - (scale * levelWidth) / 2)) / scale);
 						x3 = 0;
 					} else {
-						osctx5.strokeStyle = '#800000';
+						osctx5.strokeStyle = '#c00000';
 						x2 = Math.floor((_xmouse - lcPan[0] - (330 - (scale * levelWidth) / 2)) / scale);
 						x3 = 0.5;
 					}
@@ -9924,8 +9985,8 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, tabx, 20, exploreTabWidths[i], 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
 						exploreTab = i;
 						if (exploreTab == 2) {
 							textBoxes[0][0].text = '';
@@ -9952,8 +10013,10 @@ function draw() {
 				ctx.fillStyle = '#ffffff';
 				ctx.fillText('The favorited tab is not implemented yet!', cwidth / 2, cheight / 2);
 				//ctx.fillText('You do not have any favorited levels!', cwidth / 2, cheight / 2);
-			} else if (exploreLoading) {
-				drawExploreLoadingText();
+			} else if (exploreLoading) drawExploreLoadingText('Loading...');
+			else if (exploreError) {
+				drawExploreLoadingText('Something went wrong.');
+				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 				for (let i = 0; i < explorePageLevels.length; i++) {
 					if (exploreTab == -1) {
@@ -9963,7 +10026,7 @@ function draw() {
 						x = 215 * (i % 4) + 50;
 						y = Math.floor(i / 4) * 130 + (exploreTab == 2 ? 190 : 170);
 					}
-					drawExploreLevel(x, y, i, exploreTab==1?1:0, 0);
+					drawExploreLevel(x, y, i, exploreTab == 1 ? 1 : 0, 0);
 				}
 				if (exploreTab == 0) { // daily
 					//drawExploreLevel(0, 0, -1, 0, 0);
@@ -9979,8 +10042,8 @@ function draw() {
 					onButton = true;
 					if (mousePressedLastFrame && exploreSearchInput != tempSearchInput) {
 						exploreSearchInput = tempSearchInput;
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
 						setExplorePage(1);
 					}
 				} else ctx.fillStyle = '#333333';
@@ -10017,8 +10080,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setExplorePage(explorePage - 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10035,8 +10098,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setExplorePage(explorePage + 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10060,8 +10123,10 @@ function draw() {
 
 			ctx.fillStyle = '#666666';
 			ctx.fillRect(0, 0, cwidth, cheight);
-			if (exploreLoading) {
-				drawExploreLoadingText();
+			if (exploreLoading) drawExploreLoadingText('Loading...');
+			else if (exploreError) {
+				drawExploreLoadingText('Something went wrong.');
+				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 
 				const isGuest = exploreLevelPageLevel.creator === "";
@@ -10138,8 +10203,8 @@ function draw() {
 				if (thisLevelHasCoin) {
 					//ctx.fillStyle = thisLevelProgress.gotCoin ? '#00ff00' : '#a6a6a6';
 					//ctx.fillText('Win Token', 410, 375);
-					ctx.globalAlpha = thisLevelProgress.gotCoin ? 1 : 0.4;
-					if (!thisLevelProgress.gotCoin) ctx.filter = 'brightness(70%)';
+					ctx.globalAlpha = thisLevelProgress.gotCoin ? 1 : 0.7;
+					if (!thisLevelProgress.gotCoin) ctx.filter = 'brightness(50%)';
 					ctx.drawImage(svgTiles[12], 32, 325, 20, 20);
 					ctx.filter = 'brightness(100%)';
 					ctx.globalAlpha = 1;
@@ -10316,8 +10381,8 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, userTabX, 20, exploreTabWidths[i], 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
 						exploreUserTab = i;
 						setExploreUserPage(1, exploreUserPageNumbers[exploreUserTab]);
 					}
@@ -10334,8 +10399,10 @@ function draw() {
 			//ctx.font = '30px Helvetica';
 			//ctx.fillText(exploreUserTab == 0 ? 'Levels' : 'Levelpacks', 55, 140);
 
-			if (exploreLoading) {
-				drawExploreLoadingText();
+			if (exploreLoading) drawExploreLoadingText('Loading...');
+			else if (exploreError) {
+				drawExploreLoadingText('Something went wrong.');
+				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 				// Levels
 
@@ -10351,8 +10418,8 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
 						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] - 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10364,8 +10431,8 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click.currentTime = 0;
-						soundEffects.click.play();
+						soundEffects.click[0].currentTime = 0;
+						soundEffects.click[0].play();
 						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] + 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10523,8 +10590,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setMyLevelsPage(myLevelsPage - 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10536,8 +10603,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setMyLevelsPage(myLevelsPage + 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10629,8 +10696,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setLevelpackCreatorPage(levelpackCreatorPage - 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10642,8 +10709,8 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click.currentTime = 0;
-					soundEffects.click.play();
+					soundEffects.click[0].currentTime = 0;
+					soundEffects.click[0].play();
 					setLevelpackCreatorPage(levelpackCreatorPage + 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10718,11 +10785,11 @@ function draw() {
 	}
 
 	let windVolume = wipeTimer < 30 ? wipeTimer : 30 - (wipeTimer - 30)
-	if (screenShake) windLoop.volume = windVolume / 30;
+	if (screenShake) windLoop.volume = windVolume / 30 * soundVolume;
 	else windLoop.volume = 0;
 
 	for (var i in soundEffects) {
-		soundEffects[i].volume = soundsEnabled ? 1 : 0;
+		soundEffects[i][0].volume = soundEffects[i][1] * soundVolume;
 	}
 
 	if (draggingScrollbar) setCursor('grabbing');
@@ -10791,12 +10858,17 @@ function getExplorePage(p, t, s, f) {
 	requestAdded();
 	return fetch('https://5beam.zelo.dev/api/page?page=' + p + '&sort=' + s + '&type=' + t + '&featured=' + f, {method: 'GET'})
 		.then(async response => {
+			exploreError = false;
 			explorePageLevels = await response.json();
 			if (exploreTab == 0 || exploreTab == 3) setExploreThumbs();
 			truncateLevelTitles(explorePageLevels,0);
 			requestResolved();
 		})
 		.catch(err => {
+			soundEffects.error[0].currentTime = 0;
+			soundEffects.error[0].play();
+			exploreLoading = false;
+			exploreError = true;
 			console.log(err);
 			requestError();
 		});
@@ -10819,12 +10891,17 @@ function getSearchPage(searchText, p) {
 	requestAdded();
 	return fetch('https://5beam.zelo.dev/api/search?text=' + encodeURIComponent(searchText).replace('%20','+') + '&page=' + p, {method: 'GET'})
 		.then(async response => {
+			exploreError = false;
 			explorePageLevels = await response.json();
 			setExploreThumbs();
 			truncateLevelTitles(explorePageLevels,0);
 			requestResolved();
 		})
 		.catch(err => {
+			soundEffects.error[0].currentTime = 0;
+			soundEffects.error[0].play();
+			exploreLoading = false;
+			exploreError = true;
 			console.log(err);
 			requestError();
 		});
@@ -10834,11 +10911,16 @@ function getExploreLevel(id) {
 	requestAdded();
 	return fetch('https://5beam.zelo.dev/api/level?id=' + id, {method: 'GET'})
 		.then(async response => {
+			exploreError = false;
 			exploreLevelPageLevel = await response.json();
 			drawExploreThumb(thumbBigctx, thumbBig.width, exploreLevelPageLevel.data, 0.4);
 			requestResolved();
 		})
 		.catch(err => {
+			soundEffects.error[0].currentTime = 0;
+			soundEffects.error[0].play();
+			exploreLoading = false;
+			exploreError = true;
 			console.log(err);
 			requestError();
 		});

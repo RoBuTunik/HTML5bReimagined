@@ -107,6 +107,7 @@ let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Fe
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
 let nextLevelId;
+let locationOnPage;
 let lcSavedLevelpacks;
 let nextLevelpackId;
 let whiteAlpha = 0;

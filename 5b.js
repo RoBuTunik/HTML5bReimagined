@@ -2234,8 +2234,6 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
-let locationOnPage = 0;
-
 let musicSound = new Audio('data/music/Leopard Print Elevator.mp3');
 musicSound.volume = 0.5;
 
@@ -2681,7 +2679,9 @@ function cancelChangeLevelString() {
 	lcPopUp = false;
 }
 
-function playExploreLevel(continueGame=false) {
+function playExploreLevel(continueGame = false) {
+	if (locationOnPage) { }
+	else locationOnPage = 0;
 	cancelEditExploreLevel();
 	const isDaily = locationOnPage == 8 && exploreTab == 0
 	const levelData = isDaily ? exploreLevelPageLevel.level : exploreLevelPageLevel

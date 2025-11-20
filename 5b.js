@@ -10215,6 +10215,9 @@ function draw() {
 
 		case 7:
 			// Explore level page
+			if (locationOnPage) { }
+			else locationOnPage = 0;
+
 			lcPopUpNextFrame = false;
 
 			ctx.fillStyle = '#666666';
@@ -10225,7 +10228,6 @@ function draw() {
 				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 
-				//console.log(locationOnPage)
 				const levelData = exploreTab == 0 && locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel;
 				const isGuest = levelData.creator === "";
 				const username = isGuest ? "Guest" : levelData.creator.username;

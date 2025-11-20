@@ -91,6 +91,7 @@ let gotCoin;
 let gotThisCoin = false;
 let levelpackProgress = {};
 let onlineLevelProgress = {};
+let favoritedLevels = [];
 const bfdia5b = window.localStorage;
 let deathCount;
 let timer;
@@ -277,6 +278,10 @@ function saveOnlineLevelProgress() {
 	bfdia5b.setItem('onlineLevelProgress', JSON.stringify(onlineLevelProgress));
 }
 
+function saveFavoritedLevels() {
+	bfdia5b.setItem('favoritedLevels', JSON.stringify(favoritedLevels));
+}
+
 function saveLevelProgress() {
 	bfdia5b.setItem('levelProgress', JSON.stringify(levelProgress));
 }
@@ -296,6 +301,14 @@ function getSavedLevelProgress() {
 	onlineLevelProgress = JSON.parse(bfdia5b.getItem('onlineLevelProgress'));
 }
 getSavedLevelProgress();
+
+function getFavoritedLevels() {
+	if (bfdia5b.getItem('favoritedLevels') == undefined) {
+		bfdia5b.setItem('favoritedLevels', '[]');
+	}
+	favoritedLevels = JSON.parse(bfdia5b.getItem('favoritedLevels'));
+}
+getFavoritedLevels();
 
 function getTimer() {
 	return _frameCount / 0.06;
@@ -2024,7 +2037,8 @@ const exploreTabNames = [
 	['▶︎', 'Levels'],
 	['❒', 'Packs'],
 	['🔍︎', 'Search'],
-	['★', 'Featured']
+	['★', 'Featured'],
+	//['❤︎', 'Favorites'],
 ];
 const exploreTabWidths = [45, 45, 45, 45]; //[125, 200, 125, 50];
 let power = 1;
@@ -2220,6 +2234,8 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
+let locationOnPage = 0;
+
 let musicSound = new Audio('data/music/Leopard Print Elevator.mp3');
 musicSound.volume = 0.5;
 
@@ -2265,7 +2281,7 @@ let soundEffects = {
 	land2: [new Audio('data/sounds/land1.mp3'), 0.7],
 	land3: [new Audio('data/sounds/land2.mp3'), 0.7],
 
-	jump: [new Audio('data/sounds/throw.mp3'), 0.7],
+	jump: [new Audio('data/sounds/jump.mp3'), 0.8],
 
 	// Deaths
 	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.5],
@@ -2758,7 +2774,7 @@ function exploreMoreByThisUser() {
 	cancelEditExploreLevel();
 	menuScreen = 8;
 	// getExploreUser(exploreLevelPageLevel.creator.id);
-	exploreUser = exploreLevelPageLevel.creator;
+	exploreUser = locationOnPage == 8 && exploreTab == 0 ? exploreLevelPageLevel.level.creator : exploreLevelPageLevel.creator;
 	exploreUserTab = 0;
 	setExploreUserPage(0, 1).then(() => setExploreUserPage(1, 1))
 }
@@ -3575,7 +3591,7 @@ function drawLevelBG() {
 	osc4.width = Math.floor((bgScale / 100) * cwidth * pixelRatio);
 	osc4.height = Math.floor((bgScale / 100) * cheight * pixelRatio);
 	osctx4.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-	osctx4.filter = "blur(2px)";
+	//osctx4.filter = "blur(2px)";
 	osctx4.drawImage(
 		imgBgs[playMode >= 2 ? selectedBg : bgs[currentLevel]],
 		0,
@@ -3583,27 +3599,24 @@ function drawLevelBG() {
 		(bgScale / 100) * cwidth,
 		(bgScale / 100) * cheight
 	);
-	osctx4.filter = "none";
+	//osctx4.filter = "none";
 }
 
 function drawLevel(context) {
-	const f = 'drop-shadow(0px 0px 10px #00000055)';
-	context.filter = f;
 	// Draw Static tiles
 	context.drawImage(osc1, 0, 0, osc1.width / pixelRatio, osc1.height / pixelRatio);
 	// Draw Normal Animated Tiles
-	context.filter = 'none';
 	for (let j = 0; j < tileDepths[1].length; j++) {
 		addTileMovieClip(tileDepths[1][j].x, tileDepths[1][j].y, context);
 	}
 	// Draw Borders and Shadows
 	context.drawImage(osc2, 0, 0, osc2.width / pixelRatio, osc2.height / pixelRatio);
 	// Draw Active2 Switches & Buttons
-	context.filter = f;
 	for (let j = 0; j < tileDepths[2].length; j++) {
 		addTileMovieClip(tileDepths[2][j].x, tileDepths[2][j].y, context);
 	}
 	// We draw the characters in here so we can layer liquids above them.
+	context.filter = 'drop-shadow(0px 0px 10px #00000055)';
 	drawCharacters(context);
 	context.filter = 'none';
 	// Draw Liquids
@@ -7175,7 +7188,6 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// 0 - main explore page
 	// 1 - explore user page
 	// 2 - local saved levels page
-
 	const isDaily = i == 8 && levelType == 0
 	thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 8] : explorePageLevels[i];
 	const levelData = isDaily ? thisExploreLevel.level : thisExploreLevel;
@@ -7327,9 +7339,10 @@ function setExplorePage(page) {
 	explorePage = page;
 	exploreLevelTitlesTruncated = new Array(8); // Is this needed?
 	if (exploreTab == 2) getSearchPage(exploreSearchInput, explorePage);
-	else {
-		getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
-	}
+	else if (exploreTab == 4) {
+		//getFavoritedLevels();
+		//getFavoritedPage(explorePage);
+	} else getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
 	// setExploreThumbs();
 }
 
@@ -7394,9 +7407,9 @@ function drawExploreThumb(context, size, data, scale) {
 			let thumbLevelHead = lines[1].split(',');
 			let thumbLevelW = parseInt(thumbLevelHead[0]);
 			let thumbLevelH = parseInt(thumbLevelHead[1]);
-			context.filter = 'blur(1px)';
+			//context.filter = 'blur(1px)';
 			context.drawImage(imgBgs[parseInt(thumbLevelHead[3])], 0, 0, cwidth, cheight);
-			context.filter = 'none';
+			//context.filter = 'none';
 
 			if (thumbLevelHead[4] == 'H') {
 				for (let y = 0; y < Math.min(thumbLevelH, 18); y++) {
@@ -7418,9 +7431,9 @@ function drawExploreThumb(context, size, data, scale) {
 			// Reset a few things that were set by testLevelCreator() that we don't want.
 			menuScreen = thispmenuScreen;
 			wipeTimer = 0;
-			context.filter = 'blur(1px)';
+			//context.filter = 'blur(1px)';
 			context.drawImage(imgBgs[selectedBg], 0, 0, cwidth, cheight);
-			context.filter = 'none';
+			//context.filter = 'none';
 			setCamera();
 			context.save();
 			context.translate(-cameraX, -cameraY);
@@ -7496,6 +7509,16 @@ function drawArrow(x, y, w, h, dir) {
 function changeSortBy() {
 	exploreSort = (exploreSort + 1) % exploreSortText.length;
 	setExplorePage(1);
+}
+
+function favoriteLevel() {
+	const levelData = locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel;
+	if (favoritedLevels.includes(levelData.id)) {
+		const index = favoritedLevels.indexOf(levelData.id);
+		favoritedLevels.splice(index, 1);
+	} else favoritedLevels.push(levelData.id);
+	saveFavoritedLevels();
+	console.log(favoritedLevels)
 }
 
 function shareToExplore() {
@@ -8073,7 +8096,7 @@ function draw() {
 						else exitLevel();
 					} else {
 						if (playMode == 3) {
-							const levelData = locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel
+							const levelData = locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel;
 							onlineLevelProgress[levelData.id].completed = true;
 							if (gotThisCoin) onlineLevelProgress[levelData.id].gotCoin = true;
 							if (onlineLevelProgress[levelData.id].time == 0 || onlineLevelProgress[levelData.id].time == null ||
@@ -10039,9 +10062,9 @@ function draw() {
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			let tabx = 28;
-			for (let i = 0; i < exploreTabWidths.length; i++) {
+			for (let i = 0; i < exploreTabNames.length; i++) {
 				if (i == exploreTab) ctx.fillStyle = '#666666';
-				else if (onRect(_xmouse, _ymouse, tabx, 20, exploreTabWidths[i], 45)) {
+				else if (onRect(_xmouse, _ymouse, tabx, 20, 45, 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
 						soundEffects.click[0].currentTime = 0;
@@ -10054,23 +10077,20 @@ function draw() {
 						setExplorePage(1);
 					}
 				} else ctx.fillStyle = '#999999';
-				ctx.fillRect(tabx, 20, exploreTabWidths[i], 45);
+				ctx.fillRect(tabx, 20, 45, 45);
 				ctx.fillStyle = '#ffffff';
-				ctx.fillText(exploreTabNames[i][0], tabx + exploreTabWidths[i] / 2, 45);
-				tabx += exploreTabWidths[i] + 5;
+				ctx.fillText(exploreTabNames[i][0], tabx + 22.5, 45);
+				tabx += 50;
 			}
 
 			ctx.textAlign = 'left';
 			ctx.fillStyle = '#ffffff';
 			ctx.fillText(exploreTabNames[exploreTab][1], tabx + 5, 45);
+			ctx.textAlign = 'center';
 
 			// Levels
-			if (exploreTab == 4) { // favorites are disabled for now
-				ctx.font = 'bold 30px Helvetica';
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'middle';
-				ctx.fillStyle = '#ffffff';
-				ctx.fillText('The favorited tab is not implemented yet!', cwidth / 2, cheight / 2);
+			if (exploreTab == 4) { // && favoritedLevels.length == 0
+				ctx.fillText('Not implemented.', cwidth / 2, cheight / 2);
 				//ctx.fillText('You do not have any favorited levels!', cwidth / 2, cheight / 2);
 			} else if (exploreLoading) drawExploreLoadingText('Loading...');
 			else if (exploreError) {
@@ -10206,7 +10226,7 @@ function draw() {
 			} else {
 
 				//console.log(locationOnPage)
-				const levelData = exploreTab == 0 && locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel
+				const levelData = exploreTab == 0 && locationOnPage == 8 ? exploreLevelPageLevel.level : exploreLevelPageLevel;
 				const isGuest = levelData.creator === "";
 				const username = isGuest ? "Guest" : levelData.creator.username;
 
@@ -10256,7 +10276,7 @@ function draw() {
 
 				ctx.fillStyle = '#333333';
 				ctx.font = 'italic 18px Helvetica';
-				ctx.fillText('created ' + exploreLevelPageLevel.created.slice(0, 10), 950, 10); //32, 325
+				ctx.fillText('created ' + levelData.created.slice(0, 10), 950, 10); //32, 325
 				
 				ctx.fillStyle = '#00d68f';
 				ctx.font = 'bold 20px Helvetica';
@@ -10314,7 +10334,7 @@ function draw() {
 
 				ctx.textAlign = 'left';
 
-				// Difficulty in levelpacks arent supported yet
+				// Difficulty and favoriting for levelpacks isn't supported yet
 				if (exploreLevelPageType === 0) {
 					// difficulty circle
 					//ctx.beginPath();
@@ -10326,6 +10346,10 @@ function draw() {
 					ctx.drawImage(difficultyMap[levelData.difficulty][2], 32, 352, 40, 40);
 					ctx.fillStyle = difficultyMap[levelData.difficulty][1];
 					ctx.fillText(difficultyMap[levelData.difficulty][0], 82, 362);
+
+					//Favorite button
+					//const isFavorited = favoritedLevels.includes(levelData.id);
+					//drawMenu0Button(isFavorited ? '-' : '+', 910, 360, false, favoriteLevel, 35);
 				}
 
 				ctx.drawImage(thumbBig, 30, 98, 384, 216);
@@ -10459,7 +10483,7 @@ function draw() {
 			let userTabX = 600;
 			for (i = 0; i < 2; i++) {
 				if (i == exploreUserTab) ctx.fillStyle = '#666666';
-				else if (onRect(_xmouse, _ymouse, userTabX, 20, exploreTabWidths[i], 45)) {
+				else if (onRect(_xmouse, _ymouse, userTabX, 20, 45, 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
 						soundEffects.click[0].currentTime = 0;
@@ -10468,10 +10492,10 @@ function draw() {
 						setExploreUserPage(1, exploreUserPageNumbers[exploreUserTab]);
 					}
 				} else ctx.fillStyle = '#999999';
-				ctx.fillRect(userTabX, 20, exploreTabWidths[i], 45);
+				ctx.fillRect(userTabX, 20, 45, 45);
 				ctx.fillStyle = '#ffffff';
-				ctx.fillText(exploreTabNames[i][0], userTabX + exploreTabWidths[i] / 2, 45);
-				userTabX += exploreTabWidths[i] + 5;
+				ctx.fillText(exploreTabNames[i][0], userTabX + 22.5, 45);
+				userTabX += 50;
 			}
 
 			//ctx.textBaseline = 'bottom';
@@ -11008,9 +11032,9 @@ function getExploreLevel(id) {
 			requestResolved();
 		})
 		.catch(err => {
-			soundEffects.error[0].currentTime = 0;
-			soundEffects.error[0].play();
-			exploreLoading = false;
+			//soundEffects.error[0].currentTime = 0;
+			//soundEffects.error[0].play();
+			//exploreLoading = false;
 			exploreError = true;
 			console.log(err);
 			requestError();

@@ -549,60 +549,60 @@ function loadLevelpack(levelData) {
 // [18] - loop frame order
 const blockProperties = [
 	// tile0
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,0,false],
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*0*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false], // Air
+	/*1*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Red block
+	/*2*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Spikes down
+	/*3*/	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false], // Spikes up
+	/*4*/	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false], // Spikes right
+	/*5*/	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false], // Spikes left
+	/*6*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,0,false], // End gate
+	/*7*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]], // E tree
+	/*8*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false], // Dialogue trigger
+	/*9*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Red background
 	// tile1
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,0,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,14,false,[0,1,2,3,4,5,6,7,8,9,10,11,12,13]],
-	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	[false,false,false,false,false,false,false,false,true,false,true,0,0,false,false,true,41,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]],
-	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,true],
-	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*10*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Green block
+	/*11*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Green background
+	/*12*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,0,false], // Win token
+	/*13*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,14,false,[0,1,2,3,4,5,6,7,8,9,10,11,12,13]], // Bounce pad
+	/*14*/	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor left
+	/*15*/	[false,false,false,false,false,false,false,false,true,false,true,0,0,false,false,true,41,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]], // Heater
+	/*16*/	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor right
+	/*17*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,true], // Spike ball
+	/*18*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform up
+	/*19*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Black spikes down
 	// tile2
-	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*20*/	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false], // Black spikes up
+	/*21*/	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false], // Black spikes right
+	/*22*/	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false], // Black spikes left
+	/*23*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Black spikes down with cable
+	/*24*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable vertical
+	/*25*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable vertical right
+	/*26*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable horizontal
+	/*27*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable top left
+	/*28*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable cross
+	/*29*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable horizontal top
 	// tile3
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,1,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,7,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,2,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,8,0,false,false,true,1,false],
-	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*30*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable vertical left
+	/*31*/	[true,true,true,true,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch block on
+	/*32*/	[true,true,true,true,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Dark yellow switch block on
+	/*33*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch block off
+	/*34*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Dark yellow switch block off
+	/*35*/	[false,false,false,false,false,false,false,false,true,true,false,1,0,false,false,true,1,false], // Yellow switch left
+	/*36*/	[false,false,false,false,false,false,false,false,true,true,false,7,0,false,false,true,1,false], // Yellow switch right
+	/*37*/	[false,false,false,false,false,false,false,false,true,true,false,2,0,false,false,true,1,false], // Blue switch left
+	/*38*/	[false,false,false,false,false,false,false,false,true,true,false,8,0,false,false,true,1,false], // Blue switch right
+	/*39*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Green background with platform up
 	// tile4
-	[true,true,true,true,false,false,false,false,true,true,false,13,0,false,false,true,5,false],
-	[true,true,true,true,false,false,false,false,true,true,false,14,0,false,false,true,5,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,true,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,true,false,true,false,true,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,true,true,false,false,true,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,3,true,[0,0,0,0,0,1,1,2,2,1,1]],
+	/*40*/	[true,true,true,true,false,false,false,false,true,true,false,13,0,false,false,true,5,false], // Yellow button
+	/*41*/	[true,true,true,true,false,false,false,false,true,true,false,14,0,false,false,true,5,false], // Blue button
+	/*42*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray grass
+	/*43*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray dirt
+	/*44*/	[false,false,true,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform right
+	/*45*/	[true,true,true,true,false,true,false,true,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom right
+	/*46*/	[true,true,true,true,false,true,true,false,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom left
+	/*47*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false], // Jagged rock top right
+	/*48*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Gray background
+	/*49*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,3,true,[0,0,0,0,0,1,1,2,2,1,1]], // Lamp
 	// tile5
 	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false],
 	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
@@ -681,24 +681,29 @@ const blockProperties = [
 	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	// tile12
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*120*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*121*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*122*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*123*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*124*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*125*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*126*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*127*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*128*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*129*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	// tile13
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,true,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,1,false],
-	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*130*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,true,true,1,false], // Water
+	/*131*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Yellow bricks
+	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,1,false],
+	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
 ];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
+const tileOrder = [
+	0, // special tiles
+
+	1,9, // red tiles
+];
 
 // [0] - hitbox width
 // [1] - hitbox height
@@ -2235,8 +2240,8 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
-let musicSound = new Audio('data/music/Leopard Print Elevator.mp3');
-musicSound.volume = 0.5;
+let musicSound = new Audio('data/music/leopardprintelevator.mp3'); //thefiberambient
+musicSound.volume = 0.4;
 
 let windLoop = new Audio('data/sounds/windloop.mp3');
 windLoop.volume = 0;
@@ -2252,8 +2257,16 @@ let soundEffects = {
 	// UI
 	click: [new Audio('data/sounds/click.mp3'), 1],
 	pop: [new Audio('data/sounds/pop.mp3'), 1],
+	tab: [new Audio('data/sounds/tab.mp3'), 1],
 	dialoguePop: [new Audio('data/sounds/diapop.mp3'), 0.4],
 	error: [new Audio('data/sounds/error.mp3'), 0.3],
+	ping: [new Audio('data/sounds/ping.mp3'), 1],
+
+	// Editor
+	placeTile: [new Audio('data/sounds/placetile.mp3'), 0.5],
+	paintBucket: [new Audio('data/sounds/paintbucket.mp3'), 0.6],
+	pickTile: [new Audio('data/sounds/picktile.mp3'), 1],
+	select: [new Audio('data/sounds/select.mp3'), 0.9],
 
 	// HPRC
 	hprc1: [new Audio('data/sounds/hprc1.mp3'), 0.6],
@@ -2263,10 +2276,10 @@ let soundEffects = {
 	recovered: [new Audio('data/sounds/recovered.mp3'), 0.6],
 
 	// Tiles
-	buttonPress: [new Audio('data/sounds/press.mp3'), 0.8],
-	buttonUnpress: [new Audio('data/sounds/unpress.mp3'), 0.8],
+	buttonPress: [new Audio('data/sounds/press.mp3'), 0.5],
+	buttonUnpress: [new Audio('data/sounds/unpress.mp3'), 0.5],
 	ding: [new Audio('data/sounds/ding.mp3'), 0.8],
-	coin: [new Audio('data/sounds/coin.mp3'), 1],
+	coin: [new Audio('data/sounds/collect1.mp3'), 1],
 	bounce1: [new Audio('data/sounds/bounce1.mp3'), 0.8],
 	bounce2: [new Audio('data/sounds/bounce2.mp3'), 0.8],
 	bounce3: [new Audio('data/sounds/bounce3.mp3'), 0.8],
@@ -2274,17 +2287,17 @@ let soundEffects = {
 	// Actions
 	pickup: [new Audio('data/sounds/pickup.mp3'), 1],
 	throw: [new Audio('data/sounds/throw.mp3'), 1],
-	extinguish: [new Audio('data/sounds/extinguish.mp3'), 0.9],
+	extinguish: [new Audio('data/sounds/extinguish.mp3'), 0.3],
 
-	land1: [new Audio('data/sounds/pickup.mp3'), 0.5],
-	land2: [new Audio('data/sounds/land1.mp3'), 0.7],
-	land3: [new Audio('data/sounds/land2.mp3'), 0.7],
+	land1: [new Audio('data/sounds/land1.mp3'), 0.5],
+	land2: [new Audio('data/sounds/land2.mp3'), 0.7],
+	land3: [new Audio('data/sounds/land3.mp3'), 0.7],
 
 	jump: [new Audio('data/sounds/jump.mp3'), 0.8],
 
 	// Deaths
 	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.5],
-	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.7],
+	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.9],
 	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 0.9],
 	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 0.8],
 	bubblePop: [new Audio('data/sounds/bubblepop.mp3'), 1],
@@ -2581,6 +2594,7 @@ function menuExitLevelCreator() {
 	} else {
 		lcPopUpNextFrame = true;
 		lcPopUpType = 1;
+		playSound('ping');
 	}
 }
 
@@ -2842,6 +2856,15 @@ function toggleMusic() {
 	}
 }
 
+function playSound(snd) {
+	soundEffects[snd][0].currentTime = 0;
+	soundEffects[snd][0].play();
+}
+
+function stopSound(snd) {
+	soundEffects[snd][0].pause();
+}
+
 function setQual() {
 	highQual = !highQual;
 	if (highQual) {
@@ -2919,8 +2942,7 @@ function drawMenu0Button(text, x, y, grayed, action, width = menu0ButtonSize.w) 
 			if (onRect(lastClickX, lastClickY, x, y, width, menu0ButtonSize.h)) {
 				if (mouseIsDown) fill = '#b8b8b8';
 				else if (mousePressedLastFrame) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
+					playSound('click');
 					action();
 				}
 			}
@@ -2949,8 +2971,7 @@ function drawMenu2_3Button(id, x, y, action) {
 	}
 	if (!mouseIsDown && menu2_3ButtonClicked === id) {
 		menu2_3ButtonClicked = -1;
-		soundEffects.click[0].currentTime = 0;
-		soundEffects.click[0].play();
+		playSound('click');
 		action();
 	}
 	ctx.fillStyle = fill;
@@ -3002,8 +3023,7 @@ function drawLevelButton(text, x, y, id, color) {
 		if (!mouseIsDown && levelButtonClicked === id) {
 			levelButtonClicked = -1;
 			if (id <= levelProgress) { // || (id > 99 && id < bonusProgress + 100)
-				soundEffects.click[0].currentTime = 0;
-				soundEffects.click[0].play();
+				playSound('click');
 				playLevel(id);
 				whiteAlpha = 100;
 			}
@@ -3053,8 +3073,7 @@ function drawSimpleButton(text, action, x, y, w, h, bottomPad, textColor, bgColo
 			if (kwargs.alt) hoverText = kwargs.alt;
 			if (mouseIsDown) ctx.fillStyle = bgActive;
 			else if (pmouseIsDown && onRect(lastClickX, lastClickY, x, y, w, h)) {
-				soundEffects.click[0].currentTime = 0;
-				soundEffects.click[0].play();
+				playSound('click');
 				action();
 			}
 		} else ctx.fillStyle = bgColor;
@@ -3617,7 +3636,7 @@ function drawLevel(context) {
 		addTileMovieClip(tileDepths[2][j].x, tileDepths[2][j].y, context);
 	}
 	// We draw the characters in here so we can layer liquids above them.
-	context.filter = 'drop-shadow(0px 0px 10px #00000055)';
+	context.filter = 'drop-shadow(0px 0px 6px #00000050)';
 	drawCharacters(context);
 	context.filter = 'none';
 	// Draw Liquids
@@ -4208,7 +4227,9 @@ function addTileMovieClip(x, y, context) {
 			context.drawImage(svgTiles[t], x * 30 + svgTilesVB[t][0], y * 30 + svgTilesVB[t][1], svgTiles[t].width / scaleFactor, svgTiles[t].height / scaleFactor);
 		} else if (blockProperties[t][16] > 1) {
 			let frame = 0;
-			if (blockProperties[t][17]) frame = blockProperties[t][18][_frameCount % blockProperties[t][18].length];
+			let f = _frameCount
+			if (blockProperties[t][12] == 0) f += x*2 + y*2;
+			if (blockProperties[t][17]) frame = blockProperties[t][18][f % blockProperties[t][18].length];
 			else {
 				frame = tileFrames[y][x].cf;
 				if (tileFrames[y][x].playing) tileFrames[y][x].cf++;
@@ -4371,8 +4392,7 @@ function getCoin(i) {
 			Math.floor((char[i].y - char[i].h) / 30) <= locations[3] &&
 			Math.ceil(char[i].y / 30) - 1 >= locations[3]
 		) {
-			soundEffects.coin[0].currentTime = 0;
-			soundEffects.coin[0].play();
+			playSound('coin');
 			gotThisCoin = true;
 		}
 	}
@@ -4406,8 +4426,7 @@ function checkButton(i) {
 					num = blockProperties[thisLevel[yTile][j]][11];
 					if (num >= 13) {
 						if (tileFrames[yTile][j].cf != 1) {
-							soundEffects.buttonPress[0].currentTime = 0;
-							soundEffects.buttonPress[0].play();
+							playSound('buttonPress');
 							leverSwitch(num - 13);
 							tileFrames[yTile][j].cf = 1;
 							tileFrames[yTile][j].playing = false;
@@ -4454,8 +4473,7 @@ function checkButton2(i, bypass) {
 				if (okay) {
 					if (bypass) leverSwitch2(blockProperties[thisLevel[y][x]][11] - 13, i);
 					else leverSwitch(blockProperties[thisLevel[y][x]][11] - 13);
-					soundEffects.buttonUnpress[0].currentTime = 0;
-					soundEffects.buttonUnpress[0].play();
+					playSound('buttonUnpress');
 					tileFrames[y][x].cf = 2;
 					tileFrames[y][x].playing = true;
 				}
@@ -4575,7 +4593,7 @@ function extinguish(i) {
 				char[j].y > char[i].y - char[i].h &&
 				char[j].y < char[i].y + char[j].h
 			) {
-				soundEffects.extinguish[0].play();
+				playSound('extinguish');
 				char[j].temp = 0;
 			}
 		}
@@ -4583,7 +4601,10 @@ function extinguish(i) {
 }
 
 function submerge(i) {
-	if (char[i].temp > 0) char[i].temp = 0;
+	if (char[i].temp > 0) {
+		playSound('extinguish');
+		char[i].temp = 0;
+	}
 	let goal = somewhereSubmerged(i);
 	if (char[i].submerged <= 1 && goal >= 2) {
 		char[i].weight2 -= 0.16;
@@ -4775,15 +4796,12 @@ function landSound(vy) {
 	if (vy > 8) {
 		if (vy > 15) {
 			if (vy > 20) {
-				soundEffects.land3[0].currentTime = 0;
-				soundEffects.land3[0].play();
+				playSound('land3');
 			} else {
-				soundEffects.land2[0].currentTime = 0;
-				soundEffects.land2[0].play();
+				playSound('land2');
 			}
 		} else {
-			soundEffects.land1[0].currentTime = 0;
-			soundEffects.land1[0].play();
+			playSound('land1');
 		}
 	}
 }
@@ -4906,8 +4924,7 @@ function displayLine(level, line) {
 		char[p].diaMouthFrame = 0;
 	}
 	csText = cLevelDialogueText[line];
-	soundEffects.dialoguePop[0].currentTime = 0;
-	soundEffects.dialoguePop[0].play();
+	playSound('dialoguePop');
 }
 
 function deathSound(s, p) {
@@ -5094,8 +5111,7 @@ function putDown(i) {
 }
 
 function charThrow(i) {
-	soundEffects.throw[0].currentTime = 0;
-	soundEffects.throw[0].play();
+	playSound('throw');
 	char[i].weight2 = char[i].weight;
 	char[char[i].carryObject].weight2 = char[char[i].carryObject].weight;
 	char[char[i].carryObject].vy = -7.5;
@@ -5223,8 +5239,7 @@ function changeControl(dire, snd) {
 
 	if (control < 1000) {
 		if (snd) {
-			soundEffects.pop[0].currentTime = 0;
-			soundEffects.pop[0].play()
+			playSound('pop');
 		}
 		if (ifCarried(control)) {
 			putDown(char[control].carriedBy);
@@ -5277,8 +5292,7 @@ function recoverCycle(i, dire) {
 		recover2 = 0;
 	} else {
 		if (dire == 0) {
-			soundEffects.hprc3[0].currentTime = 0;
-			soundEffects.hprc3[0].play();
+			playSound('hprc3');
 		}
 		if (numberOfDead() == 1) {
 			HPRCBubbleFrame = 2;
@@ -5286,8 +5300,7 @@ function recoverCycle(i, dire) {
 			HPRCBubbleFrame = 3;
 			hprcBubbleAnimationTimer = dire;
 			if (dire != 0) {
-				soundEffects.hprc2[0].currentTime = 0;
-				soundEffects.hprc2[0].play();
+				playSound('hprc2');
 			}
 		}
 	}
@@ -5589,6 +5602,7 @@ function clearRectSelect() {
 }
 
 function fillTile(x, y, after, before) {
+	let filled = 0;
 	if (after == before) return;
 	let rc = [[x, y]];
 	while (rc.length >= 1) {
@@ -5611,8 +5625,10 @@ function fillTile(x, y, after, before) {
 			}
 		}
 		rc.shift();
+		filled++;
 	}
 	updateLCtiles();
+	if (filled > 1) playSound('paintBucket');
 }
 
 function setUndo() {
@@ -5836,13 +5852,18 @@ function updateLCtiles() {
 	}
 }
 
-function setTool(i) {
+function setTool(i, snd) {
 	// levelCreator.tools["tool" + tool].gotoAndStop(2);
-	if (tool == 2 || tool == 5) {
-		clearRectSelect();
-		if (tool == i && tool == 5) copied = false;
+	if (tool != i) {
+		if (tool == 2 || tool == 5) {
+			clearRectSelect();
+			if (tool == i && tool == 5) copied = false;
+		}
+		tool = i;
+		if (snd) {
+			playSound('pop');
+		}
 	}
-	tool = i;
 	// levelCreator.tools["tool" + tool].gotoAndStop(1);
 }
 
@@ -7215,8 +7236,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 			else ctx.fillStyle = '#a0a0a0';
 		}
 		if (mousePressedLastFrame && onRect(lastClickX, lastClickY, x - 4, y - 4, 200, 116)) {
-			soundEffects.click[0].currentTime = 0;
-			soundEffects.click[0].play();
+			playSound('click');
 			if (pageType == 2) {
 				if (levelpackAddScreen) addLevelToLevelpack(explorePageLevels[i].id);
 				else if (deletingMyLevels) openLevelDeletePopUp(i);
@@ -7733,14 +7753,15 @@ function mousedown(event) {
 					if (tool == 3) {
 						if (!blockProperties[selectedTile][9]) {
 							let fillType = myLevel[1][y][x];
-							fillTile(x, y, selectedTile, fillType);
+							if (selectedTile != fillType) fillTile(x, y, selectedTile, fillType);
 						} else {
-							setTool(0);
+							setTool(0, true);
 						}
 					} else if (tool == 4) {
 						selectedTab = 2;
-						setTool(0);
+						setTool(0, false);
 						setSelectedTile(myLevel[1][y][x]);
+						playSound('pickTile');
 					} else if (tool == 5) {
 						if (copied) {
 							for (let i = 0; i < tileClipboard.length && y + i < levelHeight; i++) {
@@ -7892,14 +7913,14 @@ function keydown(event) {
 	if (menuScreen == 5 && !lcPopUp && !editingTextBox) {
 		// tool shortcuts
 		if (_xmouse < 660 && selectedTab == 2) {
-			if (event.key == '1' || event.key == 'p' || event.key == 'd') setTool(0);
-			else if (event.key == '2' || event.key == 'e') setTool(1);
-			else if (event.key == '3' || event.key == 'r') setTool(2);
-			else if (event.key == '4' || event.key == 'f') setTool(3);
-			else if (event.key == '5' || event.key == 'i') setTool(4);
-			else if (event.key == '6' || event.key == 's') setTool(5);
-			else if (event.key == '7' || event.key == 'h') setTool(6);
-			else if (event.key == '8' || event.key == 'j') setTool(7);
+			if (event.key == '1' || event.key == 'p' || event.key == 'd') setTool(0, true);
+			else if (event.key == '2' || event.key == 'e') setTool(1, true);
+			else if (event.key == '3' || event.key == 'r') setTool(2, true);
+			else if (event.key == '4' || event.key == 'f') setTool(3, true);
+			else if (event.key == '5' || event.key == 'i') setTool(4, true);
+			else if (event.key == '6' || event.key == 's') setTool(5, true);
+			else if (event.key == '7' || event.key == 'h') setTool(6, true);
+			else if (event.key == '8' || event.key == 'j') setTool(7, true);
 		}
 		// undo shortcut
 		if (event.key == 'z' && (event.metaKey || event.ctrlKey)) {
@@ -8160,10 +8181,8 @@ function draw() {
 					if (_keysDown[38]) {
 						if (!upPress) {
 							if (recover && recoverTimer == 0) {
-								soundEffects.hprc1[0].currentTime = 0;
-								soundEffects.hprc1[0].play();
-								soundEffects.crank[0].currentTime = 0;
-								soundEffects.crank[0].play();
+								playSound('hprc1');
+								playSound('crank');
 								recoverTimer = 60;
 								char[recover2].charState = 2;
 								char[recover2].x = char[HPRC1] ? char[HPRC1].x : 0;
@@ -8192,8 +8211,7 @@ function draw() {
 										) {
 											if (char[i].carry) putDown(i);
 											if (ifCarried(i)) putDown(char[i].carriedBy);
-											soundEffects.pickup[0].currentTime = 0;
-											soundEffects.pickup[0].play();
+											playSound('pickup');
 											char[control].carry = true;
 											char[control].carryObject = i;
 											swapDepths(i, charCount * 2 + 1);
@@ -8224,8 +8242,7 @@ function draw() {
 							if (char[control].carry) putDown(control);
 							else if (recover) {
 								if (recoverTimer == 0) {
-									soundEffects.hprc3[0].currentTime = 0;
-									soundEffects.hprc3[0].play();
+									playSound('hprc3');
 									recover = false;
 									HPRCBubbleFrame = 0;
 								}
@@ -8261,8 +8278,7 @@ function draw() {
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
 							else {
 								char[control].jump(-jumpPower);
-								soundEffects.jump[0].currentTime = 0;
-								soundEffects.jump[0].play();
+								playSound('jump');
 							}
 							char[control].onob = false;
 							char[control].cTime = 999;
@@ -8377,9 +8393,8 @@ function draw() {
 					let trans = (60 - recoverTimer) / 60;
 					char[i].x = inter(char[HPRC1] ? char[HPRC1].x : 0, goal, trans);
 					if (recoverTimer <= 0) {
-						soundEffects.crank[0].pause();
-						soundEffects.recovered[0].currentTime = 0;
-						soundEffects.recovered[0].play();
+						stopSound('crank');
+						playSound('recovered');
 						recoverTimer = 0;
 						recover = false;
 						char[recover2].dire = 4;
@@ -8414,8 +8429,7 @@ function draw() {
 												(rot > 0 && tileFrames[y][x].rotation < 0)
 											) {
 												leverSwitch((blockProperties[thisLevel[y][x]][11] - 1) % 6);
-												soundEffects.buttonPress[0].currentTime = 0;
-												soundEffects.buttonPress[0].play();
+												playSound('buttonPress');
 											}
 											tileFrames[y][x].rotation = rot;
 										}
@@ -8558,8 +8572,7 @@ function draw() {
 								startDeath(i);
 							}
 							if (char[i].id == 3 && char[i].temp > 50) {
-								soundEffects.extinguish[0].currentTime = 0;
-								soundEffects.extinguish[0].play();
+								playSound('extinguish');
 								char[i].temp = 0;
 							}
 							y = Math.ceil((char[i].y - char[i].h) / 30) * 30 + char[i].h;
@@ -8730,8 +8743,7 @@ function draw() {
 							Math.abs(char[i].y - (locations[1] * 30 + 10)) <= 50
 						) {
 							if (!char[i].atEnd) {
-								soundEffects.ding[0].currentTime = 0;
-								soundEffects.ding[0].play();
+								playSound('ding');
 								charsAtEnd++;
 								doorLightFadeDire[charsAtEnd - 1] = 1;
 								if (charsAtEnd >= charCount2) {
@@ -9305,7 +9317,8 @@ function draw() {
 									if (mouseIsDown && !pmouseIsDown) {
 										// selectedTile = i;
 										setSelectedTile(i);
-										if (tool != 2 && tool != 3) setTool(0);
+										playSound('select');
+										if (tool != 2 && tool != 3) setTool(0, true);
 									}
 								}
 							}
@@ -9427,6 +9440,7 @@ function draw() {
 								bgh + bgdist2 - bgh
 							);
 							if (mouseIsDown && !pmouseIsDown) {
+								playSound('select');
 								selectedBg = i;
 								setLCBG();
 								updateLCtiles();
@@ -9653,6 +9667,7 @@ function draw() {
 				if (!lcPopUp && onRect(_xmouse, _ymouse, 660, tabY, 300, tabHeight)) {
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
+						playSound('tab');
 						selectedTab = i;
 						draggingScrollbar = false;
 						duplicateChar = false;
@@ -9679,7 +9694,7 @@ function draw() {
 						hoverText = toolNames[i];
 						if (mouseIsDown && !pmouseIsDown) {
 							if (i < 8) {
-								setTool(i);
+								setTool(i, true);
 								selectedTab = 2;
 								if ((tool == 2 || tool == 3) && blockProperties[selectedTile][9]) {
 									setSelectedTile(0);
@@ -9751,6 +9766,7 @@ function draw() {
 						if (i >= 0 && i < blockProperties.length) {
 							let redraw = false;
 							if (myLevel[1][y][x] != i) {
+								playSound('placeTile');
 								myLevel[1][y][x] = i;
 								redraw = true;
 							}
@@ -10068,8 +10084,7 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, tabx, 20, 45, 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('tab');
 						exploreTab = i;
 						if (exploreTab == 2) {
 							textBoxes[0][0].text = '';
@@ -10122,8 +10137,7 @@ function draw() {
 					onButton = true;
 					if (mousePressedLastFrame && exploreSearchInput != tempSearchInput) {
 						exploreSearchInput = tempSearchInput;
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setExplorePage(1);
 					}
 				} else ctx.fillStyle = '#333333';
@@ -10172,8 +10186,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setExplorePage(explorePage - 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10193,8 +10206,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setExplorePage(explorePage + 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10473,11 +10485,11 @@ function draw() {
 			ctx.drawImage(svgMenu6, 0, 0, cwidth, cheight);
 
 			// Username
-			ctx.textBaseline = 'bottom';
+			ctx.textBaseline = 'middle'; //bottom
 			ctx.textAlign = 'left';
 			ctx.fillStyle = getUsernameColor(exploreUser.username, '#ffffff');
-			ctx.font = 'bold 36px Helvetica';
-			ctx.fillText(exploreUser.username + "'s " + (exploreUserTab == 0 ? 'levels' : 'packs'), 10, 50);
+			ctx.font = 'bold 35px Helvetica';
+			ctx.fillText(exploreUser.username, 10, 45); // + "'s " + (exploreUserTab == 0 ? 'levels' : 'packs')
 
 			// Tabs
 			ctx.font = 'bold 35px Helvetica';
@@ -10489,8 +10501,7 @@ function draw() {
 				else if (onRect(_xmouse, _ymouse, userTabX, 20, 45, 45)) {
 					ctx.fillStyle = '#b3b3b3';
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('tab');
 						exploreUserTab = i;
 						setExploreUserPage(1, exploreUserPageNumbers[exploreUserTab]);
 					}
@@ -10501,11 +10512,10 @@ function draw() {
 				userTabX += 50;
 			}
 
-			//ctx.textBaseline = 'bottom';
-			//ctx.textAlign = 'left';
-			//ctx.fillStyle = '#ffffff';
-			//ctx.font = '30px Helvetica';
-			//ctx.fillText(exploreUserTab == 0 ? 'Levels' : 'Levelpacks', 55, 140);
+			ctx.textAlign = 'right';
+			ctx.fillStyle = '#ffffff';
+			ctx.font = 'bold 35px Helvetica';
+			ctx.fillText(exploreTabNames[exploreUserTab][1], 595, 45);
 
 			if (exploreLoading) drawExploreLoadingText('Loading...');
 			else if (exploreError) {
@@ -10526,8 +10536,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] - 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10539,8 +10548,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setExploreUserPage(exploreUserTab, exploreUserPageNumbers[exploreUserTab] + 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10657,16 +10665,25 @@ function draw() {
 					else if (onRect(_xmouse, _ymouse, tabx2, 20, exploreTabWidths[i], 45)) {
 						ctx.fillStyle = '#b3b3b3';
 						if (mouseIsDown && !pmouseIsDown) {
+							playSound('tab');
 							myLevelsTab = i;
 							setMyLevelsPage(0);
 						}
 					} else ctx.fillStyle = '#999999';
 					ctx.fillRect(tabx2, 20, exploreTabWidths[i], 45);
 					ctx.fillStyle = '#ffffff';
-					ctx.fillText(exploreTabNames[i], tabx2 + exploreTabWidths[i] / 2, 45);
+					ctx.fillText(exploreTabNames[i][0], tabx2 + exploreTabWidths[i] / 2, 45);
 					// exploreTabNames[i];
 					tabx2 += exploreTabWidths[i] + 5;
 				}
+
+				ctx.textAlign = 'left';
+				ctx.fillStyle = '#ffffff';
+				ctx.font = 'bold 35px Helvetica';
+				ctx.fillText(exploreTabNames[myLevelsTab][1], tabx2 + 5, 45);
+
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
 
 				// delete button
 				ctx.font = '23px Helvetica';
@@ -10699,8 +10716,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setMyLevelsPage(myLevelsPage - 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10712,8 +10728,7 @@ function draw() {
 					ctx.fillStyle = '#cccccc';
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
-						soundEffects.click[0].currentTime = 0;
-						soundEffects.click[0].play();
+						playSound('click');
 						setMyLevelsPage(myLevelsPage + 1);
 					}
 				} else ctx.fillStyle = '#999999';
@@ -10806,8 +10821,7 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
+					playSound('click');
 					setLevelpackCreatorPage(levelpackCreatorPage - 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10819,8 +10833,7 @@ function draw() {
 				ctx.fillStyle = '#cccccc';
 				onButton = true;
 				if (mouseIsDown && !pmouseIsDown) {
-					soundEffects.click[0].currentTime = 0;
-					soundEffects.click[0].play();
+					playSound('click');
 					setLevelpackCreatorPage(levelpackCreatorPage + 1);
 				}
 			} else ctx.fillStyle = '#999999';
@@ -10976,8 +10989,7 @@ function getExplorePage(p, t, s, f) {
 			requestResolved();
 		})
 		.catch(err => {
-			soundEffects.error[0].currentTime = 0;
-			soundEffects.error[0].play();
+			playSound('error');
 			exploreLoading = false;
 			exploreError = true;
 			console.log(err);
@@ -10997,8 +11009,7 @@ function getDailyLevel() {
 			requestResolved();
 		})
 		.catch(err => {
-			soundEffects.error[0].currentTime = 0;
-			soundEffects.error[0].play();
+			playSound('error');
 			exploreError = true;
 			console.log(err);
 			requestError();
@@ -11016,8 +11027,7 @@ function getSearchPage(searchText, p) {
 			requestResolved();
 		})
 		.catch(err => {
-			soundEffects.error[0].currentTime = 0;
-			soundEffects.error[0].play();
+			playSound('error');
 			exploreLoading = false;
 			exploreError = true;
 			console.log(err);
@@ -11035,8 +11045,7 @@ function getExploreLevel(id) {
 			requestResolved();
 		})
 		.catch(err => {
-			//soundEffects.error[0].currentTime = 0;
-			//soundEffects.error[0].play();
+			//playSound('error');
 			//exploreLoading = false;
 			exploreError = true;
 			console.log(err);

@@ -601,7 +601,7 @@ const blockProperties = [
 	/*25*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable vertical right
 	/*26*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable horizontal
 	/*27*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable top left
-	/*28*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable cross
+	/*28*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable horizontal down
 	/*29*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable horizontal top
 	// tile3
 	/*30*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Cable vertical left
@@ -626,71 +626,71 @@ const blockProperties = [
 	/*48*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Gray background
 	/*49*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,3,true,[0,0,0,0,0,1,1,2,2,1,1]], // Lamp
 	// tile5
-	/*50*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false],
-	/*51*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	/*52*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	/*53*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	/*54*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	/*55*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*56*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false],
-	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,9,0,false,false,true,1,false],
-	/*59*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
+	/*50*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false], // Gray crystal
+	/*51*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch block on
+	/*52*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Dark blue switch block on
+	/*53*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch block off
+	/*54*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Dark blue switch block off
+	/*55*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray bg with platform up
+	/*56*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray block
+	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false], // Green lever left
+	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,9,0,false,false,true,1,false], // Green level right
+	/*59*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]], // V tree
 	// tile6
-	/*60*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*61*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*62*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*63*/	[false,true,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*64*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*65*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	/*66*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,2,true,[0,0,0,1,1,1]],
-	/*67*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*68*/	[false,false,false,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*69*/	[true,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*60*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Dark green switch block on
+	/*61*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Green switch block off
+	/*62*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Dark green switch block off
+	/*63*/	[false,true,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Green switch platform up on
+	/*64*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Green switch platform up off
+	/*65*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Green switch block on
+	/*66*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,2,true,[0,0,0,1,1,1]], // Spotlight
+	/*67*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Black block
+	/*68*/	[false,false,false,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform left
+	/*69*/	[true,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform down
 	// tile7
-	/*70*/	[false,false,false,true,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*71*/	[true,true,true,true,false,false,false,false,true,true,false,15,0,false,false,true,5,false],
-	/*72*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,false],
-	/*73*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	/*74*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,30,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]],
-	/*75*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
-	/*76*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
-	/*77*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*78*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	/*79*/	[true,true,true,true,true,true,true,true,true,false,false,0,1,false,false,true,1,false],
+	/*70*/	[false,false,false,true,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Green background with platform left
+	/*71*/	[true,true,true,true,false,false,false,false,true,true,false,15,0,false,false,true,5,false], // Green button
+	/*72*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,false], // Black spike ball
+	/*73*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Purple block
+	/*74*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,30,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]], // Wind gust block
+	/*75*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]], // Electricity vertical
+	/*76*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]], // Electricity horizontal
+	/*77*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Purple background
+	/*78*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch spike ball off
+	/*79*/	[true,true,true,true,true,true,true,true,true,false,false,0,1,false,false,true,1,false], // Yellow switch spike ball on
 	// tile8
-	/*80*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
-	/*81*/	[false,true,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	/*82*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	/*83*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	/*84*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
-	/*85*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	/*86*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
-	/*87*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*88*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*89*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*80*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]], // I tree
+	/*81*/	[false,true,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch platform up on
+	/*82*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch platform up off
+	/*83*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor platform left on
+	/*84*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false], // Conveyor platform left off
+	/*85*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor platform right on
+	/*86*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false], // Conveyor platform right off
+	/*87*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Purple background slanted bottom left
+	/*88*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Purple background slanted bottom right
+	/*89*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Light gray cable vertical
 	// tile9
-	/*90*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*91*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*92*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	/*93*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	/*94*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*95*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*96*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*97*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*98*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	/*99*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,false,1,false],
+	/*90*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Light gray cable horizontal
+	/*91*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Light gray cable horizontal down
+	/*92*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Light gray cable horizontal up
+	/*93*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Wood block
+	/*94*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Wood background
+	/*95*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Danger zone
+	/*96*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Purple background slanted top right
+	/*97*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Purple background slanted top left
+	/*98*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Metal block
+	/*99*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,false,1,false], // Wood background (duplicate)
 	// tile10
 	/*100*/	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false], // Acid
 	/*101*/	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]], // Acid glow
-	/*102*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*102*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Yellow metal block
 	/*103*/	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false], // Lava
 	/*104*/	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]], // Lava glow
-	/*105*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	/*106*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	/*107*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	/*108*/	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false],
-	/*109*/	[false,false,false,false,false,false,false,false,true,true,false,12,0,false,false,true,1,false],
+	/*105*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Red metal block
+	/*106*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Yellow metal background
+	/*107*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Dark gray metal block
+	/*108*/	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false], // Gray lever left
+	/*109*/	[false,false,false,false,false,false,false,false,true,true,false,12,0,false,false,true,1,false], // Gray lever right
 	// tile11
 	/*110*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Painting
 	/*111*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
@@ -715,44 +715,58 @@ const blockProperties = [
 	/*129*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	// tile13
 	/*130*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,true,true,1,false], // Water
-	/*131*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Bricks
+	/*131*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Yellow bricks
 	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Text wall
-	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue platform on
-	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue platform off
-	/*135*/	//[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Brick background
+	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up on
+	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up off
+	/*135*/	//[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Yellow brick background
 ];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
 const gradientAnimated = [7, 15, 49, 59, 66, 74, 80, 101, 104];
 const tileOrder = [
-	0, 6, 8, 12, // Special tiles
+	0, 8, 6, 12, // Special tiles
 
-	1, 9, // Red tiles
-	10, 11, 39, // Green tiles
-	42, 43, 48, // Gray dirt tiles
+	1, 9, // Red blocks
+	10, 11, 39, 70, // Green blocks
+	73, 77, 87, 88, 89, 96, 97, // Purple blocks
+	42, 43, 48, 55, // Gray dirt blocks
+	93, 94, // Wood blocks
+	56, 67, 74, // Gray and black block
+	98, 107, 102, 106, 105, // Metal blocks
+	131, // Brick blocks
 
-	49, // Lights
-	47, // Rocks
+	49, 66, 95, // Lights
+	47, 50, // Rocks
 
-	18, 44, // Platforms
+	18, 44, 68, 69, // Platforms
 
-	13, 14, 16, // Movement tiles
+	13, 14, 16, 83, 85, // Movement tiles
 
 	3, 2, 5, 4, 45, 46, 17, // Gray spikes
-	20, 19, 22, 21, // Black spikes
+	20, 19, 22, 21, 23, 72, // Black spikes
 
-	15, // Heater block
+	15, 75, 76, // Misc deadlies
 
 	35, 36, 40, // Yellow switchers
-	31, 32, 33, 34, // Yellow switchables
+	31, 32, 33, 34, 81, 82, 79, 78, // Yellow switchables
 
 	37, 38, 41, // Blue switchers
+	51, 52, 53, 54, 133, 134, // Blue switchables
+
+	57, 58, 71, // Green switchers
+	65, 60, 61, 62, 63, 64, // Green switchables
+
+	108, 109, // Gray switchers
 
 	24, 25, 26, 27, 28, 29, 30, // Cables
+	89, 90, 91, 92, // Light gray cables
 
 	100, 101, 103, 104, // Deadly liquids
 	130, // Other liquids
 
-	7, // Trees
+	110, // Paintings
+
+	7, 59, 80, // Trees
 ];
 
 // [0] - hitbox width
@@ -2099,12 +2113,15 @@ const exploreTabNames = [
 const exploreTabWidths = [45, 45, 45, 45]; //[125, 200, 125, 50];
 let power = 1;
 let jumpPower = 11;
+
 let qPress = false;
 let upPress = false;
 let csPress = false;
+let jumpPress = false;
 let downPress = false;
 let leftPress = false;
 let rightPress = false;
+
 let recover = false;
 let recover2 = 0;
 let recoverTimer = 0;
@@ -2243,7 +2260,7 @@ function mapRange(value, min1, max1, min2, max2) {
 	return min2 + ((value - min1) / (max1 - min1)) * (max2 - min2);
 }
 
-let bgOrder = [0, 3, 7, 2, 11, 1, 4, 6, 5, 8, 9, 10,];
+let bgOrder = [0, 3, 7, 2, 11, 12, 13, 14, 15, 1, 4, 6, 5, 16, 17, 18, 19, 20, 21, 8, 9, 10,];
 let imgBgs = new Array(bgOrder.length);
 
 let svgTiles = new Array(blockProperties.length);
@@ -4878,6 +4895,7 @@ function land(i, y, vy) {
 		char[i].vy = vy;
 		char[i].onob = true;
 		char[i].cTime = 0;
+		char[i].doubleJumps = 0;
 	}
 }
 
@@ -5693,7 +5711,7 @@ function fillTile(x, y, after, before) {
 		filled++;
 	}
 	playSound('paintBucket');
-	if (filled == 1) myLevel[1][y][x] = after;
+	myLevel[1][y][x] = after;
 	updateLCtiles();
 }
 
@@ -8343,11 +8361,13 @@ function draw() {
 						qPress = true;
 					} else qPress = false;
 					if (_keysDown[32]) {
+						let grounded = char[control].onob || char[control].cTime <= 3 || char[control].submerged == 3
 						if (
-							(char[control].onob || char[control].cTime <= 3 || char[control].submerged == 3) &&
+							(grounded || (char[control].doubleJumps > 0 && !jumpPress)) &&
 							char[control].landTimer > 2 &&
 							!recover
 						) {
+							if (!grounded) char[control].doubleJumps--;
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
 							else {
 								char[control].jump(-jumpPower);
@@ -8357,7 +8377,11 @@ function draw() {
 							char[control].cTime = 999;
 							fallOff(control);
 						}
-					} else char[control].landTimer = 80;
+						jumpPress = true;
+					} else {
+						jumpPress = false;
+						char[control].landTimer = 80;
+					}
 				}
 			}
 
@@ -11323,7 +11347,9 @@ class Character {
 		this.expr = 0;
 		this.dExpr = tdExpr;
 		this.acidDropTimer = [0, 0]; // Why am I doing it like this
+
 		this.cTime = 999;
+		this.doubleJumps = 0;
 	}
 
 	applyForces(grav, control, waterUpMaxSpeed) {

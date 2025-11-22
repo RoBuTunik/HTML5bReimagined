@@ -719,7 +719,7 @@ const blockProperties = [
 	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Text wall
 	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up on
 	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up off
-	/*135*/	//[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Yellow brick background
+	/*135*/	[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Yellow brick background
 ];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
 const gradientAnimated = [7, 15, 49, 59, 66, 74, 80, 101, 104];
@@ -733,7 +733,7 @@ const tileOrder = [
 	93, 94, // Wood blocks
 	56, 67, 74, // Gray and black block
 	98, 107, 102, 106, 105, // Metal blocks
-	131, // Brick blocks
+	131, 135, // Brick blocks
 
 	49, 66, 95, // Lights
 	47, 50, // Rocks

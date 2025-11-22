@@ -543,18 +543,40 @@ function loadLevelpack(levelData) {
 // [12] - switched by
 // [13] - uses borders
 // [14] - is liquid
-// [15] - availible in level creator
+// [15] - availible in level creator (removed)
 // [16] - animation frames
 // [17] - loop?
 // [18] - loop frame order
+
+const blockProps = [
+	{
+		name: "Air",
+	},
+	{
+		name: "Red Ground Block",
+		solid: [true, true, true, true],
+		border: 'Normal',
+	},
+	{
+		name: "Gray Spikes Facing Down",
+		solid: [true, true, true, true],
+		deadly: [true, false, false, false],
+	},
+	{
+		name: "Gray Spikes Facing Up",
+		solid: [true, true, true, true],
+		deadly: [false, true, false, false],
+	},
+];
+
 const blockProperties = [
 	// tile0
 	/*0*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false], // Air
 	/*1*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Red block
-	/*2*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Spikes down
-	/*3*/	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false], // Spikes up
-	/*4*/	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false], // Spikes right
-	/*5*/	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false], // Spikes left
+	/*2*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray spikes down
+	/*3*/	[true,true,true,true,false,true,false,false,false,false,false,0,0,false,false,true,1,false], // Gray spikes up
+	/*4*/	[true,true,true,true,false,false,true,false,false,false,false,0,0,false,false,true,1,false], // Gray spikes right
+	/*5*/	[true,true,true,true,false,false,false,true,false,false,false,0,0,false,false,true,1,false], // Gray spikes left
 	/*6*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,0,false], // End gate
 	/*7*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]], // E tree
 	/*8*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,0,false], // Dialogue trigger
@@ -567,7 +589,7 @@ const blockProperties = [
 	/*14*/	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor left
 	/*15*/	[false,false,false,false,false,false,false,false,true,false,true,0,0,false,false,true,41,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]], // Heater
 	/*16*/	[true,true,true,true,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]], // Conveyor right
-	/*17*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,true], // Spike ball
+	/*17*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,true], // Gray spike ball
 	/*18*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform up
 	/*19*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Black spikes down
 	// tile2
@@ -598,88 +620,88 @@ const blockProperties = [
 	/*42*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray grass
 	/*43*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray dirt
 	/*44*/	[false,false,true,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform right
-	/*45*/	[true,true,true,true,false,true,false,true,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom right
-	/*46*/	[true,true,true,true,false,true,true,false,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom left
-	/*47*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false], // Jagged rock top right
+	/*45*/	[true,true,true,true,false,true,false,true,false,true,false,0,0,false,false,true,1,false], // Gray spikes top left
+	/*46*/	[true,true,true,true,false,true,true,false,false,true,false,0,0,false,false,true,1,false], // Gray spikes top right
+	/*47*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false], // Jagged rock bottom left
 	/*48*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Gray background
 	/*49*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,3,true,[0,0,0,0,0,1,1,2,2,1,1]], // Lamp
 	// tile5
-	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,9,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
+	/*50*/	[false,false,false,false,false,false,false,false,false,true,false,0,0,false,false,true,1,false],
+	/*51*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*52*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*53*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*54*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*55*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*56*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false],
+	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,9,0,false,false,true,1,false],
+	/*59*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
 	// tile6
-	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[false,true,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,2,true,[0,0,0,1,1,1]],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*60*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*61*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*62*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*63*/	[false,true,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*64*/	[false,false,false,false,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*65*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false],
+	/*66*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,2,true,[0,0,0,1,1,1]],
+	/*67*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*68*/	[false,false,false,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*69*/	[true,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
 	// tile7
-	[false,false,false,true,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,true,false,15,0,false,false,true,5,false],
-	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,30,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]],
-	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
-	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[true,true,true,true,true,true,true,true,true,false,false,0,1,false,false,true,1,false],
+	/*70*/	[false,false,false,true,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*71*/	[true,true,true,true,false,false,false,false,true,true,false,15,0,false,false,true,5,false],
+	/*72*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,false],
+	/*73*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*74*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,30,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]],
+	/*75*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
+	/*76*/	[false,false,false,false,true,true,true,true,true,false,false,0,0,false,false,true,20,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]],
+	/*77*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*78*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
+	/*79*/	[true,true,true,true,true,true,true,true,true,false,false,0,1,false,false,true,1,false],
 	// tile8
-	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
-	[false,true,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
-	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
-	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
-	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*80*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]],
+	/*81*/	[false,true,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
+	/*82*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false],
+	/*83*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
+	/*84*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
+	/*85*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,true,12,true,[0,1,2,3,4,5,6,7,8,9,10,11]],
+	/*86*/	[false,true,false,false,false,false,false,false,true,false,false,0,6,false,false,false,1,false],
+	/*87*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*88*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*89*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
 	// tile9
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,false,1,false],
+	/*90*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*91*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*92*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false],
+	/*93*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*94*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*95*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*96*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*97*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*98*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*99*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,false,1,false],
 	// tile10
-	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false],
-	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
-	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,true,true,false,12,0,false,false,true,1,false],
+	/*100*/	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false], // Acid
+	/*101*/	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]], // Acid glow
+	/*102*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*103*/	[false,false,false,false,true,true,true,true,false,false,false,0,1,false,true,true,1,false], // Lava
+	/*104*/	[false,false,false,false,false,false,false,false,true,false,false,0,0,false,false,true,60,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]], // Lava glow
+	/*105*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*106*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false],
+	/*107*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false],
+	/*108*/	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false],
+	/*109*/	[false,false,false,false,false,false,false,false,true,true,false,12,0,false,false,true,1,false],
 	// tile11
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
-	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*110*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Painting
+	/*111*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*112*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*113*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*114*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*115*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*116*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*117*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*118*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
+	/*119*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	// tile12
 	/*120*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	/*121*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
@@ -693,16 +715,44 @@ const blockProperties = [
 	/*129*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
 	// tile13
 	/*130*/	[false,false,false,false,false,false,false,false,false,false,false,0,0,false,true,true,1,false], // Water
-	/*131*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Yellow bricks
-	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,1,false],
-	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
-	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false],
+	/*131*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Bricks
+	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Text wall
+	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue platform on
+	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue platform off
+	/*135*/	//[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Brick background
 ];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
+const gradientAnimated = [7, 15, 49, 59, 66, 74, 80, 101, 104];
 const tileOrder = [
-	0, // special tiles
+	0, 6, 8, 12, // Special tiles
 
-	1,9, // red tiles
+	1, 9, // Red tiles
+	10, 11, 39, // Green tiles
+	42, 43, 48, // Gray dirt tiles
+
+	49, // Lights
+	47, // Rocks
+
+	18, 44, // Platforms
+
+	13, 14, 16, // Movement tiles
+
+	3, 2, 5, 4, 45, 46, 17, // Gray spikes
+	20, 19, 22, 21, // Black spikes
+
+	15, // Heater block
+
+	35, 36, 40, // Yellow switchers
+	31, 32, 33, 34, // Yellow switchables
+
+	37, 38, 41, // Blue switchers
+
+	24, 25, 26, 27, 28, 29, 30, // Cables
+
+	100, 101, 103, 104, // Deadly liquids
+	130, // Other liquids
+
+	7, // Trees
 ];
 
 // [0] - hitbox width
@@ -2193,7 +2243,9 @@ function mapRange(value, min1, max1, min2, max2) {
 	return min2 + ((value - min1) / (max1 - min1)) * (max2 - min2);
 }
 
-let imgBgs = new Array(12);
+let bgOrder = [0, 3, 7, 2, 11, 1, 4, 6, 5, 8, 9, 10,];
+let imgBgs = new Array(bgOrder.length);
+
 let svgTiles = new Array(blockProperties.length);
 let svgLevers = new Array(6);
 let svgShadows = new Array(19);
@@ -2240,7 +2292,7 @@ let levelButtonClicked = -1;
 let showingNewGame2 = false;
 let showingExploreNewGame2 = false;
 
-let musicSound = new Audio('data/music/leopardprintelevator.mp3'); //thefiberambient
+let musicSound = new Audio('data/music/leopardprintelevator.mp3'); //thefiberambient //leopardprintelevator
 musicSound.volume = 0.4;
 
 let windLoop = new Audio('data/sounds/windloop.mp3');
@@ -2255,7 +2307,7 @@ burningSound.volume = 0
 let soundVolume = 1;
 let soundEffects = {
 	// UI
-	click: [new Audio('data/sounds/click.mp3'), 1],
+	click: [new Audio('data/sounds/click.mp3'), 0.6],
 	pop: [new Audio('data/sounds/pop.mp3'), 1],
 	tab: [new Audio('data/sounds/tab.mp3'), 1],
 	dialoguePop: [new Audio('data/sounds/diapop.mp3'), 0.4],
@@ -2264,9 +2316,20 @@ let soundEffects = {
 
 	// Editor
 	placeTile: [new Audio('data/sounds/placetile.mp3'), 0.5],
-	paintBucket: [new Audio('data/sounds/paintbucket.mp3'), 0.6],
+	paintBucket: [new Audio('data/sounds/paintbucket.mp3'), 0.4],
 	pickTile: [new Audio('data/sounds/picktile.mp3'), 1],
 	select: [new Audio('data/sounds/select.mp3'), 0.9],
+
+	undo: [new Audio('data/sounds/undo.mp3'), 0.7],
+	redo: [new Audio('data/sounds/redo.mp3'), 0.7],
+
+	tool1: [new Audio('data/sounds/tool1.mp3'), 0.6],
+	tool2: [new Audio('data/sounds/tool2.mp3'), 0.6],
+	tool3: [new Audio('data/sounds/tool3.mp3'), 0.6],
+
+	wrench1: [new Audio('data/sounds/wrench1.mp3'), 0.7],
+	wrench2: [new Audio('data/sounds/wrench2.mp3'), 0.7],
+	wrench3: [new Audio('data/sounds/wrench3.mp3'), 0.7],
 
 	// HPRC
 	hprc1: [new Audio('data/sounds/hprc1.mp3'), 0.6],
@@ -2394,7 +2457,7 @@ async function loadingScreen() {
 	svgCoin = await createImage(resourceData['wintoken.svg']);
 	svgIceCubeMelt = await createImage(resourceData['effects/icecubemelt.svg']);
 	svgIceCubeMelt = await createImage(resourceData['effects/icecubemelt.svg']);
-	for (let i = 0; i < imgBgs.length; i++) {
+	for (let i = 0; i < bgOrder.length; i++) {
 		imgBgs[i] = await createImage(resourceData['bg/bg' + i.toString().padStart(4, '0') + '.png']);
 	}
 	for (let i = 0; i < blockProperties.length; i++) {
@@ -3636,9 +3699,9 @@ function drawLevel(context) {
 		addTileMovieClip(tileDepths[2][j].x, tileDepths[2][j].y, context);
 	}
 	// We draw the characters in here so we can layer liquids above them.
-	context.filter = 'drop-shadow(0px 0px 6px #00000050)';
+	//context.filter = 'drop-shadow(0px 0px 6px #00000050)';
 	drawCharacters(context);
-	context.filter = 'none';
+	//context.filter = 'none';
 	// Draw Liquids
 	for (let j = 0; j < tileDepths[3].length; j++) {
 		addTileMovieClip(tileDepths[3][j].x, tileDepths[3][j].y, context);
@@ -4228,7 +4291,7 @@ function addTileMovieClip(x, y, context) {
 		} else if (blockProperties[t][16] > 1) {
 			let frame = 0;
 			let f = _frameCount
-			if (blockProperties[t][12] == 0) f += x*2 + y*2;
+			if (gradientAnimated.includes(t)) f += x*2 + y*2;
 			if (blockProperties[t][17]) frame = blockProperties[t][18][f % blockProperties[t][18].length];
 			else {
 				frame = tileFrames[y][x].cf;
@@ -5410,7 +5473,7 @@ function resetLevelCreator() {
 	// levelCreator.tools.tool9.gotoAndStop(1);
 	resetLCOSC();
 	lcTextBoxes();
-
+	scale = getLCScale();
 	lcSetZoom(0);
 	lcPan = [0,0];
 }
@@ -5439,10 +5502,10 @@ function resetLCOSC() {
 	let bgdist = 92;
 	let bgdist2 = 57;
 	osc2.width = Math.floor(300 * pixelRatio);
-	osc2.height = Math.floor(Math.floor(imgBgs.length / bgpr + 1) * bgdist * pixelRatio);
+	osc2.height = Math.floor(Math.floor(bgOrder.length / bgpr + 1) * bgdist * pixelRatio);
 	osctx2.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-	for (let i = 0; i < imgBgs.length; i++) {
-		osctx2.drawImage(imgBgs[i], bgdist - bgw + (i % bgpr) * bgdist, bgdist2 - bgh + Math.floor(i / bgpr) * bgdist2,bgw,bgh);
+	for (let i = 0; i < bgOrder.length; i++) {
+		osctx2.drawImage(imgBgs[bgOrder[i]], bgdist - bgw + (i % bgpr) * bgdist, bgdist2 - bgh + Math.floor(i / bgpr) * bgdist2,bgw,bgh);
 	}
 
 	osc3.width = Math.floor(cwidth * pixelRatio);
@@ -5532,13 +5595,15 @@ function drawLCTiles() {
 			// 	ctx.restore();
 			// }
 			if (showTile) {
+				let f = _frameCount;
+				if (gradientAnimated.includes(tile)) f += x*2 + y*2;
 				let img =
 					blockProperties[tile][16] > 1
-						? svgTiles[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
+						? svgTiles[tile][blockProperties[tile][17] ? f % blockProperties[tile][16] : 0]
 						: svgTiles[tile];
 				let vb =
 					blockProperties[tile][16] > 1
-						? svgTilesVB[tile][blockProperties[tile][17] ? _frameCount % blockProperties[tile][16] : 0]
+						? svgTilesVB[tile][blockProperties[tile][17] ? f % blockProperties[tile][16] : 0]
 						: svgTilesVB[tile];
 				osctx5.drawImage(
 					img,
@@ -5627,8 +5692,9 @@ function fillTile(x, y, after, before) {
 		rc.shift();
 		filled++;
 	}
+	playSound('paintBucket');
+	if (filled == 1) myLevel[1][y][x] = after;
 	updateLCtiles();
-	if (filled > 1) playSound('paintBucket');
 }
 
 function setUndo() {
@@ -5653,6 +5719,8 @@ function undo() {
 	// {
 	// 	levelCreator.tools.tool9.gotoAndStop(2);
 	// }
+	if (undid) playSound('redo');
+	else playSound('undo');
 	undid = !undid;
 	updateLCtiles();
 	levelTimer = 0;
@@ -5727,12 +5795,12 @@ function setSelectedTile(i) {
 }
 
 function closeToEdgeY() {
-	let y2 = ((_ymouse - (240 - (scale * levelHeight) / 2)) / scale) % 1;
+	let y2 = ((_ymouse - lcPan[1] - (240 - (scale * levelHeight) / 2)) / scale) % 1;
 	return Math.abs(y2 - 0.5) > 0.25;
 }
 
 function closeToEdgeX() {
-	let x2 = ((_xmouse - (330 - (scale * levelWidth) / 2)) / scale) % 1;
+	let x2 = ((_xmouse - lcPan[0] - (330 - (scale * levelWidth) / 2)) / scale) % 1;
 	return Math.abs(x2 - 0.5) > 0.25;
 }
 
@@ -5861,7 +5929,10 @@ function setTool(i, snd) {
 		}
 		tool = i;
 		if (snd) {
-			playSound('pop');
+			playSound('tool' + Math.ceil(Math.random() * 3));
+		}
+		if ((tool == 2 || tool == 3) && blockProperties[selectedTile][9]) {
+			setSelectedTile(0);
 		}
 	}
 	// levelCreator.tools["tool" + tool].gotoAndStop(1);
@@ -6663,7 +6734,7 @@ function readLevelString(str) {
 	levelHeight = Math.max(parseInt(levelInfo[1], 10), 1);
 	charCount = parseInt(levelInfo[2], 10);
 	selectedBg = parseInt(levelInfo[3], 10);
-	if (selectedBg > imgBgs.length || isNaN(selectedBg)) selectedBg = 0;
+	if (!bgOrder.includes(selectedBg) || isNaN(selectedBg)) selectedBg = 0;
 	setLCBG();
 	longMode = levelInfo[4] == 'H';
 	i++;
@@ -6856,7 +6927,7 @@ function readExploreLevelString(str, getCoin) {
 	levelHeight = Math.max(parseInt(levelInfo[1], 10), 1);
 	charCount = parseInt(levelInfo[2], 10);
 	selectedBg = parseInt(levelInfo[3], 10);
-	if (selectedBg > imgBgs.length || isNaN(selectedBg)) selectedBg = 0;
+	if (!bgOrder.includes(selectedBg) || isNaN(selectedBg)) selectedBg = 0;
 	// setLCBG();
 	longMode = levelInfo[4] == 'H';
 	i++;
@@ -7745,8 +7816,11 @@ function mousedown(event) {
 				let y = Math.floor((_ymouse - lcPan[1] - (240 - (scale * levelHeight) / 2)) / scale);
 				if (mouseOnScreen()) {
 					if (tool == 2 || (tool == 5 && !copied)) {
-						LCRect[0] = LCRect[2] = Math.min(Math.max(x, 0), levelWidth - 1);
-						LCRect[1] = LCRect[3] = Math.min(Math.max(y, 0), levelHeight - 1);
+						let toX = Math.min(Math.max(x, 0), levelWidth - 1);
+						let toY = Math.min(Math.max(y, 0), levelHeight - 1);
+						if (LCRect[0] != toX) playSound('placeTile');
+						LCRect[0] = LCRect[2] = toX;
+						LCRect[1] = LCRect[3] = toY;
 					}
 				}
 				if (mouseOnGrid()) {
@@ -7783,14 +7857,14 @@ function mousedown(event) {
 						// setSelectedTile(myLevel[1][y][x]);
 					} else if (tool == 6) {
 						let sizeChange = 0;
-						if (closeToEdgeY() || levelHeight >= 2) {
+						if (closeToEdgeY() || levelHeight > 1) {
 							if (closeToEdgeY()) {
 								sizeChange = 1;
 							} else {
 								sizeChange = -1;
 							}
 							removeLCTiles();
-							let y2 = Math.round((_ymouse - (240 - (scale * levelHeight) / 2)) / scale);
+							let y2 = Math.round((_ymouse - lcPan[1] - (240 - (scale * levelHeight) / 2)) / scale);
 							levelHeight += sizeChange;
 							myLevel[1] = new Array(levelHeight);
 							let y4 = 0;
@@ -7812,22 +7886,23 @@ function mousedown(event) {
 									// char[i].y += sizeChange * 30;
 								}
 							}
+							playSound('wrench' + Math.ceil(Math.random() * 3));
 							setCoinAndDoorPos();
 							scale = getLCScale();
 							updateLCtiles();
 							// drawLCGrid();
 						}
 					} else if (tool == 7) {
-						let x2 = ((_xmouse - (330 - (scale * levelWidth) / 2)) / scale) % 1;
+						//let x2 = ((_xmouse - lcPan[0] - (330 - (scale * levelWidth) / 2)) / scale) % 1;
 						sizeChange = 0;
-						if (closeToEdgeX() || levelWidth >= 2) {
+						if (closeToEdgeX() || levelWidth > 1) {
 							if (closeToEdgeX()) {
 								sizeChange = 1;
 							} else {
 								sizeChange = -1;
 							}
 							removeLCTiles();
-							x2 = Math.round((_xmouse - (330 - (scale * levelWidth) / 2)) / scale);
+							let x2 = Math.round((_xmouse - lcPan[0] - (330 - (scale * levelWidth) / 2)) / scale);
 							levelWidth += sizeChange;
 							myLevel[1] = new Array(levelHeight);
 							let x4 = 0;
@@ -7850,6 +7925,7 @@ function mousedown(event) {
 									// char[i].x += sizeChange * 30;
 								}
 							}
+							playSound('wrench' + Math.ceil(Math.random() * 3));
 							setCoinAndDoorPos();
 							scale = getLCScale();
 							updateLCtiles();
@@ -7887,6 +7963,7 @@ function mouseup(event) {
 					}
 					y++;
 				}
+				playSound('paintBucket');
 				clearRectSelect();
 				updateLCtiles();
 			}
@@ -7913,7 +7990,7 @@ function keydown(event) {
 	if (menuScreen == 5 && !lcPopUp && !editingTextBox) {
 		// tool shortcuts
 		if (_xmouse < 660 && selectedTab == 2) {
-			if (event.key == '1' || event.key == 'p' || event.key == 'd') setTool(0, true);
+			if (event.key == '1' || event.key == 'd') setTool(0, true);
 			else if (event.key == '2' || event.key == 'e') setTool(1, true);
 			else if (event.key == '3' || event.key == 'r') setTool(2, true);
 			else if (event.key == '4' || event.key == 'f') setTool(3, true);
@@ -8169,14 +8246,10 @@ function draw() {
 							} else rightPress = false;
 						}
 					} else {
-						if (cornerHangTimer == 0) {
-							if (_keysDown[37]) {
-								char[control].moveHorizontal(-power);
-							} else if (_keysDown[39]) {
-								char[control].moveHorizontal(power);
-							}
-						}
-						if (!_keysDown[37] && !_keysDown[39]) char[control].stopMoving();
+						if (cornerHangTimer == 0 && _keysDown[37] != _keysDown[39]) {
+							if (_keysDown[37]) char[control].moveHorizontal(-power);
+							else char[control].moveHorizontal(power);
+						} else char[control].stopMoving();
 					}
 					if (_keysDown[38]) {
 						if (!upPress) {
@@ -9273,88 +9346,89 @@ function draw() {
 						var mouseTileRow = -1;
 						var mouseTileColumn = -1;
 					}
-					for (let i = 0; i < blockProperties.length; i++) {
-						if (blockProperties[i][15]) {
-							if (i == selectedTile) {
-								ctx.fillStyle = '#8c8c8c';//'#a0a0a0';
-								ctx.fillRect(
-									660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
-									(selectedTab + 1) * tabHeight +
-									(bdist - bs) +
-									Math.floor(j / bpr) * bdist -
-									(bdist - bs) / 2,
-									bs + bdist - bs,
-									bs + bdist - bs
-								);
-								ctx.setLineDash([6, 6]);
-								ctx.strokeStyle = '#ffffff';
-								ctx.lineWidth = 2;
-								ctx.strokeRect(
-									660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
-									(selectedTab + 1) * tabHeight +
-									(bdist - bs) +
-									Math.floor(j / bpr) * bdist -
-									(bdist - bs) / 2,
-									bs + bdist - bs,
-									bs + bdist - bs
-								);
-							}
-							if (j % bpr == mouseTileColumn && Math.floor(j / bpr) == mouseTileRow) {
-								hoverText = tileNames[i];
-								if (i != selectedTile) {
-									onButton = true;
-									ctx.fillStyle = '#ececec';
-									// ctx.fillRect(660 + (bdist-bs) + (j%bpr)*bdist - bpr/2, (selectedTab+1)*tabHeight + (bdist-bs) + Math.floor(j/bpr)*bdist - bpr/2, bs + bpr, bs + bpr);
-									ctx.fillRect(
-										660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
-										(selectedTab + 1) * tabHeight +
-										(bdist - bs) +
-										Math.floor(j / bpr) * bdist -
-										(bdist - bs) / 2,
-										bs + bdist - bs,
-										bs + bdist - bs
-									);
-									if (mouseIsDown && !pmouseIsDown) {
-										// selectedTile = i;
-										setSelectedTile(i);
-										playSound('select');
-										if (tool != 2 && tool != 3) setTool(0, true);
-									}
-								}
-							}
-							if (i == 6) {
-								ctx.fillStyle = '#505050';
-								ctx.fillRect(
-									660 + (bdist - bs) + (j % bpr) * bdist + bs / 4,
-									(selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist,
-									bs / 2,
-									bs
-								);
-							} else {
-								let img = blockProperties[i][16] > 1 ? svgTiles[i][blockProperties[i][17] ? _frameCount % blockProperties[i][16] : 0] : svgTiles[i];
-								let vb = blockProperties[i][16] > 1 ? svgTilesVB[i][blockProperties[i][17] ? _frameCount % blockProperties[i][16] : 0] : svgTilesVB[i];
-								if (vb[2] <= 60) {
-									let sc = bs / 30;
-									let tlx = 660 + (bdist - bs) + (j % bpr) * bdist;
-									let tly =
-										(selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist;
-									if (blockProperties[i][11] > 0 && blockProperties[i][11] < 13) {
-										ctx.save();
-										ctx.translate(tlx + 15 * sc, tly + 28 * sc);
-										ctx.rotate(blockProperties[i][11] < 7 ? -1 : 1);
-										ctx.translate(-tlx - 15 * sc, -tly - 28 * sc);
-										// ctx.translate(-tlx - (rot+0.5) * scale, -tly - (i+0.9333) * scale);
-										ctx.drawImage(svgLevers[(blockProperties[i][11] - 1) % 6], tlx, tly, bs, bs);
-										ctx.restore();
-									}
-									ctx.drawImage(img, tlx + vb[0] * sc, tly + vb[1] * sc, vb[2] * sc, vb[3] * sc);
-								} else {
-									let sc = bs / vb[2];
-									ctx.drawImage(img, 660 + (bdist - bs) + (j % bpr) * bdist - (vb[2] * sc) / 2 + bs / 2, (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist - (vb[3] * sc) / 2 + bs / 2, vb[2] * sc, vb[3] * sc);
-								}
-							}
-							j++;
+					for (let i = 0; i < tileOrder.length; i++) {
+						let thisTile = tileOrder[i];
+						//if (blockProperties[tileOrder[i]][15]) {
+						if (thisTile == selectedTile) {
+							ctx.fillStyle = '#8c8c8c';//'#a0a0a0';
+							ctx.fillRect(
+								660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
+								(selectedTab + 1) * tabHeight +
+								(bdist - bs) +
+								Math.floor(j / bpr) * bdist -
+								(bdist - bs) / 2,
+								bs + bdist - bs,
+								bs + bdist - bs
+							);
+							ctx.setLineDash([6, 6]);
+							ctx.strokeStyle = '#ffffff';
+							ctx.lineWidth = 2;
+							ctx.strokeRect(
+								660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
+								(selectedTab + 1) * tabHeight +
+								(bdist - bs) +
+								Math.floor(j / bpr) * bdist -
+								(bdist - bs) / 2,
+								bs + bdist - bs,
+								bs + bdist - bs
+							);
 						}
+						if (j % bpr == mouseTileColumn && Math.floor(j / bpr) == mouseTileRow) {
+							hoverText = tileNames[thisTile];
+							if (thisTile != selectedTile) {
+								onButton = true;
+								ctx.fillStyle = '#ececec';
+								// ctx.fillRect(660 + (bdist-bs) + (j%bpr)*bdist - bpr/2, (selectedTab+1)*tabHeight + (bdist-bs) + Math.floor(j/bpr)*bdist - bpr/2, bs + bpr, bs + bpr);
+								ctx.fillRect(
+									660 + (bdist - bs) + (j % bpr) * bdist - (bdist - bs) / 2,
+									(selectedTab + 1) * tabHeight +
+									(bdist - bs) +
+									Math.floor(j / bpr) * bdist -
+									(bdist - bs) / 2,
+									bs + bdist - bs,
+									bs + bdist - bs
+								);
+								if (mouseIsDown && !pmouseIsDown) {
+									// selectedTile = i;
+									setSelectedTile(thisTile);
+									playSound('select');
+									if (tool != 2 && tool != 3) setTool(0, false);
+								}
+							}
+						}
+						if (thisTile == 6) {
+							ctx.fillStyle = '#505050';
+							ctx.fillRect(
+								660 + (bdist - bs) + (j % bpr) * bdist + bs / 4,
+								(selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist,
+								bs / 2,
+								bs
+							);
+						} else {
+							let img = blockProperties[thisTile][16] > 1 ? svgTiles[thisTile][blockProperties[thisTile][17] ? _frameCount % blockProperties[thisTile][16] : 0] : svgTiles[thisTile];
+							let vb = blockProperties[thisTile][16] > 1 ? svgTilesVB[thisTile][blockProperties[thisTile][17] ? _frameCount % blockProperties[thisTile][16] : 0] : svgTilesVB[thisTile];
+							if (vb[2] <= 60) {
+								let sc = bs / 30;
+								let tlx = 660 + (bdist - bs) + (j % bpr) * bdist;
+								let tly =
+									(selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist;
+								if (blockProperties[thisTile][11] > 0 && blockProperties[thisTile][11] < 13) {
+									ctx.save();
+									ctx.translate(tlx + 15 * sc, tly + 28 * sc);
+									ctx.rotate(blockProperties[thisTile][11] < 7 ? -1 : 1);
+									ctx.translate(-tlx - 15 * sc, -tly - 28 * sc);
+									// ctx.translate(-tlx - (rot+0.5) * scale, -tly - (i+0.9333) * scale);
+									ctx.drawImage(svgLevers[(blockProperties[thisTile][11] - 1) % 6], tlx, tly, bs, bs);
+									ctx.restore();
+								}
+								ctx.drawImage(img, tlx + vb[0] * sc, tly + vb[1] * sc, vb[2] * sc, vb[3] * sc);
+							} else {
+								let sc = bs / vb[2];
+								ctx.drawImage(img, 660 + (bdist - bs) + (j % bpr) * bdist - (vb[2] * sc) / 2 + bs / 2, (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist - (vb[3] * sc) / 2 + bs / 2, vb[2] * sc, vb[3] * sc);
+							}
+						}
+						j++;
+						//}
 					}
 					ctx.restore();
 
@@ -9401,8 +9475,8 @@ function draw() {
 					// let h = _frameCount;
 					ctx.save();
 					ctx.translate(0, -bgsTabScrollBar);
-					for (var i = 0; i < imgBgs.length; i++) {
-						if (i == selectedBg) {
+					for (var i = 0; i < bgOrder.length; i++) {
+						if (bgOrder[i] == selectedBg) {
 							ctx.fillStyle = '#8c8c8c';
 							ctx.fillRect(
 								660 + (bgdist - bgw) + (i % bgpr) * bgdist - (bgdist - bgw) / 2,
@@ -9441,7 +9515,7 @@ function draw() {
 							);
 							if (mouseIsDown && !pmouseIsDown) {
 								playSound('select');
-								selectedBg = i;
+								selectedBg = bgOrder[i];
 								setLCBG();
 								updateLCtiles();
 							}
@@ -9666,7 +9740,7 @@ function draw() {
 
 				if (!lcPopUp && onRect(_xmouse, _ymouse, 660, tabY, 300, tabHeight)) {
 					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) {
+					if (mouseIsDown && !pmouseIsDown && selectedTab != i) {
 						playSound('tab');
 						selectedTab = i;
 						draggingScrollbar = false;
@@ -9682,7 +9756,7 @@ function draw() {
 			}
 
 			// Draw Tools
-			for (let i = 0; i < 12; i++) {
+			for (let i = 0; i < 11; i++) {
 				if (i != 8) {
 					if (i == tool || (i == 9 && copied)) ctx.fillStyle = '#999999';
 					else ctx.fillStyle = '#666666';
@@ -9696,16 +9770,13 @@ function draw() {
 							if (i < 8) {
 								setTool(i, true);
 								selectedTab = 2;
-								if ((tool == 2 || tool == 3) && blockProperties[selectedTile][9]) {
-									setSelectedTile(0);
-								}
 							} else if (i == 9) copyRect();
 							else if (i == 10) undo();
-							else if (i == 11) {
+							/*else if (i == 11) { // Removed the clear tool
 								setUndo();
 								clearMyLevel(1);
 								updateLCtiles();
-							}
+							}*/
 						}
 					}
 				}
@@ -9789,8 +9860,11 @@ function draw() {
 				}
 				if ((tool == 2 || (tool == 5 && !copied)) && LCRect[0] != -1 && mouseOnGrid()) {
 					if (x != LCRect[2] || y != LCRect[3]) {
-						LCRect[2] = Math.min(Math.max(x, 0), levelWidth - 1);
-						LCRect[3] = Math.min(Math.max(y, 0), levelHeight - 1);
+						let toX = Math.min(Math.max(x, 0), levelWidth - 1);
+						let toY = Math.min(Math.max(y, 0), levelHeight - 1);
+						if (LCRect[2] != toX || LCRect[3] != toY) playSound('placeTile');
+						LCRect[2] = toX;
+						LCRect[3] = toY;
 					}
 				}
 			}
@@ -10156,7 +10230,7 @@ function draw() {
 				drawMenu0Button('Sort by: ' + exploreSortText[exploreSort], 230, 75, false, changeSortBy, 210);
 			}
 
-			if (!exploreLoading) {
+			if (!exploreLoading && !exploreError) {
 				// Page number
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
@@ -10217,7 +10291,7 @@ function draw() {
 			//drawMenu2_3Button(1, 837.5, 486.95, menu2Back);
 			// if (enableExperimentalFeatures) drawMenu2_3Button(2, 10, 486.95, logInExplore);
 			drawMenu0Button('Exit', 10, 75, false, menu2Back, 80);
-			drawMenu0Button('Refresh', 100, 75, false, refreshExplorePage, 120);
+			drawMenu0Button('Refresh', 100, 75, exploreLoading, refreshExplorePage, 120);
 			//if (loggedInExploreUser5beamID === -1) {
 				//drawMenu0Button('Log In', 100, 75, true, logInExplore, 120); // fix later
 			//} else {
@@ -10280,9 +10354,9 @@ function draw() {
 					ctx.font = 'bold 38px Helvetica';
 					ctx.fillText(title, 29.15, 27.4);
 
-					ctx.fillStyle = '#ffffff';
-					ctx.font = '20px Helvetica';
-					wrapText(levelData.description, 430, 98, 500, 22);
+					ctx.fillStyle = '#cfcfcf';
+					ctx.font = 'italic 15px Helvetica';
+					wrapText(levelData.description, 430, 98, 500, 17);
 				}
 
 				// Date and views counter
@@ -10702,38 +10776,36 @@ function draw() {
 				drawExploreLevel(232 * (i % 4) + 28, Math.floor(i / 4) * 182 + 130, i, myLevelsTab, 2);
 			}
 
-			if (!exploreLoading) {
-				// Page number
-				ctx.fillStyle = '#ffffff';
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'top';
-				ctx.font = '30px Helvetica';
-				ctx.fillText((myLevelsPage + 1) + ' / ' + myLevelsPageCount, cwidth / 2, 490);
+			// Page number
+			ctx.fillStyle = '#ffffff';
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'top';
+			ctx.font = '30px Helvetica';
+			ctx.fillText((myLevelsPage + 1) + ' / ' + myLevelsPageCount, cwidth / 2, 490);
 
-				// Previous page button
-				if (myLevelsPage <= 0) ctx.fillStyle = '#505050';
-				else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
-					ctx.fillStyle = '#cccccc';
-					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) {
-						playSound('click');
-						setMyLevelsPage(myLevelsPage - 1);
-					}
-				} else ctx.fillStyle = '#999999';
-				drawArrow(227.5, 487, 25, 30, 3);
+			// Previous page button
+			if (myLevelsPage <= 0) ctx.fillStyle = '#505050';
+			else if (onRect(_xmouse, _ymouse, 227.5, 487, 25, 30)) {
+				ctx.fillStyle = '#cccccc';
+				onButton = true;
+				if (mouseIsDown && !pmouseIsDown) {
+					playSound('click');
+					setMyLevelsPage(myLevelsPage - 1);
+				}
+			} else ctx.fillStyle = '#999999';
+			drawArrow(227.5, 487, 25, 30, 3);
 
-				// Next page button
-				if (myLevelsPage >= myLevelsPageCount - 1) ctx.fillStyle = '#505050';
-				else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
-					ctx.fillStyle = '#cccccc';
-					onButton = true;
-					if (mouseIsDown && !pmouseIsDown) {
-						playSound('click');
-						setMyLevelsPage(myLevelsPage + 1);
-					}
-				} else ctx.fillStyle = '#999999';
-				drawArrow(707.5, 487, 25, 30, 1);
-			}
+			// Next page button
+			if (myLevelsPage >= myLevelsPageCount - 1) ctx.fillStyle = '#505050';
+			else if (onRect(_xmouse, _ymouse, 707.5, 487, 25, 30)) {
+				ctx.fillStyle = '#cccccc';
+				onButton = true;
+				if (mouseIsDown && !pmouseIsDown) {
+					playSound('click');
+					setMyLevelsPage(myLevelsPage + 1);
+				}
+			} else ctx.fillStyle = '#999999';
+			drawArrow(707.5, 487, 25, 30, 1);
 
 			if (lcPopUp && !lcPopUpNextFrame) {
 				ctx.globalAlpha = 0.2;

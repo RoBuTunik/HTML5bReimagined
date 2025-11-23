@@ -2,16 +2,22 @@ const enclosingDir = '../../visuals/';
 // currently only svg and png files are supported
 const filePaths = [
 	'menu0.svg',
+
 	'menu2-3button0001.svg',
 	'menu2-3button0002.svg',
 	'menu2-3button0003.svg',
 	'menu2-3button0004.svg',
 	'menu2.svg',
+
 	'menu2border.svg',
 	'menu2borderimg.png',
+
 	'menu6.svg',
+
 	'premenubg.png',
+
 	'wintoken.svg',
+
 	'bg/bg0000.png',
 	'bg/bg0001.png',
 	'bg/bg0002.png',
@@ -34,6 +40,7 @@ const filePaths = [
 	'bg/bg0019.png',
 	'bg/bg0020.png',
 	'bg/bg0021.png',
+
 	'blocks/b0000.svg',
 	'blocks/b0001.svg',
 	'blocks/b0002.svg',
@@ -805,12 +812,17 @@ const filePaths = [
 	'blocks/b0132.svg',
 	'blocks/b0133.svg',
 	'blocks/b0134.svg',
+
 	'blocks/b0135.svg',
+	'blocks/b0136.svg',
+	'blocks/b0137.svg',
+
 	'blocks/b01lever.svg',
 	'blocks/b02lever.svg',
 	'blocks/b03lever.svg',
 	'blocks/b04lever.svg',
 	'blocks/b05lever.svg',
+
 	'bodyparts/bp0000.svg',
 	'bodyparts/bp0001.svg',
 	'bodyparts/bp0002.svg',
@@ -874,6 +886,7 @@ const filePaths = [
 	'bodyparts/bp0060.svg',
 	'bodyparts/bp0061.svg',
 	'bodyparts/bp0062.svg',
+
 	'borders/tb0000.svg',
 	'borders/tb0001.svg',
 	'borders/tb0002.svg',
@@ -912,6 +925,7 @@ const filePaths = [
 	'borders/tb0035.svg',
 	'borders/tb0036.svg',
 	'borders/tb0037.svg',
+
 	'effects/aciddrop0000.svg',
 	'effects/aciddrop0001.svg',
 	'effects/aciddrop0002.svg',
@@ -964,6 +978,7 @@ const filePaths = [
 	'effects/wtgetf0008.svg',
 	'effects/wtgetf0009.svg',
 	'effects/wtgetf0010.svg',
+
 	'entities/e0000.svg',
 	'entities/e0001.svg',
 	'entities/e0002.svg',
@@ -1084,6 +1099,7 @@ const filePaths = [
 	'entities/e0053.svg',
 	'entities/e0054.svg',
 	'entities/e0055.svg',
+
 	'lc/tool0000.svg',
 	'lc/tool0001.svg',
 	'lc/tool0002.svg',
@@ -1096,6 +1112,7 @@ const filePaths = [
 	'lc/tool0009.svg',
 	'lc/tool0010.svg',
 	'lc/tool0011.svg',
+
 	'shadows/s0000.svg',
 	'shadows/s0001.svg',
 	'shadows/s0002.svg',
@@ -1115,17 +1132,21 @@ const filePaths = [
 	'shadows/s0016.svg',
 	'shadows/s0017.svg',
 	'shadows/s0018.svg',
+
 	'ui/csbubble/dia.svg',
+
 	'ui/hprcbubble/hprcbubble0000.svg',
 	'ui/hprcbubble/hprcbubble0001.svg',
 	'ui/hprcbubble/hprcbubble0002.svg',
 	'ui/hprcbubble/hprcbubble0003.svg',
 	'ui/hprcbubble/hprcbubble0004.svg',
+
 	'ui/mylevels/icon0000.svg',
 	'ui/mylevels/icon0001.svg',
 	'ui/mylevels/icon0002.svg',
 	'ui/mylevels/icon0003.svg',
 	'ui/mylevels/icon0004.svg',
+
 	'difficulties/None.svg',
 	'difficulties/Easy.svg',
 	'difficulties/Casual.svg',

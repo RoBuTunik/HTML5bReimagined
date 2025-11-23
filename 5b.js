@@ -57,7 +57,7 @@ let textAfterCursorAtClick = '';
 // let controlOrCommandPress = false;
 
 let levelsString = '';
-let levelCount = 53;
+let levelCount = 54;
 let f = 19;
 let levels = new Array(levelCount);
 let startLocations = new Array(levelCount);
@@ -103,6 +103,7 @@ let screenFlashes = true;
 let frameRateThrottling = true;
 let slowTintsEnabled = true;
 let dialogueEnabled = true;
+let speedrunTimer = false;
 
 const options = {
 	screenShake: {
@@ -127,6 +128,7 @@ let optionText = [
 	'Frame Rate Throttling',
 	'High Quality Heating Effect',
 	'Dialogue Enabled',
+	'Speedrun Timer',
 ];
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
@@ -217,7 +219,7 @@ getSavedGame();
 getSavedSettings();
 
 function saveSettings() {
-	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled, dialogueEnabled]));
+	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled, dialogueEnabled, speedrunTimer]));
 }
 
 function getSavedSettings() {
@@ -225,7 +227,7 @@ function getSavedSettings() {
 		saveSettings();
 	} else {
 		let settingsArray = JSON.parse(bfdia5b.getItem('settings'));
-		for (let i = 0; i < settingsArray.length; i++) {
+		for (let i = 0; i < optionText.length; i++) {
 			if (settingsArray.includes(undefined) || settingsArray[i] == undefined) {
 				saveSettings();
 				settingsArray = JSON.parse(bfdia5b.getItem('settings'));
@@ -239,6 +241,7 @@ function getSavedSettings() {
 		frameRateThrottling = settingsArray[4];
 		slowTintsEnabled = settingsArray[5];
 		dialogueEnabled = settingsArray[6];
+		speedrunTimer = settingsArray[7];
 	}
 }
 
@@ -353,7 +356,7 @@ function tileAt(j, i, y) {
 
 // Load Level Data
 function loadLevels() {
-	levelCount = 53;
+	levelCount = 54;
 	levels = new Array(levelCount);
 	startLocations = new Array(levelCount);
 	bgs = new Array(levelCount);
@@ -563,7 +566,7 @@ function loadLevelpack(levelData) {
 // [12] - switched by
 // [13] - uses borders
 // [14] - is liquid
-// [15] - availible in level creator (removed)
+// [15] - availible in level creator
 // [16] - animation frames
 // [17] - loop?
 // [18] - loop frame order
@@ -739,8 +742,11 @@ const blockProperties = [
 	/*132*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Text wall
 	/*133*/	[false,true,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up on
 	/*134*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch platform up off
-	/*135*/	[false, false, false, false, false, false, false, false, false, false, true, 0, 0, false, false, true, 1, false], // Yellow brick background
+	/*135*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Yellow brick background
+	/*136*/	[true,true,true,true,true,false,false,true,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom left
+	/*137*/	[true,true,true,true,true,false,true,false,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom right
 ];
+const metalTiles = [98, 102, 105, 107];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
 const gradientAnimated = [7, 15, 49, 59, 66, 74, 80, 101, 104];
 const tileOrder = [
@@ -748,7 +754,7 @@ const tileOrder = [
 
 	1, 9, // Red blocks
 	10, 11, 39, 70, // Green blocks
-	73, 77, 87, 88, 89, 96, 97, // Purple blocks
+	73, 77, 87, 88, 96, 97, // Purple blocks
 	42, 43, 48, 55, // Gray dirt blocks
 	93, 94, // Wood blocks
 	56, 67, 74, // Gray and black block
@@ -762,7 +768,7 @@ const tileOrder = [
 
 	13, 14, 16, 83, 85, // Movement tiles
 
-	3, 2, 5, 4, 45, 46, 17, // Gray spikes
+	3, 2, 5, 4, 45, 46, 136, 137, 17, // Gray spikes
 	20, 19, 22, 21, 23, 72, // Black spikes
 
 	15, 75, 76, // Misc deadlies
@@ -2261,15 +2267,17 @@ let doorLightX = [
 let doorLightFade = [];
 let doorLightFadeDire = [];
 
-function toHMS(i, milli) {
+function toHMS(i, milli, hour) {
 	const mul = milli ? 1 : 1000;
 	const roundedMs = Math.round(i);
 	const h = Math.floor(roundedMs / 3600000 * mul);
-	const m = Math.floor(roundedMs / 60000 * mul) % 60;
+	let m = Math.floor(roundedMs / 60000 * mul);
+	if (hour) m = m % 60;
 	const s = Math.floor(roundedMs / 1000 * mul) % 60;
 	const ms = roundedMs % 1000;
+	const returnHour = hour ? h.toString().padStart(2, '0') + ':' : '';
 	return (
-		h.toString().padStart(2, '0') + ':' +
+		returnHour +
 		m.toString().padStart(2, '0') + ':' +
 		s.toString().padStart(2, '0') +
 		(milli ? '.' + ms.toString().padStart(3, '0') : '')
@@ -2281,7 +2289,7 @@ function mapRange(value, min1, max1, min2, max2) {
 	return min2 + ((value - min1) / (max1 - min1)) * (max2 - min2);
 }
 
-let bgOrder = [0, 3, 7, 2, 11, 12, 13, 14, 15, 1, 4, 6, 5, 16, 17, 18, 19, 20, 21, 8, 9, 10,];
+let bgOrder = [0, 3, 7, 11, 12, 13, 2, 14, 15, 1, 4, 6, 5, 16, 17, 18, 19, 20, 21, 8, 9, 10,];
 let imgBgs = new Array(bgOrder.length);
 
 let svgTiles = new Array(blockProperties.length);
@@ -3306,7 +3314,7 @@ function drawLevelMap() {
 	}
 
 	ctx.font = '21px Helvetica';
-	ctx.fillText(toHMS(timer, true), 767.3, 27.5);
+	ctx.fillText(toHMS(timer, true, true), 767.3, 27.5);
 	ctx.fillText(deathCount.toLocaleString(), 767.3, 55.9);
 	ctx.textAlign = 'right';
 	ctx.fillText('Time:', 757.05, 27.5);
@@ -3344,9 +3352,17 @@ function drawLevelButtons() {
 	ctx.fillStyle = '#ffffff';
 	ctx.textAlign = 'left';
 	ctx.textBaseline = 'top';
-	ctx.font = 'bold 32px Helvetica';
 	ctx.filter = 'drop-shadow(0px 0px 6px #000000)';
-	ctx.fillText(currentLevelDisplayName, 12.85, 495.45);
+	if (speedrunTimer) {
+		ctx.font = 'bold 24px Helvetica';
+		ctx.fillText(toHMS(getTimer() - levelTimer2, true, false), 12.85, 20);
+		if (!playingLevelpack && playMode < 2) {
+			ctx.font = 'bold 17px Helvetica';
+			ctx.fillText(toHMS(timer + getTimer() - levelTimer2, true, true), 14, 50);
+		}
+	}
+	ctx.font = 'bold 32px Helvetica';
+	ctx.fillText(currentLevelDisplayName, 14, 495);
 	drawMenu2_3Button(0, 837.5, 486.95, playMode == 3 ? exitExploreLevel : playMode == 2 ? exitTestLevel : menu3Menu);
 	ctx.filter = 'none';
 }
@@ -4448,8 +4464,7 @@ function setAmbientShadow(x, y) {
 function setBorder(x, y, s) {
 	let borderset = 0;
 	// TODO: remove this hard-coded array
-	let metalBlocks = [98, 102, 105, 107];
-	if (metalBlocks.includes(thisLevel[y][x])) borderset = 19;
+	if (metalTiles.includes(thisLevel[y][x])) borderset = 19;
 	tileBorders[y][x] = [];
 	if (outOfRange(x, y)) return;
 	let count = 0;
@@ -5089,6 +5104,11 @@ function endDeath(i) {
 	if (playMode == 3) onlineLevelProgress[locationOnPage == 8 ? exploreLevelPageLevel.level.id : exploreLevelPageLevel.id].deaths++;
 	deathCount++;
 	saveGame();
+	if (char[i].submerged > 0) {
+		char[i].weight2 += 0.16;
+		char[i].submerged = 0;
+		char[i].submergedIn = 0;
+	}
 	if (i == control) changeControl(0, true);
 }
 
@@ -5553,9 +5573,9 @@ function setLCBG() {
 function drawLCGrid() {
 	// scale = getLCGridScale();
 	// levelCreator.grid.lineStyle(scale / 9,0,50);
-	osctx5.lineWidth = scale / 9;
+	osctx5.lineWidth = scale / 12;
 	osctx5.strokeStyle = '#000000';
-	osctx5.globalAlpha = 0.5;
+	osctx5.globalAlpha = 0.3;
 	osctx5.beginPath();
 	for (let i = 0; i <= levelWidth; i++) {
 		osctx5.moveTo(330 - (scale * levelWidth) / 2 + i * scale, 240 - (scale * levelHeight) / 2);
@@ -5914,6 +5934,15 @@ function updateLCtiles() {
 						(scale * vb[2]) / 30,
 						(scale * vb[3]) / 30
 					);
+					if (blockProperties[tile][13]) {
+						osctx3.drawImage(
+							svgTileBorders[metalTiles.includes(tile) ? 33 : 14],
+							tlx + x * scale + (scale * vb[0]) / 30,
+							tly + y * scale + (scale * vb[1]) / 30,
+							(scale * vb[2]) / 30,
+							(scale * vb[3]) / 30
+						);
+					}
 				}
 			} else if (tile == 6) {
 				osctx3.fillStyle = '#505050';
@@ -7320,7 +7349,7 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 		ctx.fillStyle = '#ffffff';
 		const len = 86400;
 		const date = Math.floor(Date.now() / 1000);
-		const time = toHMS(len - date % len, false);
+		const time = toHMS(len - date % len, false, true);
 		ctx.fillText('Daily level! ' + time, x, y - 26);
 	}
 
@@ -9417,8 +9446,7 @@ function draw() {
 							if (vb[2] <= 60) {
 								let sc = bs / 30;
 								let tlx = 660 + (bdist - bs) + (j % bpr) * bdist;
-								let tly =
-									(selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist;
+								let tly = (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist;
 								if (blockProperties[thisTile][11] > 0 && blockProperties[thisTile][11] < 13) {
 									ctx.save();
 									ctx.translate(tlx + 15 * sc, tly + 28 * sc);
@@ -9429,9 +9457,14 @@ function draw() {
 									ctx.restore();
 								}
 								ctx.drawImage(img, tlx + vb[0] * sc, tly + vb[1] * sc, vb[2] * sc, vb[3] * sc);
+								if (blockProperties[thisTile][13])
+									ctx.drawImage(svgTileBorders[metalTiles.includes(thisTile) ? 33 : 14], tlx, tly, bs, bs);
 							} else {
 								let sc = bs / vb[2];
-								ctx.drawImage(img, 660 + (bdist - bs) + (j % bpr) * bdist - (vb[2] * sc) / 2 + bs / 2, (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist - (vb[3] * sc) / 2 + bs / 2, vb[2] * sc, vb[3] * sc);
+								let tlx = 660 + (bdist - bs) + (j % bpr) * bdist - (vb[2] * sc) / 2 + bs / 2;
+								let tly = (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist - (vb[3] * sc) / 2 + bs / 2;
+								ctx.drawImage(img, tlx, tly, vb[2] * sc, vb[3] * sc);
+								//ctx.drawImage(svgTileBorders[14], tlx, tly, bs, bs);
 							}
 						}
 						j++;
@@ -9537,7 +9570,7 @@ function draw() {
 					ctx.drawImage(osc2, 660, tabWindowY, osc2.width / pixelRatio, osc2.height / pixelRatio);
 					ctx.restore();
 
-					var tabContentsHeight = bgdist - bgh + Math.floor((i - 1) / bgpr + 1) * bgdist2;
+					var tabContentsHeight = bgdist2 - bgh + Math.floor((i - 1) / bgpr + 1) * bgdist2;
 					var scrollBarH = (tabWindowH / tabContentsHeight) * tabWindowH;
 					var scrollBarY =
 						(selectedTab + 1) * tabHeight +
@@ -10197,18 +10230,12 @@ function draw() {
 				drawMenu0Button('Retry', cwidth / 2 - 50, 360, false, refreshExplorePage, 100);
 			} else {
 				for (let i = 0; i < explorePageLevels.length - (exploreTab == 0 ? 1 : 0); i++) {
-					if (exploreTab == -1) {
-						x = 215 * (i % 4) + 60;
-						y = Math.floor(i / 4) * 130 + 270;
-						//x = (i % 2) * 205 + (exploreTab == 2 ? 500 : 555);
-						//y = 120 * Math.floor(i / 2) + 70;
-					} else {
-						x = 215 * (i % 4) + 60;
-						y = Math.floor(i / 4) * 130 + (exploreTab == 2 ? 190 : 170);
-					}
+					x = 215 * (i % 4) + 60;
+					if (exploreTab == 0) y = Math.floor(i / 4) * 125 + 240;
+					else y = Math.floor(i / 4) * 130 + (exploreTab == 2 ? 210 : 170);
 					drawExploreLevel(x, y, i, exploreTab == 1 ? 1 : 0, 0);
 				}
-				//if (exploreTab == 0) drawExploreLevel(705, 125, 8, 0, 0); //Daily level
+				if (exploreTab == 0) drawExploreLevel(705, 110, 8, 0, 0); //Daily level
 			}
 
 			if (exploreTab == 2) {
@@ -10425,7 +10452,7 @@ function draw() {
 				}
 
 				ctx.fillStyle = completedThisLevel ? '#00ff00' : '#9b9b9b';
-				ctx.fillText(completedThisLevel ? toHMS(thisLevelTime, true) : "No best time", 410, 325);
+				ctx.fillText(completedThisLevel ? toHMS(thisLevelTime, true, true) : "No best time", 410, 325);
 				ctx.fillStyle = '#ffffff';
 				if (exploreLevelPageType == 0) ctx.fillText(thisLevelAttempts + (thisLevelAttempts === 1 ? ' attempt' : ' attempts'), 410, 350);
 				ctx.fillText(thisLevelDeaths + (thisLevelDeaths === 1 ? ' death' : ' deaths'), 410, exploreLevelPageType == 0 ? 375 : 350);
@@ -10683,6 +10710,9 @@ function draw() {
 						break;
 					case 6:
 						thisOptionValue = dialogueEnabled;
+						break;
+					case 7:
+						thisOptionValue = speedrunTimer;
 				}
 				ctx.fillStyle = thisOptionValue?'#00ff00':'#ff0000';
 				ctx.fillText(thisOptionValue ? 'on' : 'off', x + 25, y + 2);
@@ -10712,6 +10742,9 @@ function draw() {
 								break;
 							case 6:
 								dialogueEnabled = !dialogueEnabled;
+								break;
+							case 7:
+								speedrunTimer = !speedrunTimer;
 								break;
 						}
 					}

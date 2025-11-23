@@ -2759,7 +2759,7 @@ function addLevelToLevelpack(id) {
 
 function gotoExploreLevelPage(locOnPage) {
 	locationOnPage = locOnPage;
-	let newExploreLevelPageLevel = menuScreen==8?exploreUserPageLevels[Math.floor(locOnPage/8)][locOnPage%8]:explorePageLevels[locOnPage];
+	let newExploreLevelPageLevel = menuScreen == 8 ? exploreUserPageLevels[Math.floor(locOnPage/8)][locOnPage%8] : explorePageLevels[locOnPage];
 	if ((menuScreen == 6 && (exploreTab != 1)) || (menuScreen == 8 && (locOnPage < 8 || exploreTab == 0))) { //exploreTab == 0 || exploreTab == 2 || exploreTab == 3
 		exploreLevelPageType = 0;
 		exploreLevelPageLevel = newExploreLevelPageLevel;
@@ -2842,8 +2842,10 @@ function continueExploreLevelpack() {
 }
 
 function copyExploreLevel() {
+	//const isDaily = locationOnPage == 8 && exploreTab == 0;
+	//const levelData = isDaily ? explorePageLevels[locationOnPage].level : explorePageLevels[locationOnPage];
 	const isDaily = locationOnPage == 8 && exploreTab == 0;
-	const levelData = isDaily ? explorePageLevels[locationOnPage].level : explorePageLevels[locationOnPage];
+	const levelData = isDaily ? exploreLevelPageLevel.level : exploreLevelPageLevel;
 	menuLevelCreator();
 	myLevelInfo.name = levelData.title;
 	myLevelInfo.desc = levelData.description;

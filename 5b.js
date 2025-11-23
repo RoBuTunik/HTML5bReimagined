@@ -102,7 +102,32 @@ let screenShake = true;
 let screenFlashes = true;
 let frameRateThrottling = true;
 let slowTintsEnabled = true;
-let optionText = ['Screen Shake','Screen Flashes','Quirks Mode','Experimental Features','Frame Rate Throttling', 'High Quality Heating Effect'];
+let dialogueEnabled = true;
+
+const options = {
+	screenShake: {
+		enabled: true,
+		name: 'Screen Shake',
+	},
+	screenFlashes: {
+		enabled: true,
+		name: 'Screen Flashes',
+	},
+	frameRateThrottling: {
+		enabled: true,
+		name: 'Frame Rate Throttling',
+	},
+}
+
+let optionText = [
+	'Screen Shake',
+	'Screen Flashes',
+	'Quirks Mode',
+	'Experimental Features',
+	'Frame Rate Throttling',
+	'High Quality Heating Effect',
+	'Dialogue Enabled',
+];
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
 let nextLevelId;
@@ -192,7 +217,7 @@ getSavedGame();
 getSavedSettings();
 
 function saveSettings() {
-	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled]));
+	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled, dialogueEnabled]));
 }
 
 function getSavedSettings() {
@@ -200,12 +225,20 @@ function getSavedSettings() {
 		saveSettings();
 	} else {
 		let settingsArray = JSON.parse(bfdia5b.getItem('settings'));
+		for (let i = 0; i < settingsArray.length; i++) {
+			if (settingsArray.includes(undefined) || settingsArray[i] == undefined) {
+				saveSettings();
+				settingsArray = JSON.parse(bfdia5b.getItem('settings'));
+				break;
+			}
+		}
 		screenShake = settingsArray[0];
 		screenFlashes = settingsArray[1];
 		quirksMode = settingsArray[2];
 		enableExperimentalFeatures = settingsArray[3];
 		frameRateThrottling = settingsArray[4];
 		slowTintsEnabled = settingsArray[5];
+		dialogueEnabled = settingsArray[6];
 	}
 }
 
@@ -2973,7 +3006,7 @@ function testLevelCreator() {
 		deselectAllTextBoxes();
 		wipeTimer = 30;
 		menuScreen = 3;
-		toSeeCS = true;
+		toSeeCS = dialogueEnabled;
 		transitionType = 1;
 		resetLevel();
 	}
@@ -3411,7 +3444,7 @@ function playLevel(i) {
 	currentLevel = i;
 	wipeTimer = 30;
 	menuScreen = 3;
-	toSeeCS = true;
+	toSeeCS = dialogueEnabled;
 	transitionType = 1;
 	resetLevel();
 }
@@ -7421,8 +7454,7 @@ function setExplorePage(page) {
 	explorePage = page;
 	exploreLevelTitlesTruncated = new Array(8); // Is this needed?
 	if (exploreTab == 2) getSearchPage(exploreSearchInput, explorePage);
-	getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
-	// setExploreThumbs();
+	else getExplorePage(explorePage, exploreTab == 1 ? 1 : 0, exploreSort, exploreTab == 3);
 }
 
 function refreshExplorePage() {
@@ -8158,7 +8190,7 @@ function draw() {
 					timer += getTimer() - levelTimer2;
 					if (playMode == 0) {
 						currentLevel++;
-						if (!quirksMode) toSeeCS = true; // This line was absent in the original source, but without it dialogue doesn't play after level 1 when on a normal playthrough.
+						if (!quirksMode) toSeeCS = dialogueEnabled; // This line was absent in the original source, but without it dialogue doesn't play after level 1 when on a normal playthrough.
 						levelProgress = currentLevel;
 						if (currentLevel < levelCount) resetLevel();
 						else exitLevel();
@@ -10619,12 +10651,13 @@ function draw() {
 			ctx.font = '26px Helvetica';
 
 			for (var i = 0; i < optionText.length; i++) {
-				let y = i*50 + 150;
+				let x = 10;
+				let y = i * 40 + 10;
 				ctx.fillStyle = '#444444';
-				ctx.fillRect(590, y, 50, 28);
+				ctx.fillRect(x, y, 50, 28);
 				ctx.fillStyle = '#ffffff';
-				ctx.textAlign = 'right';
-				ctx.fillText(optionText[i], 580, y+2);
+				ctx.textAlign = 'left';
+				ctx.fillText(optionText[i], x + 55, y + 2);
 				ctx.textAlign = 'center';
 				let thisOptionValue;
 				switch (i) {
@@ -10645,13 +10678,17 @@ function draw() {
 						break;
 					case 5:
 						thisOptionValue = slowTintsEnabled;
+						break;
+					case 6:
+						thisOptionValue = dialogueEnabled;
 				}
 				ctx.fillStyle = thisOptionValue?'#00ff00':'#ff0000';
-				ctx.fillText(thisOptionValue?'on':'off', 615, y+2);
+				ctx.fillText(thisOptionValue ? 'on' : 'off', x + 25, y + 2);
 
-				if (onRect(_xmouse, _ymouse, 590, y, 50, 28)) {
+				if (onRect(_xmouse, _ymouse, x, y, 50, 28)) {
 					onButton = true;
 					if (mouseIsDown && !pmouseIsDown) {
+						playSound('click');
 						switch (i) {
 							case 0:
 								screenShake = !screenShake;
@@ -10670,6 +10707,9 @@ function draw() {
 								break;
 							case 5:
 								slowTintsEnabled = !slowTintsEnabled;
+								break;
+							case 6:
+								dialogueEnabled = !dialogueEnabled;
 								break;
 						}
 					}
@@ -11021,9 +11061,9 @@ function requestResolved() {
 }
 
 function requestError() {
-	playSound('error');
 	requestsWaiting--;
 	if (requestsWaiting === 0) {
+		playSound('error');
 		exploreError = true;
 		exploreLoading = false;
 	}
@@ -11037,7 +11077,6 @@ function getExplorePage(p, t, s, f) {
 	requestAdded();
 	return fetch('https://5beam.zelo.dev/api/page' + (exploreTab == 4 ? '/trending?page=' : '?page=') + p + '&sort=' + s + '&type=' + t + '&featured=' + f, {method: 'GET'})
 		.then(async response => {
-			console.log(response)
 			explorePageLevels = await response.json();
 			if (exploreTab == 0) getDailyLevel();
 			if (exploreTab == 0 || exploreTab >= 3) setExploreThumbs();
@@ -11061,16 +11100,14 @@ function getDailyLevel() {
 			requestResolved();
 		})
 		.catch(err => {
-			playSound('error');
-			exploreError = true;
 			console.log(err);
 			requestError();
 		});
 }
 
-function getSearchPage(s, p) {
+function getSearchPage(searchText, p) {
 	requestAdded();
-	return fetch('https://5beam.zelo.dev/api/search?text=' + encodeURIComponent(s).replace('%20','+') + '&page=' + p, {method: 'GET'})
+	return fetch('https://5beam.zelo.dev/api/search?text=' + encodeURIComponent(searchText).replace('%20','+') + '&page=' + p, {method: 'GET'})
 		.then(async response => {
 			explorePageLevels = await response.json();
 			setExploreThumbs();
@@ -11078,9 +11115,6 @@ function getSearchPage(s, p) {
 			requestResolved();
 		})
 		.catch(err => {
-			playSound('error');
-			exploreLoading = false;
-			exploreError = true;
 			console.log(err);
 			requestError();
 		});

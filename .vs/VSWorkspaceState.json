@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data"
+    "\\data",
+    "\\tools",
+    "\\tools\\getBase64"
   ],
   "SelectedNode": "\\data\\levels.txt",
   "PreviewInSolutionExplorer": false

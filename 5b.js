@@ -633,13 +633,13 @@ const blockProperties = [
 	/*33*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Yellow switch block off
 	/*34*/	[false,false,false,false,false,false,false,false,true,false,false,0,1,false,false,true,1,false], // Dark yellow switch block off
 	/*35*/	[false,false,false,false,false,false,false,false,true,true,false,1,0,false,false,true,1,false], // Yellow switch left
-	/*36*/	[false,false,false,false,false,false,false,false,true,true,false,7,0,false,false,true,1,false], // Yellow switch right
+	/*36*/	[false,false,false,false,false,false,false,false,true,true,false,101,0,false,false,true,1,false], // Yellow switch right
 	/*37*/	[false,false,false,false,false,false,false,false,true,true,false,2,0,false,false,true,1,false], // Blue switch left
-	/*38*/	[false,false,false,false,false,false,false,false,true,true,false,8,0,false,false,true,1,false], // Blue switch right
+	/*38*/	[false,false,false,false,false,false,false,false,true,true,false,102,0,false,false,true,1,false], // Blue switch right
 	/*39*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Green background with platform up
 	// tile4
-	/*40*/	[true,true,true,true,false,false,false,false,true,true,false,13,0,false,false,true,5,false], // Yellow button
-	/*41*/	[true,true,true,true,false,false,false,false,true,true,false,14,0,false,false,true,5,false], // Blue button
+	/*40*/	[true,true,true,true,false,false,false,false,true,true,false,201,0,false,false,true,5,false], // Yellow button
+	/*41*/	[true,true,true,true,false,false,false,false,true,true,false,202,0,false,false,true,5,false], // Blue button
 	/*42*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray grass
 	/*43*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray dirt
 	/*44*/	[false,false,true,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform right
@@ -656,8 +656,8 @@ const blockProperties = [
 	/*54*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Dark blue switch block off
 	/*55*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray bg with platform up
 	/*56*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray block
-	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false], // Green lever left
-	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,9,0,false,false,true,1,false], // Green level right
+	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false], // Green switch left
+	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,103,0,false,false,true,1,false], // Green switch right
 	/*59*/	[false,false,false,false,false,false,false,false,true,true,false,0,0,false,false,true,120,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119]], // V tree
 	// tile6
 	/*60*/	[true,true,true,true,false,false,false,false,true,false,false,0,3,false,false,true,1,false], // Dark green switch block on
@@ -672,7 +672,7 @@ const blockProperties = [
 	/*69*/	[true,false,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Platform down
 	// tile7
 	/*70*/	[false,false,false,true,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Green background with platform left
-	/*71*/	[true,true,true,true,false,false,false,false,true,true,false,15,0,false,false,true,5,false], // Green button
+	/*71*/	[true,true,true,true,false,false,false,false,true,true,false,203,0,false,false,true,5,false], // Green button
 	/*72*/	[true,true,true,true,true,true,true,true,false,false,false,0,0,false,false,true,1,false], // Black spike ball
 	/*73*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Purple block
 	/*74*/	[true,true,true,true,false,false,false,false,true,false,false,0,0,false,false,true,30,true,[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]], // Wind gust block
@@ -712,8 +712,8 @@ const blockProperties = [
 	/*105*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Red metal block
 	/*106*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Yellow metal background
 	/*107*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Dark gray metal block
-	/*108*/	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false], // Gray lever left
-	/*109*/	[false,false,false,false,false,false,false,false,true,true,false,12,0,false,false,true,1,false], // Gray lever right
+	/*108*/	[false,false,false,false,false,false,false,false,true,true,false,6,0,false,false,true,1,false], // Gray switch left
+	/*109*/	[false,false,false,false,false,false,false,false,true,true,false,106,0,false,false,true,1,false], // Gray switch right
 	// tile11
 	/*110*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,true,1,false], // Painting
 	/*111*/	[false,false,false,false,false,false,false,false,false,true,true,0,0,false,false,false,0,false],
@@ -745,6 +745,10 @@ const blockProperties = [
 	/*135*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Yellow brick background
 	/*136*/	[true,true,true,true,true,false,false,true,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom left
 	/*137*/	[true,true,true,true,true,false,true,false,false,true,false,0,0,false,false,true,1,false], // Gray spikes bottom right
+	/*138*/	[true,true,true,true,true,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray spikes down with cable
+	/*139*/	[false,false,false,false,false,false,false,false,true,true,false,4,0,false,false,true,1,false], // Red switch left
+	// tile14
+	/*140*/	[false,false,false,false,false,false,false,false,true,true,false,104,0,false,false,true,1,false], // Red switch right
 ];
 const metalTiles = [98, 102, 105, 107];
 const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
@@ -768,7 +772,7 @@ const tileOrder = [
 
 	13, 14, 16, 83, 85, // Movement tiles
 
-	3, 2, 5, 4, 45, 46, 136, 137, 17, // Gray spikes
+	3, 2, 5, 4, 138, 45, 46, 136, 137, 17, // Gray spikes
 	20, 19, 22, 21, 23, 72, // Black spikes
 
 	15, 75, 76, // Misc deadlies
@@ -781,6 +785,8 @@ const tileOrder = [
 
 	57, 58, 71, // Green switchers
 	65, 60, 61, 62, 63, 64, // Green switchables
+
+	139, 140, // Red switchers
 
 	108, 109, // Gray switchers
 
@@ -3685,6 +3691,16 @@ function resetLevel() {
 	doorLightFadeDire = new Array(charCount2).fill(0);
 }
 
+function resetTileBorders() {
+	tileBorders = new Array(levelHeight);
+	for (let y = 0; y < levelHeight; y++) {
+		tileBorders[y] = new Array(levelWidth);
+		for (let x = 0; x < levelWidth; x++) {
+			tileBorders[y][x] = [];
+		}
+	}
+}
+
 function copyLevel(thatLevel) {
 	thisLevel = new Array(thatLevel.length);
 	tileFrames = new Array(thatLevel.length);
@@ -3697,7 +3713,7 @@ function copyLevel(thatLevel) {
 		tileBorders[y] = new Array(thatLevel[y].length);
 		for (let x = 0; x < levelWidth; x++) {
 			thisLevel[y][x] = thatLevel[y][x];
-			let sw = Math.ceil(blockProperties[thisLevel[y][x]][11] / 6);
+			let sw = Math.ceil(blockProperties[thisLevel[y][x]][11] / 100);
 			tileFrames[y][x] = {cf: 0, playing: false, rotation: sw == 1 ? -60 : sw == 2 ? 60 : 0};
 			tileShadows[y][x] = [];
 			tileBorders[y][x] = [];
@@ -4325,12 +4341,12 @@ function addTileMovieClip(x, y, context) {
 	let t = thisLevel[y][x];
 	if (blockProperties[t][16] > 0) {
 		if (blockProperties[t][16] == 1) {
-			if (blockProperties[t][11] > 0 && typeof svgLevers[(blockProperties[t][11] - 1) % 6] !== 'undefined') {
+			if (blockProperties[t][11] > 0 && typeof svgLevers[(blockProperties[t][11] - 1) % 100] !== 'undefined') {
 				context.save();
 				context.translate(x * 30 + 15, y * 30 + 28);
 				context.rotate(tileFrames[y][x].rotation * (Math.PI / 180));
 				context.translate(-x * 30 - 15, -y * 30 - 28); // TODO: find out how to remove this line
-				context.drawImage(svgLevers[(blockProperties[t][11] - 1) % 6], x * 30, y * 30, svgLevers[0].width / scaleFactor, svgLevers[0].height / scaleFactor);
+				context.drawImage(svgLevers[(blockProperties[t][11] - 1) % 100], x * 30, y * 30, svgLevers[0].width / scaleFactor, svgLevers[0].height / scaleFactor);
 				context.restore();
 				// Math.floor(blockProperties[t][11]/6);
 				// Math.floor(blockProperties[t][11]/6)
@@ -4426,7 +4442,7 @@ function calculateShadowsAndBorders() {
 					setAmbientShadow(x, y);
 				}
 				if (blockProperties[thisLevel[y][x]][13]) {
-					setBorder(x, y, t);
+					setBorder(x, y, t, thisLevel);
 				}
 			}
 		}
@@ -4461,17 +4477,16 @@ function setAmbientShadow(x, y) {
 	}
 }
 
-function setBorder(x, y, s) {
+function setBorder(x, y, s, lvl) {
 	let borderset = 0;
-	// TODO: remove this hard-coded array
-	if (metalTiles.includes(thisLevel[y][x])) borderset = 19;
+	if (metalTiles.includes(lvl[y][x])) borderset = 19;
 	tileBorders[y][x] = [];
 	if (outOfRange(x, y)) return;
 	let count = 0;
 	for (let i = 0; i < 4; i++) {
 		if (
 			!outOfRange(x + cardinal[i][0], y + cardinal[i][1]) &&
-			thisLevel[y + cardinal[i][1]][x + cardinal[i][0]] != s
+			lvl[y + cardinal[i][1]][x + cardinal[i][0]] != s
 		) {
 			count += Math.pow(2, 3 - i);
 		}
@@ -4480,9 +4495,9 @@ function setBorder(x, y, s) {
 	for (let i = 0; i < 4; i++) {
 		if (
 			!outOfRange(x + diagonal[i][0], y + diagonal[i][1]) &&
-			thisLevel[y][x + diagonal[i][0]] == s &&
-			thisLevel[y + diagonal[i][1]][x] == s &&
-			thisLevel[y + diagonal[i][1]][x + diagonal[i][0]] != s
+			lvl[y][x + diagonal[i][0]] == s &&
+			lvl[y + diagonal[i][1]][x] == s &&
+			lvl[y + diagonal[i][1]][x + diagonal[i][0]] != s
 		) {
 			tileBorders[y][x].push(16 + i + borderset);
 		}
@@ -4538,10 +4553,10 @@ function checkButton(i) {
 			for (let j = Math.floor((char[i].x - char[i].w) / 30); j <= Math.floor((char[i].x + char[i].w) / 30); j++) {
 				if (!outOfRange(j, yTile)) {
 					num = blockProperties[thisLevel[yTile][j]][11];
-					if (num >= 13) {
+					if (num > 200) {
 						if (tileFrames[yTile][j].cf != 1) {
 							playSound('buttonPress');
-							leverSwitch(num - 13);
+							leverSwitch(num - 201);
 							tileFrames[yTile][j].cf = 1;
 							tileFrames[yTile][j].playing = false;
 						}
@@ -4585,8 +4600,8 @@ function checkButton2(i, bypass) {
 					}
 				}
 				if (okay) {
-					if (bypass) leverSwitch2(blockProperties[thisLevel[y][x]][11] - 13, i);
-					else leverSwitch(blockProperties[thisLevel[y][x]][11] - 13);
+					if (bypass) leverSwitch2(blockProperties[thisLevel[y][x]][11] - 201, i);
+					else leverSwitch(blockProperties[thisLevel[y][x]][11] - 201);
 					playSound('buttonUnpress');
 					tileFrames[y][x].cf = 2;
 					tileFrames[y][x].playing = true;
@@ -5046,13 +5061,7 @@ function displayLine(level, line) {
 	playSound('dialoguePop');
 }
 
-function deathSound(s, p) {
-	soundEffects[s][0].currentTime = 0;
-	if (p) soundEffects[s][0].play();
-	else soundEffects[s][0].pause();
-}
-
-function playDeathSound(i, p) {
+function playDeathSound(i) {
 	let snd = 'none';
 	if (i == 0) {
 		snd = 'rubyDeath';
@@ -5065,7 +5074,7 @@ function playDeathSound(i, p) {
 	} else if (i == 5) {
 		snd = 'bubblePop';
 	}
-	if (snd != 'none') deathSound(snd, p);
+	if (snd != 'none') playSound(snd);
 }
 
 function startDeath(i) {
@@ -5123,10 +5132,9 @@ function bounce(i, snd) {
 	char[i].onob = false;
 	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
-	let randSnd = 1 + Math.floor(Math.random() * 3);
 	if (snd) {
-		soundEffects['bounce' + randSnd][0].currentTime = 0;
-		soundEffects['bounce' + randSnd][0].play();
+		let randSnd = 1 + Math.floor(Math.random() * 3);
+		playSound('bounce' + randSnd);
 	}
 }
 
@@ -5902,13 +5910,13 @@ function updateLCtiles() {
 	for (let x = 0; x < levelWidth; x++) {
 		for (let y = 0; y < levelHeight; y++) {
 			let tile = myLevel[1][y][x];
-			if (blockProperties[tile][11] > 0 && blockProperties[tile][11] < 13) {
+			if (blockProperties[tile][11] > 0 && blockProperties[tile][11] <= 200) {
 				osctx3.save();
 				osctx3.translate(tlx + (x + 0.5) * scale, tly + (y + 0.9333) * scale);
-				osctx3.rotate(blockProperties[tile][11] < 7 ? -1 : 1);
+				osctx3.rotate(blockProperties[tile][11] <= 100 ? -1 : 1);
 				osctx3.translate(-tlx - (x + 0.5) * scale, -tly - (y + 0.9333) * scale);
 				osctx3.drawImage(
-					svgLevers[(blockProperties[tile][11] - 1) % 6],
+					svgLevers[(blockProperties[tile][11] - 1) % 100],
 					tlx + x * scale,
 					tly + y * scale,
 					scale,
@@ -7593,13 +7601,13 @@ function exploreDrawThumbTile(context, x, y, tile) {
 			if (blockProperties[tile][16] == 1) {
 				if (
 					blockProperties[tile][11] > 0 &&
-					typeof svgLevers[(blockProperties[tile][11] - 1) % 6] !== 'undefined'
+					typeof svgLevers[(blockProperties[tile][11] - 1) % 100] !== 'undefined'
 				) {
 					context.save();
 					context.translate(x * 30 + 15, y * 30 + 28);
-					context.rotate((Math.ceil(blockProperties[tile][11] / 6) == 1 ? -60 : 60) * (Math.PI / 180));
+					context.rotate((Math.ceil(blockProperties[tile][11] / 100) == 1 ? -60 : 60) * (Math.PI / 180));
 					context.translate(-x * 30 - 15, -y * 30 - 28);
-					context.drawImage(svgLevers[(blockProperties[tile][11] - 1) % 6], x * 30, y * 30, svgLevers[0].width / scaleFactor, svgLevers[0].height / scaleFactor);
+					context.drawImage(svgLevers[(blockProperties[tile][11] - 1) % 100], x * 30, y * 30, svgLevers[0].width / scaleFactor, svgLevers[0].height / scaleFactor);
 					context.restore();
 				}
 				context.drawImage(svgTiles[tile], x * 30 + svgTilesVB[tile][0], y * 30 + svgTilesVB[tile][1], svgTilesVB[tile][2], svgTilesVB[tile][3]);
@@ -8527,7 +8535,7 @@ function draw() {
 							if (!outOfRange(x, y)) {
 								if (
 									blockProperties[thisLevel[y][x]][11] >= 1 &&
-									blockProperties[thisLevel[y][x]][11] <= 12
+									blockProperties[thisLevel[y][x]][11] <= 200
 								) {
 									if (Math.floor(char[i].x / 30) == x) {
 										let rot = (char[i].x - Math.floor(char[i].x / 30) * 30 - 15) * 5;
@@ -8539,7 +8547,7 @@ function draw() {
 												(rot < 0 && tileFrames[y][x].rotation > 0) ||
 												(rot > 0 && tileFrames[y][x].rotation < 0)
 											) {
-												leverSwitch((blockProperties[thisLevel[y][x]][11] - 1) % 6);
+												leverSwitch((blockProperties[thisLevel[y][x]][11] - 1) % 100);
 												playSound('buttonPress');
 											}
 											tileFrames[y][x].rotation = rot;
@@ -9447,13 +9455,13 @@ function draw() {
 								let sc = bs / 30;
 								let tlx = 660 + (bdist - bs) + (j % bpr) * bdist;
 								let tly = (selectedTab + 1) * tabHeight + (bdist - bs) + Math.floor(j / bpr) * bdist;
-								if (blockProperties[thisTile][11] > 0 && blockProperties[thisTile][11] < 13) {
+								if (blockProperties[thisTile][11] > 0 && blockProperties[thisTile][11] <= 200) {
 									ctx.save();
 									ctx.translate(tlx + 15 * sc, tly + 28 * sc);
-									ctx.rotate(blockProperties[thisTile][11] < 7 ? -1 : 1);
+									ctx.rotate(blockProperties[thisTile][11] <= 100 ? -1 : 1);
 									ctx.translate(-tlx - 15 * sc, -tly - 28 * sc);
 									// ctx.translate(-tlx - (rot+0.5) * scale, -tly - (i+0.9333) * scale);
-									ctx.drawImage(svgLevers[(blockProperties[thisTile][11] - 1) % 6], tlx, tly, bs, bs);
+									ctx.drawImage(svgLevers[(blockProperties[thisTile][11] - 1) % 100], tlx, tly, bs, bs);
 									ctx.restore();
 								}
 								ctx.drawImage(img, tlx + vb[0] * sc, tly + vb[1] * sc, vb[2] * sc, vb[3] * sc);

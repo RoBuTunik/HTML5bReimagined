@@ -749,9 +749,23 @@ const blockProperties = [
 	/*139*/	[false,false,false,false,false,false,false,false,true,true,false,4,0,false,false,true,1,false], // Red switch left
 	// tile14
 	/*140*/	[false,false,false,false,false,false,false,false,true,true,false,104,0,false,false,true,1,false], // Red switch right
+	/*141*/	[true,true,true,true,false,false,false,false,true,true,false,204,0,false,false,true,5,false], // Red button
+	/*142*/	[true,true,true,true,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch block on
+	/*143*/	[true,true,true,true,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Dark red switch block on
+	/*144*/	[false,false,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch block off
+	/*145*/	[false,false,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Dark red switch block off
+	/*146*/	[false,true,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch platform up on
+	/*147*/	[false,false,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch platform up off
 ];
 const metalTiles = [98, 102, 105, 107];
-const switches = [[31,33,32,34,79,78,81,82],[51,53,52,54,133,134],[65,61,60,62,63,64],[],[],[14,16,83,85]];
+const switches = [
+	[31, 33, 32, 34, 79, 78, 81, 82], // Yellow
+	[51, 53, 52, 54, 133, 134], // Blue
+	[65, 61, 60, 62, 63, 64], // Green
+	[142, 144, 143, 145, 146, 147], // Red
+	[], // Purple
+	[14, 16, 83, 85], // Gray
+];
 const gradientAnimated = [7, 15, 49, 59, 66, 74, 80, 101, 104];
 const tileOrder = [
 	0, 8, 6, 12, // Special tiles
@@ -786,7 +800,8 @@ const tileOrder = [
 	57, 58, 71, // Green switchers
 	65, 60, 61, 62, 63, 64, // Green switchables
 
-	139, 140, // Red switchers
+	139, 140, 141, // Red switchers
+	142, 143, 144, 145, 146, 147, // Red switchables
 
 	108, 109, // Gray switchers
 
@@ -801,7 +816,7 @@ const tileOrder = [
 	7, 59, 80, // Trees
 ];
 
-// [0] - hitbox width
+// [0] - hitbox width/2
 // [1] - hitbox height
 // [2] - weight
 // [3] - carried object height
@@ -809,65 +824,72 @@ const tileOrder = [
 // [5] - cached as bitmap
 // [6] - heat speed
 // [7] - number of frames
-// [8] - has arms
+// [8] - can carry
 // [9] - default state (in level creator)
+// [10] - jump power
+// [11] - can be carried
+// [12] - can recover
+// [13] - name
 const charD = [
-	[28,45.4,0.45,27,0.8,false,1,1,true,10],
-	[23,56,0.36,31,0.8,false,1.7,1,true,10],
-	[20,51,0.41,20,0.85,false,5,1,false,10],
-	[10,86,0.26,31,0.8,false,1.6,1,true,10],
-	[10,84,0.23,31,0.8,false,1.4,1,true,10],
-	[28,70,0.075,28,0.8,false,9,1,true,10],
-	[26,49,0.2,20,0.75,false,0.6,1,false,10],
-	[44,65,0.8,20,0.75,false,0.8,1,false,10],
-	[16,56,0.25,17,0.76,false,0.8,1,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[0,0,0,0,0,false,1,0,true,10],
-	[36.5,72.8,1,20,0.6,false,0,1,true,6],
-	[15.1,72.8,0.6,20,0.7,true,0,1,true,6],
-	[20,40,0.15,20,0.7,true,0.7,1,true,6],
-	[25,50,0.64,20,0.6,true,0.1,1,true,6],
-	[25,10,1,5,0.7,true,0.2,1,true,4],
-	[25,50,1,20,0.7,true,0.1,1,true,3],
-	[25,29,0.1,20,0.8,true,1,1,true,6],
-	[21.5,43,0.3,20,0.6,true,0.5,1,true,6],
-	[35,60,1,20,0.7,true,0.1,1,true,3],
-	[22.5,45,1,20,0.7,true,0.8,1,true,3],
-	[25,50,1,20,0.7,true,0.1,27,true,3],
-	[15,30,0.64,20,0.6,true,0.2,1,true,3],
-	[10,55,0.8,20,0.3,true,0.4,1,true,6],
-	[45,10,1,20,0.7,true,0.2,1,true,4],
-	[20,40,1,20,0.8,false,0.8,5,true,3],
-	[16,45,0.4,20,0.94,false,1.1,60,true,3],
-	[25,10,1,20,0.7,true,0.3,1,true,3],
-	[45,10,0.4,20,0.7,true,0.7,1,true,4],
-	[15,50,0.1,20,0.8,true,1.9,1,true,6],
-	[25,25,0.1,20,0.8,true,1.7,1,true,6],
-	[30,540,10,20,0.4,true,0,1,true,3]
+	[28, 45.4, 0.45, 27, 0.8, false, 1, 1, true, 10, 10, true, true, "Ruby"],
+	[23, 56, 0.36, 31, 0.8, false, 1.7, 1, true, 10, 11, true, true, "Book"],
+	[20, 51, 0.41, 20, 0.85, false, 5, 1, false, 10, 10, true, false, "Ice Cube"],
+	[10, 86, 0.26, 31, 0.8, false, 1.6, 1, true, 10, 12, true, true, "Match"],
+	[10, 84, 0.23, 31, 0.8, false, 1.4, 1, true, 10, 12, true, true, "Pencil"],
+	[28, 70, 0.075, 28, 0.8, false, 9, 1, true, 10, 20, true, true, "Bubble"],
+	[26, 49, 0.2, 20, 0.75, false, 0.6, 1, false, 10, 10, true, true, "Lego Brick"],
+	[44, 65, 0.8, 20, 0.75, false, 0.8, 1, false, 10, 10, true, true, "Waffle"],
+	[16, 56, 0.25, 17, 0.76, false, 0.8, 1, true, 10, 10, true, true, "Tune"],
+	[23, 56, 0.36, 31, 0.8, false, 1.7, 1, true, 10, 11, true, true, "Blocky"],
+
+	// blank chars
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
+
+	[36.5, 72.8, 1, 20, 0.6, false, 0, 1, true, 6, 10, true, false, ""],
+	[15.1, 72.8, 0.6, 20, 0.7, true, 0, 1, true, 6, 10, true, false, ""],
+	[20, 40, 0.15, 20, 0.7, true, 0.7, 1, true, 6, 10, true, false, ""],
+	[25, 50, 0.64, 20, 0.6, true, 0.1, 1, true, 6, 10, true, false, ""],
+	[25, 10, 1, 5, 0.7, true, 0.2, 1, true, 4, 10, true, false, ""],
+	[25, 50, 1, 20, 0.7, true, 0.1, 1, true, 3, 10, true, false, ""],
+	[25, 29, 0.1, 20, 0.8, true, 1, 1, true, 6, 10, true, false, ""],
+	[21.5, 43, 0.3, 20, 0.6, true, 0.5, 1, true, 6, 10, true, false, ""],
+	[35, 60, 1, 20, 0.7, true, 0.1, 1, true, 3, 10, true, false, ""],
+	[22.5, 45, 1, 20, 0.7, true, 0.8, 1, true, 3, 10, true, false, ""],
+	[25, 50, 1, 20, 0.7, true, 0.1, 27, true, 3, 10, true, false, ""],
+	[15, 30, 0.64, 20, 0.6, true, 0.2, 1, true, 3, 10, true, false, ""],
+	[10, 55, 0.8, 20, 0.3, true, 0.4, 1, true, 6, 10, true, false, ""],
+	[45, 10, 1, 20, 0.7, true, 0.2, 1, true, 4, 10, true, false, ""],
+	[20, 40, 1, 20, 0.8, false, 0.8, 5, true, 3, 10, true, false, ""],
+	[16, 45, 0.4, 20, 0.94, false, 1.1, 60, true, 3, 10, true, false, ""],
+	[25, 10, 1, 20, 0.7, true, 0.3, 1, true, 3, 10, true, false, ""],
+	[45, 10, 0.4, 20, 0.7, true, 0.7, 1, true, 4, 10, true, false, ""],
+	[15, 50, 0.1, 20, 0.8, true, 1.9, 1, true, 6, 10, true, false, ""],
+	[25, 25, 0.1, 20, 0.8, true, 1.7, 1, true, 6, 10, true, false, ""],
+	[30, 540, 10, 20, 0.4, true, 0, 1, true, 3, 10, true, false, ""]
 ];
 
 const diaMouths = [
@@ -1967,7 +1989,125 @@ const charModels = [
 			]
 		]
 	},
-	{},
+	{
+		// Blocky
+		torsomat: { a: 1, b: 0, c: 0, d: 1, tx: 1.15, ty: -8.95 },
+		legx: [-5.55, 8.8],
+		legy: [-11.25, -11.25],
+		firemat: { a: -0.4046630859375, b: 0.0060882568359375, c: 0.006805419921875, d: 0.5772552490234375, tx: 1.05, ty: -51.05 },
+		charimgmat: { a: 0.15, b: 0, c: 0, d: 0.15, tx: 0.1, ty: 0.4 },
+		burstmat: { a: 1.0688934326171875, b: 0, c: 0, d: 1, tx: 1.6, ty: -32.25 },
+		defaultExpr: 1,
+		mouthType: 0,
+		frames: [
+			[ // walk left
+				{ type: 'anim', anim: 0, offset: 15, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: -21.05, ty: -17.65 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.35, ty: -26.65 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.375213623046875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -9.05, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 4.2, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: -0.3180999755859375, b: 0.01141357421875, c: 0.022735595703125, d: 0.43402099609375, tx: -2.5, ty: -17.5 } },
+				{ type: 'anim', anim: 0, offset: 0, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: 17.95, ty: -17.65 } },
+			],
+			[ // stand left
+				{ type: 'static', bodypart: 2, mat: { a: 0.3733978271484375, b: 0.0712127685546875, c: -0.0721435546875, d: 0.3782196044921875, tx: -21.35, ty: -16.9 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.375213623046875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -8.8, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 4.45, ty: -30 } },
+				{ type: 'static', bodypart: 2, mat: { a: -0.3849334716796875, b: 0.0501251220703125, c: 0.0777587890625, d: 0.3766937255859375, tx: 21.1, ty: -18.65 } },
+				{ type: 'dia', mat: { a: 0.886138916015625, b: 0, c: 0, d: 0.886138916015625, tx: -2.05, ty: -18.05 } },
+			],
+			[ // walk right
+				{ type: 'anim', anim: 0, offset: 0, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: 22.1, ty: -17.65 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.85, ty: -26.65 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -4.2, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 9.05, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: 0.3180999755859375, b: 0.01141357421875, c: -0.022735595703125, d: 0.43402099609375, tx: 2.5, ty: -17.5 } },
+				{ type: 'anim', anim: 0, offset: 15, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: -17.95, ty: -17.65 } },
+			],
+			[ // stand right
+				{ type: 'static', bodypart: 2, mat: { a: -0.3730010986328125, b: 0.071136474609375, c: 0.0718994140625, d: 0.3780364990234375, tx: 21.2, ty: -16.8 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: -0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -4.4, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 8.75, ty: -30 } },
+				{ type: 'static', bodypart: 2, mat: { a: 0.3796844482421875, b: 0.0500335693359375, c: -0.076751708984375, d: 0.3769683837890625, tx: -20.85, ty: -18.65 } },
+				{ type: 'dia', mat: { a: -0.886138916015625, b: 0, c: 0, d: 0.886138916015625, tx: 2.35, ty: -18.05 } },
+			],
+			[ // fall left
+				{ type: 'anim', anim: 1, offset: 0, loop: false, mat: { a: 1, b: 0, c: 0, d: 1, tx: -18.55, ty: -24.65 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37451171875, b: -0.0196380615234375, c: -0.0245208740234375, d: 0.374267578125, tx: -7.25, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37451171875, b: -0.0196380615234375, c: -0.0245208740234375, d: 0.374267578125, tx: 6, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: -0.3180389404296875, b: -0.0084075927734375, c: -0.004058837890625, d: 0.310455322265625, tx: -1.55, ty: -17.8 } },
+				{ type: 'anim', anim: 1, offset: 0, loop: false, mat: { a: -1, b: 0, c: 0, d: 1, tx: 21.4, ty: -24.65 } },
+			],
+			[ // fall right
+				{ type: 'anim', anim: 1, offset: 0, loop: false, mat: { a: -1, b: 0, c: 0, d: 1, tx: 21.4, ty: -24.65 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37451171875, b: -0.0196380615234375, c: 0.0245208740234375, d: 0.374267578125, tx: -3.2, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37451171875, b: -0.0196380615234375, c: 0.0245208740234375, d: 0.374267578125, tx: 10.05, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: 0.3180389404296875, b: -0.0084075927734375, c: 0.004058837890625, d: 0.310455322265625, tx: 4.35, ty: -17.8 } },
+				{ type: 'anim', anim: 1, offset: 0, loop: false, mat: { a: 1, b: 0, c: 0, d: 1, tx: -18.55, ty: -24.65 } },
+			],
+			[ // carry left
+				{ type: 'static', bodypart: 3, mat: { a: -0.0284576416015625, b: -0.457672119140625, c: -0.385009765625, d: 0.023651123046875, tx: -17.15, ty: -21.15 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37451171875, b: -0.0196380615234375, c: -0.0245208740234375, d: 0.374267578125, tx: -7.25, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37451171875, b: -0.0196380615234375, c: -0.0245208740234375, d: 0.374267578125, tx: 6, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: -0.3180389404296875, b: -0.0084075927734375, c: -0.004058837890625, d: 0.310455322265625, tx: -1.55, ty: -17.8 } },
+				{ type: 'static', bodypart: 3, mat: { a: -0.02813720703125, b: -0.4629669189453125, c: -0.386383056640625, d: 0.0238037109375, tx: 9.25, ty: -19.75 } },
+			],
+			[ // carry right
+				{ type: 'static', bodypart: 3, mat: { a: 0.0284576416015625, b: -0.457672119140625, c: 0.385009765625, d: 0.023651123046875, tx: 16.9, ty: -21.25 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37451171875, b: -0.0196380615234375, c: 0.0245208740234375, d: 0.374267578125, tx: -6.4, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37451171875, b: -0.0196380615234375, c: 0.0245208740234375, d: 0.374267578125, tx: 6.85, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: 0.3180389404296875, b: -0.0084075927734375, c: 0.004058837890625, d: 0.310455322265625, tx: 1.15, ty: -17.8 } },
+				{ type: 'static', bodypart: 3, mat: { a: 0.02813720703125, b: -0.46295166015625, c: 0.386383056640625, d: 0.0238037109375, tx: -9.5, ty: -19.75 } },
+			],
+			[ // die left
+				{ type: 'static', bodypart: 2, mat: { a: -0.26220703125, b: 0.2750244140625, c: -0.2784881591796875, d: -0.2655029296875, tx: -20.2, ty: -24.1 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 4, mat: { a: -0.37493896484375, b: -0.011810302734375, c: -0.016754150390625, d: 0.3746490478515625, tx: -7.6, ty: -30 } },
+				{ type: 'static', bodypart: 4, mat: { a: -0.3749237060546875, b: -0.011810302734375, c: -0.016448974609375, d: 0.3746795654296875, tx: 5.6, ty: -30 } },
+				{ type: 'static', bodypart: 5, mat: { a: -0.3182525634765625, b: -0.0028076171875, c: 0.0003204345703125, d: 0.3105926513671875, tx: -0.7, ty: -18.75 } },
+				{ type: 'static', bodypart: 2, mat: { a: 0.21820068359375, b: 0.313629150390625, c: 0.29925537109375, d: -0.2410430908203125, tx: 21.95, ty: -24.25 } },
+			],
+			[ // die right
+				{ type: 'static', bodypart: 2, mat: { a: 0.26220703125, b: 0.2750244140625, c: 0.2784881591796875, d: -0.2655029296875, tx: 20.6, ty: -24.5 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 4, mat: { a: 0.3748626708984375, b: -0.0118255615234375, c: 0.0179901123046875, d: 0.374542236328125, tx: -5.2, ty: -30 } },
+				{ type: 'static', bodypart: 4, mat: { a: 0.3748779296875, b: 0.011810302734375, c: 0.0179901123046875, d: 0.3745269775390625, tx: 8, ty: -30 } },
+				{ type: 'static', bodypart: 5, mat: { a: 0.3182220458984375, b: -0.0028076171875, c: -0.0013580322265625, d: 0.3105621337890625, tx: 1.1, ty: -19.15 } },
+				{ type: 'static', bodypart: 2, mat: { a: -0.21820068359375, b: 0.313629150390625, c: -0.29925537109375, d: -0.2410430908203125, tx: -21.2, ty: -24.75 } },
+			],
+			[ // recover left
+				{ type: 'armroot', id: 0, pos: { x: -21.1, y: -17.05 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.375213623046875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -8.8, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: -0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 4.45, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: -0.3180999755859375, b: 0.01141357421875, c: 0.022735595703125, d: 0.43402099609375, tx: -2.25, ty: -17.05 } },
+				{ type: 'armroot', id: 1, pos: { x: 21.5, y: -17.05 } },
+			],
+			[ // recover right
+				{ type: 'armroot', id: 0, pos: { x: 22.1, y: -17.05 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -3.45, ty: -30 } },
+				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 9.8, ty: -30 } },
+				{ type: 'static', bodypart: 1, mat: { a: 0.3180999755859375, b: 0.01141357421875, c: -0.022735595703125, d: 0.43402099609375, tx: 3.25, ty: -17.05 } },
+				{ type: 'armroot', id: 1, pos: { x: -20.5, y: -17.05 } },
+			],
+			[ // recover left near
+				{ type: 'armroot', id: 0, pos: { x: 22.1, y: -17.05 } },
+				{ type: 'armroot', id: 1, pos: { x: -20.5, y: -17.05 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+			],
+			[ // recover right near
+				{ type: 'armroot', id: 0, pos: { x: 22.1, y: -17.05 } },
+				{ type: 'armroot', id: 1, pos: { x: -20.5, y: -17.05 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.5, ty: -26.2 } },
+			]
+		]
+	},
 	{},
 	{},
 	{},
@@ -2303,7 +2443,7 @@ let svgLevers = new Array(6);
 let svgShadows = new Array(19);
 let svgTileBorders = new Array(38);
 let svgChars = new Array(charD.length);
-let svgBodyParts = new Array(63);
+let svgBodyParts = new Array(64);
 let svgHPRCBubble = new Array(5);
 let svgCSBubble;
 let svgHPRCCrank;
@@ -3503,7 +3643,8 @@ function resetLevel() {
 				charD[id][4],
 				charD[id][6],
 				charD[id][8],
-				id < 35 ? charModels[id].defaultExpr : 0
+				id < 35 ? charModels[id].defaultExpr : 0,
+				charD[id][10]
 			);
 			if (char[i].charState == 9) {
 				char[i].expr = 1;
@@ -3563,7 +3704,8 @@ function resetLevel() {
 				charD[id][4],
 				charD[id][6],
 				charD[id][8],
-				id < 35 ? charModels[id].defaultExpr : 0
+				id < 35 ? charModels[id].defaultExpr : 0,
+				charD[id][10]
 			);
 			if (char[i].charState == 9) {
 				char[i].expr = 1;
@@ -3622,7 +3764,8 @@ function resetLevel() {
 				charD[id][4],
 				charD[id][6],
 				charD[id][8],
-				id < 35 ? charModels[id].defaultExpr : 0
+				id < 35 ? charModels[id].defaultExpr : 0,
+				charD[id][10]
 			);
 			if (char[i].charState == 9) {
 				char[i].expr = 1;
@@ -4901,6 +5044,7 @@ function verticalType(i, sign, prop, pist) {
 	let toReturn = false;
 	for (let j = Math.floor((char[i].x - char[i].w) / 30); j <= Math.floor((char[i].x + char[i].w - 0.01) / 30); j++) {
 		if (!outOfRange(j, yTile)) {
+			if (thisLevel[yTile] == undefined) continue;
 			if (thisLevel[yTile][j] == prop) {
 				if (pist) {
 					tileFrames[yTile][j].playing = true;
@@ -5128,7 +5272,7 @@ function bounce(i, snd) {
 	if (char[i].dire % 2 == 0) {
 		char[i].fricGoal = 0;
 	}
-	char[i].jump(-jumpPower * 1.66);
+	char[i].jump(-26 / (1 + char[i].weight2));
 	char[i].onob = false;
 	char[i].cTime = 999;
 	char[i].y = Math.floor(char[i].y / 30) * 30 - 10;
@@ -5247,6 +5391,7 @@ function charThrow(i) {
 	char[i].weight2 = char[i].weight;
 	char[char[i].carryObject].weight2 = char[char[i].carryObject].weight;
 	char[char[i].carryObject].vy = -7.5;
+	char[i].vy += (char[char[i].carryObject].weight / 2);
 	char[char[i].carryObject].vx = char[i].vx;
 	if (char[i].dire <= 2) {
 		char[char[i].carryObject].vx -= 3;
@@ -6605,7 +6750,8 @@ function cloneChar(charObj) {
 		charObj.friction,
 		charObj.heatSpeed,
 		charObj.hasArms,
-		charObj.dExpr
+		charObj.dExpr,
+		charObj.jumpPower
 	);
 	clone.placed = false;
 	clone.speed = charObj.speed;
@@ -6642,7 +6788,8 @@ function generateCharFromInfo(info) {
 		charD[id][4],
 		charD[id][6],
 		charD[id][8],
-		id < 35 ? charModels[id].defaultExpr : 0
+		id < 35 ? charModels[id].defaultExpr : 0,
+		charD[id][10]
 	);
 	if (info[1] == -1 || info[2] == -1) {
 		newChar.placed = false;
@@ -6904,7 +7051,8 @@ function readLevelString(str) {
 			charD[id][4],
 			charD[id][6],
 			charD[id][8],
-			id < 35 ? charModels[id].defaultExpr : 0
+			id < 35 ? charModels[id].defaultExpr : 0,
+			charD[id][10]
 		);
 		if (myLevelChars[1][e][1] < 0 || myLevelChars[1][e][2] < 0) char[e].placed = false;
 		if (myLevelChars[1][e][3] == 3 || myLevelChars[1][e][3] == 4) {
@@ -7099,7 +7247,8 @@ function readExploreLevelString(str, getCoin) {
 			charD[id][4],
 			charD[id][6],
 			charD[id][8],
-			id < 35 ? charModels[id].defaultExpr : 0
+			id < 35 ? charModels[id].defaultExpr : 0,
+			charD[id][10]
 		);
 		if (myLevelChars[1][e][1] < 0 || myLevelChars[1][e][2] < 0) char[e].placed = false;
 		if (myLevelChars[1][e][3] == 3 || myLevelChars[1][e][3] == 4) {
@@ -8392,7 +8541,12 @@ function draw() {
 							if (!grounded) char[control].doubleJumps--;
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
 							else {
-								char[control].jump(-jumpPower);
+								if (char[control].carry) {
+									char[control].jump(-char[control].jumpPower / (1 + char[char[control].carryObject].weight / 2));
+								} else {
+									char[control].jump(-char[control].jumpPower);
+								}
+								
 								playSound('jump');
 							}
 							char[control].onob = false;
@@ -9112,7 +9266,8 @@ function draw() {
 										charD[i][4],
 										charD[i][6],
 										charD[i][8],
-										i < 35 ? charModels[i].defaultExpr : 0
+										i < 35 ? charModels[i].defaultExpr : 0,
+										charD[i][10]
 									)
 								);
 								char[char.length - 1].placed = false;
@@ -11323,7 +11478,7 @@ async function postExploreModifyLevel(id, title, desc, difficulty, file) {
 
 // Before, this was in a separate file like it was in the Flash version, but it made minifying take more steps and I didn't really edit it that often, so I decided it was just easier to move it into the same file.
 class Character {
-	constructor(tid, tx, ty, tpx, tpy, tcharState, tw, th, tweight, tweight2, th2, tfriction, theatSpeed, thasArms, tdExpr) {
+	constructor(tid, tx, ty, tpx, tpy, tcharState, tw, th, tweight, tweight2, th2, tfriction, theatSpeed, thasArms, tdExpr, tjumpPower) {
 		this.id = tid;
 		this.x = tx;
 		this.y = ty;
@@ -11380,13 +11535,14 @@ class Character {
 
 		this.cTime = 999;
 		this.doubleJumps = 0;
+		this.jumpPower = tjumpPower;
 	}
 
 	applyForces(grav, control, waterUpMaxSpeed) {
 		let gravity = Math.sign(grav) * Math.sqrt(Math.abs(grav));
 		let smoothing = this.submerged >= 2 ? 1.2 : 1;
 
-		if (!this.onob && this.submerged != 1) this.vy = Math.min(this.vy + gravity, 25);
+		if (!this.onob && this.submerged != 1) this.vy = Math.min(this.vy + 0.58, 30);
 		if (this.onob || control) {
 			this.vx = (this.vx - this.fricGoal) * (this.friction / smoothing) + this.fricGoal;
 		} else {

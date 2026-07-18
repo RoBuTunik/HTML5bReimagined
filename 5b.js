@@ -835,15 +835,15 @@ const charD = [
 	[23, 56, 0.36, 31, 0.8, false, 1.7, 1, true, 10, 11, true, true, "Book"],
 	[20, 51, 0.41, 20, 0.85, false, 5, 1, false, 10, 10, true, false, "Ice Cube"],
 	[10, 86, 0.26, 31, 0.8, false, 1.6, 1, true, 10, 12, true, true, "Match"],
-	[10, 84, 0.23, 31, 0.8, false, 1.4, 1, true, 10, 12, true, true, "Pencil"],
-	[28, 70, 0.075, 28, 0.8, false, 9, 1, true, 10, 20, true, true, "Bubble"],
-	[26, 49, 0.2, 20, 0.75, false, 0.6, 1, false, 10, 10, true, true, "Lego Brick"],
-	[44, 65, 0.8, 20, 0.75, false, 0.8, 1, false, 10, 10, true, true, "Waffle"],
-	[16, 56, 0.25, 17, 0.76, false, 0.8, 1, true, 10, 10, true, true, "Tune"],
+	[10, 84, 0.23, 31, 0.8, false, 1.4, 1, true, 10, 13, true, true, "Pencil"],
+	[28, 70, 0.075, 28, 0.8, false, 9, 1, true, 10, 19, true, true, "Bubble"],
+	[26, 49, 0.2, 20, 0.82, false, 0.6, 1, false, 10, 12, true, true, "Lego Brick"],
+	[44, 65, 0.8, 20, 0.77, false, 0.8, 1, false, 10, 8, true, true, "Waffle"],
+	[16, 56, 0.25, 17, 0.82, false, 0.8, 1, true, 10, 10, true, true, "Tune"],
 	[23, 56, 0.36, 31, 0.8, false, 1.7, 1, true, 10, 11, true, true, "Blocky"],
+	[10, 84, 0.23, 31, 0.78, false, 1.4, 1, true, 10, 13, true, true, "Pen"],
 
 	// blank chars
-	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
 	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
 	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
 	[0, 0, 0, 0, 0, false, 1, 0, true, 10, 10, false, false, ""],
@@ -933,32 +933,34 @@ const bodyPartAnimations = [
 		// Running Arm
 		bodypart: 41,
 		frames: [
-			{a:0.1691741943359375,b:-0.3343353271484375,c:-0.32513427734375,d:-0.164520263671875,tx:0,ty:0},
-			{a:0.1628875732421875,b:-0.3369293212890625,c:-0.32763671875,d:-0.1584014892578125,tx:-0.05,ty:0.05},
-			{a:0.143402099609375,b:-0.3457183837890625,c:-0.3361968994140625,d:-0.13946533203125,tx:0,ty:0.05},
-			{a:0.106475830078125,b:-0.35894775390625,c:-0.3490753173828125,d:-0.1035614013671875,tx:0,ty:0.15},
-			{a:0.0476837158203125,b:-0.37158203125,c:-0.3613433837890625,d:-0.0463714599609375,tx:0,ty:0.2},
-			{a:-0.0312652587890625,b:-0.3734130859375,c:-0.3631439208984375,d:0.0304107666015625,tx:0.1,ty:0.3},
-			{a:-0.130035400390625,b:-0.3511962890625,c:-0.341522216796875,d:0.12646484375,tx:0.2,ty:0.45},
-			{a:-0.2310028076171875,b:-0.29461669921875,c:-0.2865142822265625,d:0.224639892578125,tx:0.4,ty:0.6},
-			{a:-0.31005859375,b:-0.209991455078125,c:-0.2042236328125,d:0.3015289306640625,tx:0.5,ty:0.6},
-			{a:-0.3542327880859375,b:-0.1222076416015625,c:-0.1188507080078125,d:0.3444976806640625,tx:0.75,ty:0.65},
-			{a:-0.3712921142578125,b:-0.0524749755859375,c:-0.051025390625,d:0.361083984375,tx:0.9,ty:0.65},
-			{a:-0.37493896484375,b:-0.0117645263671875,c:-0.011444091796875,d:0.3646240234375,tx:1,ty:0.6},
-			{a:-0.37518310546875,b:-0.0000152587890625,c:-0.0000152587890625,d:0.3648681640625,tx:0.95,ty:0.55},
-			{a:-0.375152587890625,b:-0.0035858154296875,c:-0.0034942626953125,d:0.364837646484375,tx:0.95,ty:0.55},
-			{a:-0.3746490478515625,b:-0.0182647705078125,c:-0.01776123046875,d:0.364349365234375,tx:0.95,ty:0.55},
-			{a:-0.3723907470703125,b:-0.044281005859375,c:-0.0430755615234375,d:0.3621368408203125,tx:0.85,ty:0.6},
-			{a:-0.3656005859375,b:-0.0829010009765625,c:-0.08062744140625,d:0.35552978515625,tx:0.8,ty:0.65},
-			{a:-0.3497314453125,b:-0.1344451904296875,c:-0.1307373046875,d:0.3401031494140625,tx:0.7,ty:0.6},
-			{a:-0.3190460205078125,b:-0.196136474609375,c:-0.19073486328125,d:0.310272216796875,tx:0.6,ty:0.6},
-			{a:-0.2664947509765625,b:-0.2629547119140625,c:-0.2557220458984375,d:0.2591705322265625,tx:0.5,ty:0.6},
-			{a:-0.19036865234375,b:-0.3223876953125,c:-0.3135223388671875,d:0.1851348876953125,tx:0.3,ty:0.5},
-			{a:-0.0957794189453125,b:-0.36212158203125,c:-0.3521575927734375,d:0.0931396484375,tx:0.2,ty:0.45},
-			{a:-0.0017242431640625,b:-0.3748016357421875,c:-0.3644866943359375,d:0.001678466796875,tx:0.15,ty:0.3},
-			{a:0.076385498046875,b:-0.3666534423828125,c:-0.3565673828125,d:-0.07427978515625,tx:0.1,ty:0.15},
-			{a:0.129913330078125,b:-0.35107421875,c:-0.3414154052734375,d:-0.1263275146484375,tx:0.05,ty:0.05},
-			{a:0.159912109375,b:-0.338348388671875,c:-0.32904052734375,d:-0.155517578125,tx:0.05,ty:0.05},
+			{ a: 0.1691741943359375, b: -0.3343353271484375, c: -0.32513427734375, d: -0.164520263671875, tx: 0, ty: 0 },
+			{ a: 0.1628875732421875, b: -0.3369293212890625, c: -0.32763671875, d: -0.1584014892578125, tx: -0.05, ty: 0.05 },
+			{ a: 0.143402099609375, b: -0.3457183837890625, c: -0.3361968994140625, d: -0.13946533203125, tx: 0, ty: 0.05 },
+			{ a: 0.106475830078125, b: -0.35894775390625, c: -0.3490753173828125, d: -0.1035614013671875, tx: 0, ty: 0.15 },
+			{ a: 0.0476837158203125, b: -0.37158203125, c: -0.3613433837890625, d: -0.0463714599609375, tx: 0, ty: 0.2 },
+			{ a: -0.0312652587890625, b: -0.3734130859375, c: -0.3631439208984375, d: 0.0304107666015625, tx: 0.1, ty: 0.3 },
+			{ a: -0.0312652587890625, b: -0.3734130859375, c: -0.3631439208984375, d: 0.0304107666015625, tx: 0.1, ty: 0.3 },//dup
+			{ a: -0.130035400390625, b: -0.3511962890625, c: -0.341522216796875, d: 0.12646484375, tx: 0.2, ty: 0.45 },
+			{ a: -0.2310028076171875, b: -0.29461669921875, c: -0.2865142822265625, d: 0.224639892578125, tx: 0.4, ty: 0.6 },
+			{ a: -0.31005859375, b: -0.209991455078125, c: -0.2042236328125, d: 0.3015289306640625, tx: 0.5, ty: 0.6 },
+			{ a: -0.3542327880859375, b: -0.1222076416015625, c: -0.1188507080078125, d: 0.3444976806640625, tx: 0.75, ty: 0.65 },
+			{ a: -0.3712921142578125, b: -0.0524749755859375, c: -0.051025390625, d: 0.361083984375, tx: 0.9, ty: 0.65 },
+			{ a: -0.37493896484375, b: -0.0117645263671875, c: -0.011444091796875, d: 0.3646240234375, tx: 1, ty: 0.6 },
+			{ a: -0.37518310546875, b: -0.0000152587890625, c: -0.0000152587890625, d: 0.3648681640625, tx: 0.95, ty: 0.55 },
+			{ a: -0.375152587890625, b: -0.0035858154296875, c: -0.0034942626953125, d: 0.364837646484375, tx: 0.95, ty: 0.55 },
+			{ a: -0.3746490478515625, b: -0.0182647705078125, c: -0.01776123046875, d: 0.364349365234375, tx: 0.95, ty: 0.55 },
+			{ a: -0.3723907470703125, b: -0.044281005859375, c: -0.0430755615234375, d: 0.3621368408203125, tx: 0.85, ty: 0.6 },
+			{ a: -0.3656005859375, b: -0.0829010009765625, c: -0.08062744140625, d: 0.35552978515625, tx: 0.8, ty: 0.65 },
+			{ a: -0.3497314453125, b: -0.1344451904296875, c: -0.1307373046875, d: 0.3401031494140625, tx: 0.7, ty: 0.6 },
+			{ a: -0.3497314453125, b: -0.1344451904296875, c: -0.1307373046875, d: 0.3401031494140625, tx: 0.7, ty: 0.6 },//dup
+			{ a: -0.3190460205078125, b: -0.196136474609375, c: -0.19073486328125, d: 0.310272216796875, tx: 0.6, ty: 0.6 },
+			{ a: -0.2664947509765625, b: -0.2629547119140625, c: -0.2557220458984375, d: 0.2591705322265625, tx: 0.5, ty: 0.6 },
+			{ a: -0.19036865234375, b: -0.3223876953125, c: -0.3135223388671875, d: 0.1851348876953125, tx: 0.3, ty: 0.5 },
+			{ a: -0.0957794189453125, b: -0.36212158203125, c: -0.3521575927734375, d: 0.0931396484375, tx: 0.2, ty: 0.45 },
+			{ a: -0.0017242431640625, b: -0.3748016357421875, c: -0.3644866943359375, d: 0.001678466796875, tx: 0.15, ty: 0.3 },
+			{ a: 0.076385498046875, b: -0.3666534423828125, c: -0.3565673828125, d: -0.07427978515625, tx: 0.1, ty: 0.15 },
+			{ a: 0.129913330078125, b: -0.35107421875, c: -0.3414154052734375, d: -0.1263275146484375, tx: 0.05, ty: 0.05 },
+			{ a: 0.159912109375, b: -0.338348388671875, c: -0.32904052734375, d: -0.155517578125, tx: 0.05, ty: 0.05 },
 		]
 	},
 	{
@@ -1178,7 +1180,7 @@ const charModels = [
 		mouthType: 0,
 		frames: [
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-19.05,ty:-17.65}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-19.05,ty:-17.65}},
 				{type:'body',mat:{a:0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:0,ty:-24.75}},
 				{type:'static',bodypart:36,mat:{a:-0.400299072265625,b:0,c:0,d:0.400299072265625,tx:-13.05,ty:-20.25}},
 				{type:'static',bodypart:39,mat:{a:0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:-25.35,ty:-30.7}},
@@ -1194,12 +1196,12 @@ const charModels = [
 				{type:'static',bodypart:2,mat:{a:0.3648681640625,b:0,c:0.0000152587890625,d:0.3648681640625,tx:19.2,ty:-19.6}},
 			],
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:18.95,ty:-17.65}},
+				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:18.95,ty:-17.65}},
 				{type:'body',mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:-0.1,ty:-24.75}},
 				{type:'static',bodypart:36,mat:{a:0.400299072265625,b:0,c:0,d:0.400299072265625,tx:12.95,ty:-20.25}},
 				{type:'static',bodypart:39,mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:9.55,ty:-30.95}},
 				{type:'static',bodypart:39,mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:25.25,ty:-30.7}},
-				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-16.05,ty:-17.65}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-16.05,ty:-17.65}},
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:-0.3648681640625,b:0.0000152587890625,c:0.0000152587890625,d:0.3648681640625,tx:19.15,ty:-18.1}},
@@ -1291,13 +1293,13 @@ const charModels = [
 		legx: [-5.55, 8.8],
 		legy: [-11.25, -11.25],
 		firemat: {a:-0.4046630859375,b:0.0060882568359375,c:0.006805419921875,d:0.5772552490234375,tx:1.05,ty:-51.05},
-		charimgmat: {a:0.12158203125,b:-0.0020751953125,c:0.0037384033203125,d:0.12152099609375,tx:0.1,ty:0.4},
+		charimgmat: {a:0.12158203125,b:0,c:0,d:0.12152099609375,tx:0.1,ty:0.4},
 		burstmat: {a:1.0688934326171875,b:0,c:0,d:1,tx:1.6,ty:-32.25},
 		defaultExpr: 1,
 		mouthType: 0,
 		frames: [
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-21.05,ty:-17.65}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-21.05,ty:-17.65}},
 				{type:'body',mat:{a:0.2847747802734375,b:-0.0040130615234375,c:0.0086822509765625,d:0.285064697265625,tx:0.35,ty:-26.65}},
 				{type:'static',bodypart:0,mat:{a:-0.375213623046875,b:0.00494384765625,c:0,d:0.375213623046875,tx:-9.05,ty:-30.6}},
 				{type:'static',bodypart:0,mat:{a:-0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:4.2,ty:-30.35}},
@@ -1306,23 +1308,23 @@ const charModels = [
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:0.3733978271484375,b:0.0712127685546875,c:-0.0721435546875,d:0.3782196044921875,tx:-21.35,ty:-16.9}},
-				{type:'body',mat:{a:0.2847747802734375,b:-0.0040130615234375,c:0.0086822509765625,d:0.285064697265625,tx:0.6,ty:-26.2}},
+				{type:'body',mat:{a:0.2847747802734375,b:0,c:0,d:0.285064697265625,tx:0.6,ty:-26.2}},
 				{type:'static',bodypart:0,mat:{a:-0.375213623046875,b:0.00494384765625,c:0,d:0.375213623046875,tx:-8.8,ty:-30.15}},
 				{type:'static',bodypart:0,mat:{a:-0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:4.45,ty:-29.8}},
 				{type:'static',bodypart:2,mat:{a:-0.3849334716796875,b:0.0501251220703125,c:0.0777587890625,d:0.3766937255859375,tx:21.1,ty:-18.65}},
 				{type:'dia',mat:{a:0.886138916015625,b:0,c:0,d:0.886138916015625,tx:-2.05,ty:-18.05}},
 			],
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:22.1,ty:-17.65}},
+				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:22.1,ty:-17.65}},
 				{type:'body',mat:{a:0.283721923828125,b:0.0136260986328125,c:-0.0087432861328125,d:0.283905029296875,tx:0.85,ty:-26.65}},
 				{type:'static',bodypart:0,mat:{a:0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:-4.2,ty:-30.25}},
 				{type:'static',bodypart:0,mat:{a:0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:9.05,ty:-30.6}},
 				{type:'static',bodypart:1,mat:{a:0.3180999755859375,b:0.01141357421875,c:-0.022735595703125,d:0.43402099609375,tx:2.5,ty:-17.5}},
-				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-17.95,ty:-17.65}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-17.95,ty:-17.65}},
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:-0.3730010986328125,b:0.071136474609375,c:0.0718994140625,d:0.3780364990234375,tx:21.2,ty:-16.8}},
-				{type:'body',mat:{a:0.2848052978515625,b:0.003997802734375,c:-0.0077362060546875,d:0.2839813232421875,tx:-0.3,ty:-26.2}},
+				{type:'body',mat:{a:0.2848052978515625,b:0,c:0,d:0.2839813232421875,tx:-0.3,ty:-26.2}},
 				{type:'static',bodypart:0,mat:{a:0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:-4.4,ty:-29.75}},
 				{type:'static',bodypart:0,mat:{a:0.37518310546875,b:0.00494384765625,c:0,d:0.375213623046875,tx:8.75,ty:-30.1}},
 				{type:'static',bodypart:2,mat:{a:0.3796844482421875,b:0.0500335693359375,c:-0.076751708984375,d:0.3769683837890625,tx:-20.85,ty:-18.65}},
@@ -1475,7 +1477,7 @@ const charModels = [
 		mouthType: 0,
 		frames: [
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-6.1,ty:-22.1}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-6.1,ty:-22.1}},
 				{type:'body',mat:{a:0.3351287841796875,b:0,c:0,d:0.3351287841796875,tx:0.05,ty:-41.75}},
 				{type:'static',bodypart:0,mat:{a:-0.3351287841796875,b:0,c:0,d:0.3351287841796875,tx:-3.6,ty:-39.6}},
 				{type:'static',bodypart:36,mat:{a:-0.194427490234375,b:0,c:0,d:0.329345703125,tx:-1.4,ty:-29.45}},
@@ -1489,11 +1491,11 @@ const charModels = [
 				{type:'dia',mat:{a:0.4889373779296875,b:0,c:0,d:0.9688720703125,tx:-0.8,ty:-28.85}},
 			],
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:7.5,ty:-22.65}},
+				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:7.5,ty:-22.65}},
 				{type:'body',mat:{a:-0.3351287841796875,b:0,c:0,d:0.3351287841796875,tx:0.05,ty:-41.75}},
 				{type:'static',bodypart:0,mat:{a:0.3351287841796875,b:0,c:0,d:0.3351287841796875,tx:5,ty:-39.6}},
 				{type:'static',bodypart:36,mat:{a:0.194427490234375,b:0,c:0,d:0.329345703125,tx:2.8,ty:-29.45}},
-				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-4.55,ty:-22.65}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-4.55,ty:-22.65}},
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:0.322235107421875,b:-0.090789794921875,c:0.090789794921875,d:0.322235107421875,tx:6.2,ty:-19.95}},
@@ -1580,13 +1582,13 @@ const charModels = [
 		legx: [-2.45, 5.1],
 		legy: [-11.25, -11.25],
 		firemat: {a:-0.16912841796875,b:0.0142822265625,c:0.031341552734375,d:0.6383819580078125,tx:-3.65,ty:-58.2},
-		charimgmat: {a:0.10894775390625,b:-0.003753662109375,c:0.003753662109375,d:0.10894775390625,tx:-0.2,ty:-1.4},
+		charimgmat: {a:0.10894775390625,b:0,c:0,d:0.10894775390625,tx:-0.2,ty:-1.4},
 		burstmat: {a:0.557373046875,b:0,c:0,d:1.2081451416015625,tx:-2.65,ty:-42.2},
 		defaultExpr: 0,
 		mouthType: 0,
 		frames: [
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-4.55,ty:-20.4}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-4.55,ty:-20.4}},
 				{type:'body',mat:{a:0.333160400390625,b:-0.035125732421875,c:0.035125732421875,d:0.333160400390625,tx:-2.5,ty:-39.2}},
 				{type:'static',bodypart:0,mat:{a:-0.333160400390625,b:0.035125732421875,c:0.035125732421875,d:0.333160400390625,tx:-7.1,ty:-36.05}},
 				{type:'static',bodypart:36,mat:{a:-0.1932830810546875,b:0.0203857421875,c:0.034515380859375,d:0.327423095703125,tx:-3.85,ty:-26.2}},
@@ -1600,11 +1602,11 @@ const charModels = [
 				{type:'dia',mat:{a:0.555206298828125,b:0,c:0,d:0.8481903076171875,tx:-0.25,ty:-27.2}},
 			],
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:7.45,ty:-20.4}},
+				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:7.45,ty:-20.4}},
 				{type:'body',mat:{a:-0.333160400390625,b:-0.035125732421875,c:-0.035125732421875,d:0.333160400390625,tx:5.4,ty:-39.2}},
 				{type:'static',bodypart:0,mat:{a:0.333160400390625,b:0.035125732421875,c:-0.035125732421875,d:0.333160400390625,tx:10,ty:-36.05}},
 				{type:'static',bodypart:36,mat:{a:0.1932830810546875,b:0.0203857421875,c:-0.034515380859375,d:0.327423095703125,tx:6.75,ty:-26.2}},
-				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-3.05,ty:-20.4}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-3.05,ty:-20.4}},
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:0.322235107421875,b:-0.090789794921875,c:0.090789794921875,d:0.322235107421875,tx:7.45,ty:-18.95}},
@@ -1697,7 +1699,7 @@ const charModels = [
 		mouthType: 0,
 		frames: [
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-26.55,ty:-24.15}},
+				{ type: 'anim', anim: 0, offset: 14,loop:true,mat:{a:1,b:0,c:0,d:1,tx:-26.55,ty:-24.15}},
 				{type:'body',mat:{a:0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:2.9,ty:-42}},
 				{type:'static',bodypart:36,mat:{a:-0.400299072265625,b:0,c:0,d:0.400299072265625,tx:-15.75,ty:-28.25}},
 				{type:'static',bodypart:0,mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:-9.25,ty:-44.2}},
@@ -1713,12 +1715,12 @@ const charModels = [
 				{type:'static',bodypart:2,mat:{a:-0.3738250732421875,b:0.0201416015625,c:0.0196075439453125,d:0.3635406494140625,tx:23.75,ty:-23.85}},
 			],
 			[
-				{type:'anim',anim:0,offset:15,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:32.2,ty:-24.15}},
+				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:32.2,ty:-24.15}},
 				{type:'body',mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:2.75,ty:-42}},
 				{type:'static',bodypart:36,mat:{a:0.400299072265625,b:0,c:0,d:0.400299072265625,tx:21.4,ty:-28.25}},
 				{type:'static',bodypart:0,mat:{a:-0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:30.6,ty:-43.95}},
 				{type:'static',bodypart:0,mat:{a:0.3648529052734375,b:0,c:0,d:0.3648529052734375,tx:14.9,ty:-44.2}},
-				{type:'anim',anim:0,offset:0,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-15.3,ty:-26.15}},
+				{type:'anim',anim:0,offset:14,loop:true,mat:{a:-1,b:0,c:0,d:1,tx:-15.3,ty:-26.15}},
 			],
 			[
 				{type:'static',bodypart:2,mat:{a:0.3739166259765625,b:-0.0296478271484375,c:0.02886962890625,d:0.3636322021484375,tx:31.4,ty:-23.9}},
@@ -2001,8 +2003,8 @@ const charModels = [
 		mouthType: 0,
 		frames: [
 			[ // walk left
-				{ type: 'anim', anim: 0, offset: 15, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: -21.05, ty: -17.65 } },
-				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.35, ty: -26.65 } },
+				{ type: 'anim', anim: 0, offset: 14, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: -21.05, ty: -17.65 } },
+				{ type: 'body', mat: { a: -0.35, b: 0, c: 0, d: 0.35, tx: 0.35, ty: -27 } },
 				{ type: 'static', bodypart: 63, mat: { a: -0.375213623046875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -9.05, ty: -30 } },
 				{ type: 'static', bodypart: 63, mat: { a: -0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 4.2, ty: -30 } },
 				{ type: 'static', bodypart: 1, mat: { a: -0.3180999755859375, b: 0.01141357421875, c: 0.022735595703125, d: 0.43402099609375, tx: -2.5, ty: -17.5 } },
@@ -2018,11 +2020,11 @@ const charModels = [
 			],
 			[ // walk right
 				{ type: 'anim', anim: 0, offset: 0, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: 22.1, ty: -17.65 } },
-				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.85, ty: -26.65 } },
+				{ type: 'body', mat: { a: 0.35, b: 0, c: 0, d: 0.35, tx: 0.85, ty: -27 } },
 				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: -4.2, ty: -30 } },
 				{ type: 'static', bodypart: 63, mat: { a: 0.37518310546875, b: 0.00494384765625, c: 0, d: 0.375213623046875, tx: 9.05, ty: -30 } },
 				{ type: 'static', bodypart: 1, mat: { a: 0.3180999755859375, b: 0.01141357421875, c: -0.022735595703125, d: 0.43402099609375, tx: 2.5, ty: -17.5 } },
-				{ type: 'anim', anim: 0, offset: 15, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: -17.95, ty: -17.65 } },
+				{ type: 'anim', anim: 0, offset: 14, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: -17.95, ty: -17.65 } },
 			],
 			[ // stand right
 				{ type: 'static', bodypart: 2, mat: { a: -0.3730010986328125, b: 0.071136474609375, c: 0.0718994140625, d: 0.3780364990234375, tx: 21.2, ty: -16.8 } },
@@ -2108,7 +2110,117 @@ const charModels = [
 			]
 		]
 	},
-	{},
+	{
+		// Pen
+		torsomat: { a: 0.9736328125, b: 0, c: 0, d: 0.9736328125, tx: -0.2, ty: -8.75 },
+		legx: [-2.45, 5.1],
+		legy: [-11.25, -11.25],
+		firemat: { a: -0.16912841796875, b: 0.0142822265625, c: 0.031341552734375, d: 0.6383819580078125, tx: -3.65, ty: -58.2 },
+		charimgmat: { a: 0.10894775390625, b: 0, c: 0, d: 0.10894775390625, tx: -0.2, ty: -1.4 },
+		burstmat: { a: 0.557373046875, b: 0, c: 0, d: 1.2081451416015625, tx: -2.65, ty: -42.2 },
+		defaultExpr: 0,
+		mouthType: 0,
+		frames: [
+			[// walk left
+				{ type: 'anim', anim: 0, offset: 14, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: -4.55, ty: -20.4 } },
+				{ type: 'body', mat: { a: 0.333160400390625, b: -0.035125732421875, c: 0.035125732421875, d: 0.333160400390625, tx: -2.5, ty: -41 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.333160400390625, b: 0.035125732421875, c: 0.035125732421875, d: 0.333160400390625, tx: -7.1, ty: -36.05 } },
+				{ type: 'static', bodypart: 36, mat: { a: -0.1932830810546875, b: 0.0203857421875, c: 0.034515380859375, d: 0.327423095703125, tx: -3.85, ty: -26.2 } },
+				{ type: 'anim', anim: 0, offset: 0, loop: true, mat: { a: 1, b: 0, c: 0, d: 1, tx: 5.95, ty: -20.4 } },
+			],
+			[// stand left
+				{ type: 'static', bodypart: 2, mat: { a: -0.322235107421875, b: -0.090789794921875, c: -0.090789794921875, d: 0.322235107421875, tx: -5.25, ty: -17 } },
+				{ type: 'body', mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 1.4, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: -3.25, ty: -38 } },
+				{ type: 'static', bodypart: 2, mat: { a: -0.313751220703125, b: 0.1172332763671875, c: 0.1172332763671875, d: 0.313751220703125, tx: 6.5, ty: -17 } },
+				{ type: 'dia', mat: { a: 0.555206298828125, b: 0, c: 0, d: 0.8481903076171875, tx: -0.25, ty: -27.2 } },
+			],
+			[ // walk right
+				{ type: 'anim', anim: 0, offset: 0, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: 7.45, ty: -20.4 } },
+				{ type: 'body', mat: { a: -0.333160400390625, b: -0.035125732421875, c: -0.035125732421875, d: 0.333160400390625, tx: 5.4, ty: -41 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.333160400390625, b: 0.035125732421875, c: -0.035125732421875, d: 0.333160400390625, tx: 10, ty: -36.05 } },
+				{ type: 'static', bodypart: 36, mat: { a: 0.1932830810546875, b: 0.0203857421875, c: -0.034515380859375, d: 0.327423095703125, tx: 6.75, ty: -26.2 } },
+				{ type: 'anim', anim: 0, offset: 14, loop: true, mat: { a: -1, b: 0, c: 0, d: 1, tx: -3.05, ty: -20.4 } },
+			],
+			[ // stand right
+				{ type: 'static', bodypart: 2, mat: { a: 0.322235107421875, b: -0.090789794921875, c: 0.090789794921875, d: 0.322235107421875, tx: 7.45, ty: -17 } },
+				{ type: 'body', mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 0.8, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 4.2, ty: -38 } },
+				{ type: 'static', bodypart: 2, mat: { a: 0.313751220703125, b: 0.1172332763671875, c: -0.1172332763671875, d: 0.313751220703125, tx: -4.3, ty: -17 } },
+				{ type: 'dia', mat: { a: -0.555206298828125, b: 0, c: 0, d: 0.8481903076171875, tx: 2.45, ty: -27.2 } },
+			],
+			[ // fall left
+				{ type: 'anim', anim: 2, offset: 0, loop: false, mat: { a: 0.9993896484375, b: -0.0311737060546875, c: 0.0311737060546875, d: 0.9993896484375, tx: -4.05, ty: -24.5 } },
+				{ type: 'body', mat: { a: 0.334869384765625, b: 0.0100250244140625, c: -0.0100250244140625, d: 0.334869384765625, tx: 2.45, ty: -39.9 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.334869384765625, b: -0.0100250244140625, c: -0.0100250244140625, d: 0.334869384765625, tx: -2.4, ty: -37.85 } },
+				{ type: 'static', bodypart: 37, mat: { a: -0.19427490234375, b: -0.005828857421875, c: -0.0087738037109375, d: 0.293060302734375, tx: -0.5, ty: -27.5 } },
+				{ type: 'anim', anim: 2, offset: 0, loop: false, mat: { a: -0.9993896484375, b: 0.0311737060546875, c: 0.0311737060546875, d: 0.9993896484375, tx: 5.7, ty: -24 } },
+			],
+			[ // fall right
+				{ type: 'anim', anim: 2, offset: 0, loop: false, mat: { a: -0.9992523193359375, b: -0.0352020263671875, c: -0.0352020263671875, d: 0.9992523193359375, tx: 6.75, ty: -24.55 } },
+				{ type: 'body', mat: { a: -0.33489990234375, b: 0.0086669921875, c: 0.0086669921875, d: 0.33489990234375, tx: 0.35, ty: -39.9 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.33489990234375, b: -0.0086669921875, c: 0.0086669921875, d: 0.33489990234375, tx: 5.15, ty: -37.85 } },
+				{ type: 'static', bodypart: 37, mat: { a: 0.1942901611328125, b: -0.0050201416015625, c: 0.007598876953125, d: 0.2930755615234375, tx: 3.2, ty: -27.55 } },
+				{ type: 'anim', anim: 2, offset: 0, loop: false, mat: { a: 0.9992523193359375, b: 0.0352020263671875, c: -0.0352020263671875, d: 0.9992523193359375, tx: -3, ty: -24.05 } },
+			],
+			[ // carry left
+				{ type: 'static', bodypart: 3, mat: { a: 0.02471923828125, b: -0.3337860107421875, c: -0.3337860107421875, d: -0.0247039794921875, tx: -4.45, ty: -20.75 } },
+				{ type: 'body', mat: { a: 0.3344268798828125, b: 0.0204620361328125, c: -0.0204620361328125, d: 0.3344268798828125, tx: 3.4, ty: -39.75 } },
+				{ type: 'static', bodypart: 1, mat: { a: -0.19403076171875, b: -0.011871337890625, c: -0.017913818359375, d: 0.29266357421875, tx: 0.2, ty: -27.2 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.3344268798828125, b: -0.0204620361328125, c: -0.0204620361328125, d: 0.3344268798828125, tx: -1.15, ty: -37.85 } },
+				{ type: 'static', bodypart: 3, mat: { a: 0.02471923828125, b: -0.3337860107421875, c: -0.3337860107421875, d: -0.0247039794921875, tx: 6.35, ty: -20.75 } },
+			],
+			[ // carry right
+				{ type: 'static', bodypart: 3, mat: { a: -0.02471923828125, b: -0.3337860107421875, c: 0.3337860107421875, d: -0.0247039794921875, tx: 6.4, ty: -20.75 } },
+				{ type: 'body', mat: { a: -0.3344268798828125, b: 0.0204620361328125, c: 0.0204620361328125, d: 0.3344268798828125, tx: -1.45, ty: -39.75 } },
+				{ type: 'static', bodypart: 1, mat: { a: 0.19403076171875, b: -0.011871337890625, c: 0.017913818359375, d: 0.29266357421875, tx: 1.75, ty: -27.2 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.3344268798828125, b: -0.0204620361328125, c: 0.0204620361328125, d: 0.3344268798828125, tx: 3.1, ty: -37.85 } },
+				{ type: 'static', bodypart: 3, mat: { a: -0.02471923828125, b: -0.3337860107421875, c: 0.3337860107421875, d: -0.0247039794921875, tx: -4.4, ty: -20.75 } },
+			],
+			[ // die left
+				{ type: 'anim', anim: 3, offset: 0, loop: true, mat: { a: 0.2680206298828125, b: -0.1997222900390625, c: -0.1997222900390625, d: -0.2680206298828125, tx: -5.7, ty: -23.55 } },
+				{ type: 'body', mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 0.95, ty: -39.85 } },
+				{ type: 'static', bodypart: 5, mat: { a: -0.194427490234375, b: 0, c: 0, d: 0.329345703125, tx: -1.75, ty: -27.05 } },
+				{ type: 'static', bodypart: 40, mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: -3.7, ty: -37.2 } },
+				{ type: 'anim', anim: 3, offset: 0, loop: true, mat: { a: -0.2680206298828125, b: -0.1997222900390625, c: 0.1997222900390625, d: -0.2680206298828125, tx: 5.75, ty: -25.4 } },
+			],
+			[ // die right
+				{ type: 'anim', anim: 3, offset: 0, loop: true, bodypart: 3, mat: { a: -0.2680206298828125, b: -0.1997222900390625, c: 0.1997222900390625, d: -0.2680206298828125, tx: 6.8, ty: -23.55 } },
+				{ type: 'body', mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 0.15, ty: -39.85 } },
+				{ type: 'static', bodypart: 5, mat: { a: 0.194427490234375, b: 0, c: 0, d: 0.329345703125, tx: 2.85, ty: -27.05 } },
+				{ type: 'static', bodypart: 40, mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 4.8, ty: -37.2 } },
+				{ type: 'anim', anim: 3, offset: 0, loop: true, bodypart: 3, mat: { a: 0.2680206298828125, b: -0.1997222900390625, c: -0.1997222900390625, d: -0.2680206298828125, tx: -4.65, ty: -25.4 } },
+			],
+			[ // recover left
+				{ type: 'armroot', id: 0, pos: { x: -6.4, y: -21.2 } },
+				{ type: 'body', mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 1.4, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: -3.85, ty: -38 } },
+				{ type: 'static', bodypart: 36, mat: { a: -0.194427490234375, b: 0, c: 0, d: 0.329345703125, tx: -1.65, ty: -27.8 } },
+				{ type: 'armroot', id: 1, pos: { x: 5.65, y: -21.2 } },
+			],
+			[ // recover right
+				{ type: 'armroot', id: 0, pos: { x: 8.55, y: -21.2 } },
+				{ type: 'body', mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 1.4, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 6, ty: -38 } },
+				{ type: 'static', bodypart: 36, mat: { a: 0.194427490234375, b: 0, c: 0, d: 0.329345703125, tx: 3.8, ty: -27.8 } },
+				{ type: 'armroot', id: 1, pos: { x: -3.5, y: -21.2 } },
+			],
+			[ // recover left near
+				{ type: 'armroot', id: 0, pos: { x: -6.4, y: -21.2 } },
+				{ type: 'armroot', id: 1, pos: { x: 8, y: -21.2 } },
+				{ type: 'body', mat: { a: 0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 1.4, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: -0.17022705078125, b: 0, c: 0, d: 0.3351287841796875, tx: -5.35, ty: -38 } },
+				{ type: 'static', bodypart: 36, mat: { a: -0.0987548828125, b: 0, c: 0, d: 0.329345703125, tx: -4.25, ty: -28.1 } },
+			],
+			[ // recover right near
+				{ type: 'armroot', id: 0, pos: { x: 8.55, y: -20.45 } },
+				{ type: 'armroot', id: 1, pos: { x: -5.85, y: -20.45 } },
+				{ type: 'body', mat: { a: -0.3351287841796875, b: 0, c: 0, d: 0.3351287841796875, tx: 1.4, ty: -42 } },
+				{ type: 'static', bodypart: 0, mat: { a: 0.20745849609375, b: 0, c: 0, d: 0.3351287841796875, tx: 6.7, ty: -38 } },
+				{ type: 'static', bodypart: 36, mat: { a: 0.120361328125, b: 0, c: 0, d: 0.329345703125, tx: 5.35, ty: -27.8 } },
+			]
+		]
+	},
 	{},
 	{},
 	{},
@@ -2435,8 +2547,23 @@ function mapRange(value, min1, max1, min2, max2) {
 	return min2 + ((value - min1) / (max1 - min1)) * (max2 - min2);
 }
 
-let bgOrder = [0, 3, 7, 11, 12, 13, 2, 14, 15, 1, 4, 6, 5, 16, 17, 18, 19, 20, 21, 8, 9, 10,];
-let imgBgs = new Array(bgOrder.length);
+let bgCount = 30;
+let bgOrder = [
+	0, 22, 3, 7, // mountain/cliff
+	1, 4, 6, 5, // red cave
+
+	2, 24, 23, // night stuff
+	8, 9, 10, // house and factory
+
+	11, 12, 13, // red sky
+	29, 16, 17, 18, 28, // green cave
+	14, 15, // forest 
+
+	19, 20, 21, // purple cave
+
+	25, 26, 27, // misc
+];
+let imgBgs = new Array(bgCount);
 
 let svgTiles = new Array(blockProperties.length);
 let svgLevers = new Array(6);
@@ -2551,11 +2678,13 @@ let soundEffects = {
 	jump: [new Audio('data/sounds/jump.mp3'), 0.8],
 
 	// Deaths
-	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.5],
-	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.9],
-	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 0.9],
-	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 0.8],
-	bubblePop: [new Audio('data/sounds/bubblepop.mp3'), 1],
+	rubyDeath: [new Audio('data/sounds/rubydeath.mp3'), 0.3],
+	bookDeath: [new Audio('data/sounds/bookdeath.mp3'), 0.8],
+	iceCubeDeath: [new Audio('data/sounds/icecubedeath.mp3'), 0.8],
+	pencilDeath: [new Audio('data/sounds/pencildeath.mp3'), 0.7],
+	bubblePop: [new Audio('data/sounds/bubblepop.mp3'), 0.8],
+	spongyDeath: [new Audio('data/sounds/spongyuhoh.mp3'), 0.6],
+	penDeath: [new Audio('data/sounds/pendeath.mp3'), 0.6],
 };
 
 const scaleFactor = 5;
@@ -2649,7 +2778,7 @@ async function loadingScreen() {
 	svgCoin = await createImage(resourceData['wintoken.svg']);
 	svgIceCubeMelt = await createImage(resourceData['effects/icecubemelt.svg']);
 	svgIceCubeMelt = await createImage(resourceData['effects/icecubemelt.svg']);
-	for (let i = 0; i < bgOrder.length; i++) {
+	for (let i = 0; i < bgCount; i++) {
 		imgBgs[i] = await createImage(resourceData['bg/bg' + i.toString().padStart(4, '0') + '.png']);
 	}
 	for (let i = 0; i < blockProperties.length; i++) {
@@ -4087,7 +4216,7 @@ function drawCharacters(context) {
 				context.save();
 				let runbob =
 					char[i].frame == 0 || char[i].frame == 2
-						? bounceY(4 / charModels[char[i].id].torsomat.a, 13, char[i].poseTimer)
+						? bounceY(4 / charModels[char[i].id].torsomat.a, 14, char[i].poseTimer)
 						: 0;
 				context.transform(
 					charModels[char[i].id].torsomat.a,
@@ -4133,7 +4262,7 @@ function drawCharacters(context) {
 						modelFrame[j].mat.c,
 						modelFrame[j].mat.d,
 						modelFrame[j].mat.tx,
-						modelFrame[j].mat.ty + (modelFrame[j].type != 'anim' ? runbob : 0)
+						modelFrame[j].mat.ty + runbob //(modelFrame[j].type != 'anim' ? runbob : 0)
 					);
 					if (modelFrame[j].type == 'anim') {
 						img = svgBodyParts[bodyPartAnimations[modelFrame[j].anim].bodypart];
@@ -5207,17 +5336,14 @@ function displayLine(level, line) {
 
 function playDeathSound(i) {
 	let snd = 'none';
-	if (i == 0) {
-		snd = 'rubyDeath';
-	} else if (i == 1) {
-		snd = 'bookDeath';
-	} else if (i == 2) {
-		snd = 'iceCubeDeath';
-	} else if (i == 4) {
-		snd = 'pencilDeath';
-	} else if (i == 5) {
-		snd = 'bubblePop';
-	}
+	if (i == 0) snd = 'rubyDeath';
+	else if (i == 1) snd = 'bookDeath';
+	else if (i == 2) snd = 'iceCubeDeath';
+	else if (i == 4) snd = 'pencilDeath';
+	else if (i == 5) snd = 'bubblePop';
+	else if (i == 7) snd = 'spongyDeath';
+	else if (i == 10) snd = 'penDeath';
+
 	if (snd != 'none') playSound(snd);
 }
 
@@ -5702,7 +5828,7 @@ function resetLCOSC() {
 	osc2.width = Math.floor(300 * pixelRatio);
 	osc2.height = Math.floor(Math.floor(bgOrder.length / bgpr + 1) * bgdist * pixelRatio);
 	osctx2.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-	for (let i = 0; i < bgOrder.length; i++) {
+	for (let i = 0; i < bgCount; i++) {
 		osctx2.drawImage(imgBgs[bgOrder[i]], bgdist - bgw + (i % bgpr) * bgdist, bgdist2 - bgh + Math.floor(i / bgpr) * bgdist2,bgw,bgh);
 	}
 
@@ -8542,7 +8668,7 @@ function draw() {
 							if (char[control].submerged == 3) char[control].swimUp(0.14 / char[control].weight2);
 							else {
 								if (char[control].carry) {
-									char[control].jump(-char[control].jumpPower / (1 + char[char[control].carryObject].weight / 2));
+									char[control].jump(-char[control].jumpPower / (1 + char[char[control].carryObject].weight));
 								} else {
 									char[control].jump(-char[control].jumpPower);
 								}
@@ -8584,7 +8710,7 @@ function draw() {
 						}
 					} else char[i].fricGoal = char[char[i].standingOn].vx;
 
-					char[i].applyForces(char[i].weight2, control == i, jumpPower * 0.7);
+					char[i].applyForces(1, control == i, char[i].jumpPower * -0.7);
 					if (char[i].deathTimer >= 30) char[i].charMove();
 					if (char[i].id == 3) {
 						if (char[i].temp > 50) {
@@ -8776,7 +8902,7 @@ function draw() {
 						if (verticalType(i, -1, 8, false) && char[i].charState == 10) {
 							startCutScene();
 						}
-						if (verticalProp(i, -1, 4, char[i].x, char[i].y) && char[i].charState >= 7) {
+						if (verticalProp(i, -1, 4, char[i].px, char[i].y) && char[i].charState >= 7) {
 							startDeath(i);
 						} else if (char[i].y < char[i].py && verticalProp(i, -1, 0, char[i].px, char[i].y)) {
 							stopY = -1;
@@ -8830,7 +8956,7 @@ function draw() {
 						char[i].x = x;
 						char[i].vx = 0;
 						stopCarrierX(i, x);
-						char[i].stopMoving();
+						//char[i].stopMoving();
 					}
 					if (stopY != 0) {
 						if (stopY == 1) {
@@ -9679,6 +9805,7 @@ function draw() {
 					ctx.save();
 					ctx.translate(0, -bgsTabScrollBar);
 					for (var i = 0; i < bgOrder.length; i++) {
+						//console.log(bgOrder[i])
 						if (bgOrder[i] == selectedBg) {
 							ctx.fillStyle = '#8c8c8c';
 							ctx.fillRect(
@@ -11539,10 +11666,9 @@ class Character {
 	}
 
 	applyForces(grav, control, waterUpMaxSpeed) {
-		let gravity = Math.sign(grav) * Math.sqrt(Math.abs(grav));
 		let smoothing = this.submerged >= 2 ? 1.2 : 1;
 
-		if (!this.onob && this.submerged != 1) this.vy = Math.min(this.vy + 0.58, 30);
+		if (!this.onob && this.submerged != 1) this.vy = Math.min(this.vy + (0.58*grav), 30);
 		if (this.onob || control) {
 			this.vx = (this.vx - this.fricGoal) * (this.friction / smoothing) + this.fricGoal;
 		} else {
@@ -11560,7 +11686,7 @@ class Character {
 			if (this.vx < -1.5) this.vx += 0.05;
 
 			if (this.vy > 1.8) this.vy -= 0.8;
-			if (this.vy < - waterUpMaxSpeed) this.vy = - waterUpMaxSpeed;
+			if (this.vy < waterUpMaxSpeed) this.vy = waterUpMaxSpeed;
 		}
 	}
 

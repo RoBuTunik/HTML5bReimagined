@@ -2398,7 +2398,8 @@ const exploreTabWidths = [45, 45, 45, 45]; //[125, 200, 125, 50];
 let power = 1;
 let jumpPower = 11;
 
-let qPress = false;
+let zPress = false;
+let xPress = false;
 let upPress = false;
 let csPress = false;
 let jumpPress = false;
@@ -3957,7 +3958,7 @@ function resetLevel() {
 	recoverTimer = 0;
 	levelTimer2 = getTimer();
 
-	if (char[0].charState <= 9) changeControl(0, false);
+	if (char[0].charState <= 9) changeControl(1, false);
 
 	doorLightFade = new Array(charCount2).fill(0);
 	doorLightFadeDire = new Array(charCount2).fill(0);
@@ -5388,7 +5389,7 @@ function endDeath(i) {
 		char[i].submerged = 0;
 		char[i].submergedIn = 0;
 	}
-	if (i == control) changeControl(0, true);
+	if (i == control) changeControl(1, true);
 }
 
 function bounce(i, snd) {
@@ -5630,10 +5631,13 @@ function changeControl(dire, snd) {
 			swapDepths(char[control].carryObject, (charCount - control - 1) * 2 + 1);
 		}
 	}
-	control = (control + 1) % charCount;
+	control = (control + dire) % charCount;
+	if (control < 0) control = charCount-1;
+
 	let attempts = 0;
 	while (char[control].charState != 10 && attempts < charCount) {
-		control = (control + 1) % charCount;
+		control = (control + dire) % charCount;
+		if (control < 0) control = charCount-1;
 		attempts++;
 	}
 	if (attempts == charCount) {
@@ -8600,15 +8604,21 @@ function draw() {
 											if (char[i].carry) putDown(i);
 											if (ifCarried(i)) putDown(char[i].carriedBy);
 											playSound('pickup');
+
 											char[control].carry = true;
 											char[control].carryObject = i;
+
+
 											swapDepths(i, charCount * 2 + 1);
 											char[i].carriedBy = control;
 											char[i].weight2 = char[i].weight;
 											char[control].weight2 = char[i].weight + char[control].weight;
+											char[control].vy = (char[control].vy + char[i].vy)/2
+
 											rippleWeight(control, char[i].weight2, 1);
 											fallOff(i);
 											aboveFallOff(i);
+
 											char[i].justChanged = 2;
 											char[control].justChanged = 2;
 											if (char[i].submerged == 1) char[i].submerged = 0;
@@ -8650,13 +8660,23 @@ function draw() {
 						}
 						downPress = true;
 					} else downPress = false;
+
 					if (_keysDown[90]) {
-						if (!qPress && !recover) {
-							changeControl(0, true);
+						if (!zPress && !recover) {
+							changeControl(1, true);
 							qTimer = 6;
 						}
-						qPress = true;
-					} else qPress = false;
+						zPress = true;
+					} else zPress = false;
+
+					if (_keysDown[88]) {
+						if (!xPress && !recover) {
+							changeControl(-1, true);
+							qTimer = 6;
+						}
+						xPress = true;
+					} else xPress = false;
+
 					if (_keysDown[32]) {
 						let grounded = char[control].onob || char[control].cTime <= 3 || char[control].submerged == 3
 						if (
@@ -11321,8 +11341,7 @@ function draw() {
 	}
 
 	let windVolume = wipeTimer < 30 ? wipeTimer : 30 - (wipeTimer - 30)
-	if (screenShake) windLoop.volume = windVolume / 30 * soundVolume;
-	else windLoop.volume = 0;
+	windLoop.volume = windVolume / 30 * soundVolume;
 
 	for (var i in soundEffects) {
 		soundEffects[i][0].volume = soundEffects[i][1] * soundVolume;

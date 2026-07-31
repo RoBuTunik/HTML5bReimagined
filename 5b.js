@@ -104,6 +104,7 @@ let frameRateThrottling = true;
 let slowTintsEnabled = true;
 let dialogueEnabled = true;
 let speedrunTimer = false;
+let useCharDeathSounds = true;
 
 const options = {
 	screenShake: {
@@ -129,6 +130,7 @@ let optionText = [
 	'High Quality Heating Effect',
 	'Dialogue Enabled',
 	'Speedrun Timer',
+	'Character Specific Death Sounds',
 ];
 let levelAlreadySharedToExplore = false;
 let lcSavedLevels;
@@ -636,7 +638,7 @@ const blockProperties = [
 	/*36*/	[false,false,false,false,false,false,false,false,true,true,false,101,0,false,false,true,1,false], // Yellow switch right
 	/*37*/	[false,false,false,false,false,false,false,false,true,true,false,2,0,false,false,true,1,false], // Blue switch left
 	/*38*/	[false,false,false,false,false,false,false,false,true,true,false,102,0,false,false,true,1,false], // Blue switch right
-	/*39*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Green background with platform up
+	/*39*/	[false,true,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Green background with platform up
 	// tile4
 	/*40*/	[true,true,true,true,false,false,false,false,true,true,false,201,0,false,false,true,5,false], // Yellow button
 	/*41*/	[true,true,true,true,false,false,false,false,true,true,false,202,0,false,false,true,5,false], // Blue button
@@ -654,7 +656,7 @@ const blockProperties = [
 	/*52*/	[true,true,true,true,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Dark blue switch block on
 	/*53*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Blue switch block off
 	/*54*/	[false,false,false,false,false,false,false,false,true,false,false,0,2,false,false,true,1,false], // Dark blue switch block off
-	/*55*/	[false,true,false,false,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray bg with platform up
+	/*55*/	[false,true,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Gray bg with platform up
 	/*56*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // Gray block
 	/*57*/	[false,false,false,false,false,false,false,false,true,true,false,3,0,false,false,true,1,false], // Green switch left
 	/*58*/	[false,false,false,false,false,false,false,false,true,true,false,103,0,false,false,true,1,false], // Green switch right
@@ -756,8 +758,15 @@ const blockProperties = [
 	/*145*/	[false,false,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Dark red switch block off
 	/*146*/	[false,true,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch platform up on
 	/*147*/	[false,false,false,false,false,false,false,false,true,false,false,0,4,false,false,true,1,false], // Red switch platform up off
+	/*148*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Periwinkle block
+	/*149*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Periwinkle background
+	// tile15
+	/*150*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,false,false,true,1,false], // White block
+	/*151*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // White metal block
+	/*152*/	[true,true,true,true,false,false,false,false,false,false,false,0,0,true,false,true,1,false], // Checker block
+	/*153*/	[false,false,false,false,false,false,false,false,false,false,true,0,0,false,false,true,1,false], // Checker background
 ];
-const metalTiles = [98, 102, 105, 107];
+const metalTiles = [98, 102, 105, 107, 151];
 const switches = [
 	[31, 33, 32, 34, 79, 78, 81, 82], // Yellow
 	[51, 53, 52, 54, 133, 134], // Blue
@@ -773,10 +782,14 @@ const tileOrder = [
 	1, 9, // Red blocks
 	10, 11, 39, 70, // Green blocks
 	73, 77, 87, 88, 96, 97, // Purple blocks
+	74,
+	148,149, // Periwinkle blocks
+
 	42, 43, 48, 55, // Gray dirt blocks
 	93, 94, // Wood blocks
-	56, 67, 74, // Gray and black block
-	98, 107, 102, 106, 105, // Metal blocks
+	56, 67, 150, // Gray and black block
+	152, 153, // Checker blocks
+	98, 107, 102, 106, 105, 151, // Metal blocks
 	131, 135, // Brick blocks
 
 	49, 66, 95, // Lights
@@ -808,8 +821,8 @@ const tileOrder = [
 	24, 25, 26, 27, 28, 29, 30, // Cables
 	89, 90, 91, 92, // Light gray cables
 
+	130, // Wadda
 	100, 101, 103, 104, // Deadly liquids
-	130, // Other liquids
 
 	110, // Paintings
 
@@ -3081,7 +3094,7 @@ function cancelChangeLevelString() {
 
 function playExploreLevel(continueGame = false) {
 	cancelEditExploreLevel();
-	const isDaily = locationOnPage == 8 && exploreTab == 0
+	const isDaily = locationOnPage == 8 && exploreTab == 0;
 	const levelData = isDaily ? exploreLevelPageLevel.level : exploreLevelPageLevel
 	// increment play counter
 	getExplorePlay(levelData.id);
@@ -4608,6 +4621,7 @@ function getTileDepths() {
 		}
 	}
 }
+
 // draws a tile
 // TODO: precalculate a this stuff and only do the drawing in here. Unless it's actually all necessary. Then you can just leave it.
 function addTileMovieClip(x, y, context) {
@@ -5222,7 +5236,7 @@ function land(i, y, vy) {
 		char[i].vy = vy;
 		char[i].onob = true;
 		char[i].cTime = 0;
-		char[i].doubleJumps = 0;
+		char[i].doubleJumps = char[i].doubleJumpCount;
 	}
 }
 
@@ -5337,13 +5351,19 @@ function displayLine(level, line) {
 
 function playDeathSound(i) {
 	let snd = 'none';
-	if (i == 0) snd = 'rubyDeath';
-	else if (i == 1) snd = 'bookDeath';
-	else if (i == 2) snd = 'iceCubeDeath';
-	else if (i == 4) snd = 'pencilDeath';
-	else if (i == 5) snd = 'bubblePop';
-	else if (i == 7) snd = 'spongyDeath';
-	else if (i == 10) snd = 'penDeath';
+
+	if (useCharDeathSounds) {
+		if (i == 0) snd = 'rubyDeath';
+		else if (i == 1) snd = 'bookDeath';
+		else if (i == 2) snd = 'iceCubeDeath';
+		else if (i == 4) snd = 'pencilDeath';
+		else if (i == 5) snd = 'bubblePop';
+		else if (i == 7) snd = 'spongyDeath';
+		else if (i == 10) snd = 'penDeath';
+	} else {
+		if (i == 5) snd = 'bubblePop';
+		else snd = "land3";
+	}
 
 	if (snd != 'none') playSound(snd);
 }
@@ -7622,7 +7642,8 @@ function drawExploreLevel(x, y, i, levelType, pageType) {
 	// 0 - main explore page
 	// 1 - explore user page
 	// 2 - local saved levels page
-	const isDaily = i == 8 && levelType == 0
+
+	const isDaily = i == 8 && levelType == 0;
 	thisExploreLevel = (pageType == 1) ? exploreUserPageLevels[levelType][i - levelType * 8] : explorePageLevels[i];
 	const levelData = isDaily ? thisExploreLevel.level : thisExploreLevel;
 
@@ -7781,14 +7802,14 @@ function refreshExplorePage() {
 
 function setMyLevelsPage(page) {
 	myLevelsPage = page;
-	let keys = Object.keys(myLevelsTab==0?lcSavedLevels:lcSavedLevelpacks);
-	let offset = myLevelsPage*8;
+	let keys = Object.keys(myLevelsTab == 0 ? lcSavedLevels : lcSavedLevelpacks);
+	let offset = myLevelsPage * 8;
 	myLevelsPageCount = Math.ceil(keys.length / 8.0);
 	if (myLevelsPage >= myLevelsPageCount) myLevelsPage = myLevelsPageCount - 1;
 	explorePageLevels = [];
 	for (let i = 0; i + offset < keys.length && i < 8; i++) {
 		let key = keys[i + offset];
-		explorePageLevels.push(myLevelsTab===0?lcSavedLevels[key]:lcSavedLevelpacks[key]);
+		explorePageLevels.push(myLevelsTab === 0 ? lcSavedLevels[key] : lcSavedLevelpacks[key]);
 	}
 	truncateLevelTitles(explorePageLevels, 0);
 	if (myLevelsTab === 0) setExploreThumbs();
@@ -11023,6 +11044,10 @@ function draw() {
 						break;
 					case 7:
 						thisOptionValue = speedrunTimer;
+						break;
+					case 8:
+						thisOptionValue = useCharDeathSounds;
+						break;
 				}
 				ctx.fillStyle = thisOptionValue?'#00ff00':'#ff0000';
 				ctx.fillText(thisOptionValue ? 'on' : 'off', x + 25, y + 2);
@@ -11055,6 +11080,9 @@ function draw() {
 								break;
 							case 7:
 								speedrunTimer = !speedrunTimer;
+								break;
+							case 8:
+								useCharDeathSounds = !useCharDeathSounds;
 								break;
 						}
 					}
@@ -11128,7 +11156,7 @@ function draw() {
 
 			// The levels themselves
 			for (let i = 0; i < explorePageLevels.length; i++) {
-				drawExploreLevel(232 * (i % 4) + 28, Math.floor(i / 4) * 182 + 130, i, myLevelsTab, 2);
+				drawExploreLevel(232 * (i % 4) + 28, Math.floor(i / 4) * 150 + 130, i, myLevelsTab, 2);
 			}
 
 			// Page number
@@ -11680,7 +11708,8 @@ class Character {
 		this.acidDropTimer = [0, 0]; // Why am I doing it like this
 
 		this.cTime = 999;
-		this.doubleJumps = 0;
+		this.doubleJumpCount = 0; // currently unused but it's so fun
+		this.doubleJumps = this.doubleJumpCount;
 		this.jumpPower = tjumpPower;
 	}
 

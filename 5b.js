@@ -221,7 +221,7 @@ getSavedGame();
 getSavedSettings();
 
 function saveSettings() {
-	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled, dialogueEnabled, speedrunTimer]));
+	bfdia5b.setItem('settings', JSON.stringify([screenShake, screenFlashes, quirksMode, enableExperimentalFeatures, frameRateThrottling, slowTintsEnabled, dialogueEnabled, speedrunTimer, useCharDeathSounds]));
 }
 
 function getSavedSettings() {
@@ -244,6 +244,7 @@ function getSavedSettings() {
 		slowTintsEnabled = settingsArray[5];
 		dialogueEnabled = settingsArray[6];
 		speedrunTimer = settingsArray[7];
+		useCharDeathSounds = settingsArray[8];
 	}
 }
 

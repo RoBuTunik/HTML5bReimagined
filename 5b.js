@@ -8703,7 +8703,7 @@ function draw() {
 						let grounded = char[control].onob || char[control].cTime <= 3 || char[control].submerged == 3
 						if (
 							(grounded || (char[control].doubleJumps > 0 && !jumpPress)) &&
-							char[control].landTimer > 2 &&
+							char[control].landTimer > 0 &&
 							!recover
 						) {
 							if (!grounded) char[control].doubleJumps--;

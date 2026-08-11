@@ -11709,7 +11709,8 @@ class Character {
 		this.acidDropTimer = [0, 0]; // Why am I doing it like this
 
 		this.cTime = 999;
-		this.doubleJumpCount = 0; // currently unused but it's so fun
+		// temp used depending on how much people like it
+		this.doubleJumpCount = 1; // currently used but it's so fun
 		this.doubleJumps = this.doubleJumpCount;
 		this.jumpPower = tjumpPower;
 	}
